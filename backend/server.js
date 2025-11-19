@@ -1,7 +1,13 @@
+// server.js
+
 import express from "express";
 import fs from "fs";
 import cors from "cors";
 import mysql from "mysql2";
+
+// (opcional, mas ajuda no ambiente local se você usar .env)
+// import dotenv from "dotenv";
+// dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -9,26 +15,45 @@ app.use(express.json());
 
 // ================== CONEXÃO COM O MYSQL (Railway ou local) ==================
 
-const db = mysql.createConnection({
-  host: process.env.MYSQLHOST || "localhost",
-  user: process.env.MYSQLUSER || "root",
-  password: process.env.MYSQLPASSWORD || "vinicius",
-  database: process.env.MYSQLDATABASE || "dependencia_internet",
-  port: process.env.MYSQLPORT || 3306,
-});
+// Detecta se estamos em produção (Railway) ou local
+const usandoRailway = !!process.env.MYSQLHOST && process.env.MYSQLHOST !== "localhost";
+
+const dbConfigProd = {
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: Number(process.env.MYSQLPORT) || 3306,
+  // Railway exige SSL
+  ssl: {
+    rejectUnauthorized: false,
+  },
+};
+
+const dbConfigLocal = {
+  host: "localhost",
+  user: "root",
+  password: "vinicius",
+  database: "dependencia_internet",
+  port: 3306,
+};
+
+const db = mysql.createConnection(usandoRailway ? dbConfigProd : dbConfigLocal);
 
 db.connect((err) => {
   if (err) {
     console.error("❌ Erro ao conectar ao MySQL:", err);
     return;
   }
-  console.log("✅ Conectado ao MySQL!");
+  console.log("✅ Conectado ao MySQL!", usandoRailway ? "(Railway)" : "(Local)");
 });
 
 // ================== ARQUIVO JSON (AINDA USADO PELO DASHBOARD) ==================
+
 const caminhoArquivo = "./respostas.json";
 
 // ================== FUNÇÃO DE CÁLCULO ==================
+
 function calcularPontuacao(respostas) {
   const valores = {
     "Nunca": 1,
@@ -49,8 +74,16 @@ function calcularPontuacao(respostas) {
   let pontuacao = 0;
   const respostasDetalhadas = {};
 
+  // funciona tanto se vier { q1: "Sempre" } quanto { q1: { texto: "Sempre", ... } }
   for (const [pergunta, resposta] of Object.entries(respostas)) {
-    let texto = typeof resposta === "object" ? resposta.texto : resposta;
+    let texto;
+
+    if (typeof resposta === "object" && resposta !== null) {
+      texto = resposta.texto || resposta.resposta || resposta.valor || "";
+    } else {
+      texto = resposta;
+    }
+
     const valor = valores[texto] || 0;
     pontuacao += valor;
     respostasDetalhadas[pergunta] = { texto, valor };
@@ -70,6 +103,7 @@ function calcularPontuacao(respostas) {
 }
 
 // ================== ENDPOINT QUE RECEBE AS RESPOSTAS ==================
+
 app.post(["/registrar", "/dados"], (req, res) => {
   const { estado, idade, genero, respostas } = req.body;
 
@@ -87,7 +121,7 @@ app.post(["/registrar", "/dados"], (req, res) => {
     data: new Date().toISOString(),
   };
 
-  // 1) SALVAR NO JSON
+  // -------- 1) SALVAR NO ARQUIVO JSON (para o dashboard) --------
   try {
     let dados = [];
     if (fs.existsSync(caminhoArquivo)) {
@@ -100,7 +134,8 @@ app.post(["/registrar", "/dados"], (req, res) => {
     console.error("❌ Erro ao salvar no JSON:", erro);
   }
 
-  // 2) SALVAR NO MYSQL
+  // -------- 2) SALVAR NO MYSQL --------
+
   const det = novaResposta.respostasDetalhadas || {};
   const getValor = (n) => det[`q${n}`]?.valor ?? 0;
 
@@ -121,19 +156,33 @@ app.post(["/registrar", "/dados"], (req, res) => {
   ];
 
   db.query(sql, valores, (err) => {
-    if (err) console.error("❌ Erro ao inserir no MySQL:", err);
-    else console.log("✅ Resposta inserida no MySQL!");
+    if (err) {
+      console.error("❌ Erro ao inserir no MySQL:", err);
+    } else {
+      console.log("✅ Resposta inserida no MySQL!");
+    }
+
     res.json({ mensagem: "Respostas salvas!", novaResposta });
   });
 });
 
 // ================== ROTA PARA MIGRAR JSON -> MYSQL ==================
+
 app.get("/migrar-json-para-mysql", (req, res) => {
   try {
-    if (!fs.existsSync(caminhoArquivo)) return res.status(400).json({ erro: "Arquivo não encontrado" });
+    if (!fs.existsSync(caminhoArquivo)) {
+      return res.status(400).json({ erro: "Arquivo não encontrado" });
+    }
 
     const conteudo = fs.readFileSync(caminhoArquivo, "utf8");
+    if (!conteudo.trim()) {
+      return res.status(400).json({ erro: "Arquivo JSON está vazio" });
+    }
+
     const dados = JSON.parse(conteudo);
+    if (!Array.isArray(dados)) {
+      return res.status(400).json({ erro: "Formato inválido no JSON" });
+    }
 
     const valores = dados.map((item) => {
       const det = item.respostasDetalhadas || {};
@@ -148,30 +197,43 @@ app.get("/migrar-json-para-mysql", (req, res) => {
       ];
     });
 
+    if (valores.length === 0) {
+      return res.status(400).json({ erro: "Nenhum registro para migrar" });
+    }
+
     const sql = `
       INSERT INTO respostas
       (estado, idade, genero,
-      q1_valor, q2_valor, q3_valor, q4_valor, q5_valor,
-      q6_valor, q7_valor, q8_valor, q9_valor, q10_valor)
+       q1_valor, q2_valor, q3_valor, q4_valor, q5_valor,
+       q6_valor, q7_valor, q8_valor, q9_valor, q10_valor)
       VALUES ?
     `;
 
     db.query(sql, [valores], (err, result) => {
-      if (err) return res.status(500).json({ erro: "Erro ao migrar" });
+      if (err) {
+        console.error("❌ Erro ao migrar JSON -> MySQL:", err);
+        return res.status(500).json({ erro: "Erro ao migrar" });
+      }
+
+      console.log(`✅ Migração concluída. Registros inseridos: ${result.affectedRows}`);
       res.json({ mensagem: "Migração concluída!", inseridos: result.affectedRows });
     });
   } catch (erro) {
+    console.error("❌ Erro interno na migração:", erro);
     res.status(500).json({ erro: "Erro interno" });
   }
 });
 
-// ================== ENDPOINT DE LEITURA ==================
+// ================== ENDPOINTS DE LEITURA (AINDA LENDO DO JSON) ==================
+
 app.get("/dados", (req, res) => {
   try {
     if (!fs.existsSync(caminhoArquivo)) return res.json([]);
-    const dados = JSON.parse(fs.readFileSync(caminhoArquivo, "utf8"));
+    const conteudo = fs.readFileSync(caminhoArquivo, "utf8");
+    const dados = conteudo.trim() ? JSON.parse(conteudo) : [];
     res.json(dados);
-  } catch {
+  } catch (erro) {
+    console.error("❌ Erro ao ler JSON em /dados:", erro);
     res.status(500).json({ erro: "Erro ao ler JSON" });
   }
 });
@@ -179,15 +241,18 @@ app.get("/dados", (req, res) => {
 app.get("/respostas", (req, res) => {
   try {
     if (!fs.existsSync(caminhoArquivo)) return res.json([]);
-    const dados = JSON.parse(fs.readFileSync(caminhoArquivo, "utf8"));
+    const conteudo = fs.readFileSync(caminhoArquivo, "utf8");
+    const dados = conteudo.trim() ? JSON.parse(conteudo) : [];
     res.json(dados);
-  } catch {
+  } catch (erro) {
+    console.error("❌ Erro ao ler JSON em /respostas:", erro);
     res.status(500).json({ erro: "Erro ao ler JSON" });
   }
 });
 
 // ================== INICIAR SERVIDOR ==================
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em: http://localhost:${PORT}`);
+  console.log(`🚀 Servidor rodando na porta ${PORT} (${usandoRailway ? "Railway" : "Local"})`);
 });
