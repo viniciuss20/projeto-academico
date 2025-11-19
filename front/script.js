@@ -101,30 +101,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dados = { estado, idade, genero, respostas };
 
-    try {
-      // 🚀 Envia as respostas para o mesmo endpoint usado no dashboard
-      const resposta = await fetch("http://localhost:3000/dados", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados),
-      });
+      try {
+    const resposta = await fetch("https://projeto-academico-production.up.railway.app/dados", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
 
-      if (!resposta.ok) throw new Error("Erro no servidor");
+    if (!resposta.ok) throw new Error("Erro no servidor");
 
-      const resultado = await resposta.json();
-      alert("✅ Respostas enviadas com sucesso!");
-      console.log("Servidor respondeu:", resultado);
+    const resultado = await resposta.json();
+    alert("✅ Respostas enviadas com sucesso!");
+    console.log("Servidor respondeu:", resultado);
 
-      // Limpa o formulário
-      Object.keys(respostas).forEach((key) => delete respostas[key]);
-      indice = 0;
-      form.reset();
-      dadosPessoais.style.display = "block";
-      questionario.style.display = "none";
-    } catch (erro) {
-      console.error("❌ Erro ao enviar:", erro);
-      alert("Erro ao enviar respostas. Verifique o servidor.");
-    }
+    Object.keys(respostas).forEach((key) => delete respostas[key]);
+    indice = 0;
+    form.reset();
+    dadosPessoais.style.display = "block";
+    questionario.style.display = "none";
+  } catch (erro) {
+    console.error("❌ Erro ao enviar:", erro);
+    alert("Erro ao enviar respostas. Verifique o servidor.");
+  }
+
   });
 
   // 🔹 Voltar
