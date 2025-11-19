@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Resultados</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* pequenos estilos para o mapa (você pode mover para style.css) */
+      #mapaBrasilContainer { margin-bottom: 16px; }
+      #mapaBrasil { width: 100%; max-width: 700px; height: auto; border: 1px solid #ddd; background: #fff; }
+      .estado-shape { cursor: pointer; stroke: #333; stroke-width: 1; transition: filter 0.15s, opacity 0.15s; }
+      .estado-label { font-size: 12px; font-family: Arial, sans-serif; pointer-events: none; }
+      .estado-legend { display:flex; gap:8px; align-items:center; margin-top:8px; font-size:13px }
+      .legend-swatch { width:28px; height:14px; border:1px solid #ccc; display:inline-block; }
+    </style>
+  </head>
+
+  <body>
+    <div class="dashboard-layout">
+      <!-- ✅ MENU LATERAL -->
+      <aside class="sidebar">
+        <h2>Estados</h2>
+        <ul id="estadoList">
+          <li data-estado="geral" class="active">Geral</li>
+          <li data-estado="Pernambuco">Pernambuco</li>
+          <li data-estado="São Paulo">São Paulo</li>
+          <li data-estado="Rio de Janeiro">Rio de Janeiro</li>
+          <li data-estado="Minas Gerais">Minas Gerais</li>
+          <li data-estado="Bahia">Bahia</li>
+        </ul>
+      </aside>
+
+      <!-- ✅ CONTEÚDO PRINCIPAL -->
+      <div class="dashboard-container">
+        <header class="dashboard-header">
+          <h1 id="tituloDashboard">Resultados Gerais da Pesquisa</h1>
+
+          <!-- ✅ CARDS PRINCIPAIS -->
+          <div class="stats">
+            <div class="stat-card">
+              <h2 id="totalRespostas">0</h2>
+              <p>Total de Respostas</p>
+            </div>
+
+            <div class="stat-card">
+              <h3 id="estadoMaisPopularTitulo">Estado Mais Afetado</h3>
+              <h2 id="EstadoMaisAfetado">-</h2>
+            </div>
+
+            <div class="stat-card">
+              <h2 id="totalEstados">0</h2>
+              <p>Estados Participantes</p>
+            </div>
+          </div>
+
+          <!-- ✅ NOVOS CARDS DE CLASSIFICAÇÃO -->
+          <div class="stats classificacao-cards" style="display: none;">
+            <div class="stat-card">
+              <h2 id="usoNormal">0</h2>
+              <p>Sem Dependência</p>
+            </div>
+            <div class="stat-card">
+              <h2 id="leve">0</h2>
+              <p>Dependência Leve</p>
+            </div>
+            <div class="stat-card">
+              <h2 id="moderada">0</h2>
+              <p>Dependência Moderada</p>
+            </div>
+            <div class="stat-card">
+              <h2 id="alta">0</h2>
+              <p>Dependência Alta</p>
+            </div>
+            <div class="stat-card">
+              <h2 id="severa">0</h2>
+              <p>Dependência Severa</p>
+            </div>
+          </div>
+        </header>
+
+        <!-- ✅ GRÁFICOS -->
+        <main class="dashboard-main" id="areaGraficos">
+          <!-- 🔹 MAPA DO BRASIL (simplificado para demonstração) -->
+          <div class="chart-card" id="mapaBrasilContainer">
+            <h3>Mapa de Dependência por Estado</h3>
+
+            <!-- SVG simplificado com formas representando estados (PE, SP, RJ, MG, BA) -->
+            <svg id="mapaBrasil" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+              <!-- fundo -->
+              <rect x="0" y="0" width="800" height="500" fill="#f7f7f7"></rect>
+
+              <!-- Pernambuco (PE) — topo direito -->
+              <g id="PE" class="estado" data-estado="Pernambuco">
+                <rect class="estado-shape" x="600" y="90" width="90" height="60" rx="6"></rect>
+                <text class="estado-label" x="645" y="130" text-anchor="middle" fill="#111">PE</text>
+              </g>
+
+              <!-- Bahia (BA) — centro direito baixo -->
+              <g id="BA" class="estado" data-estado="Bahia">
+                <rect class="estado-shape" x="560" y="220" width="140" height="90" rx="8"></rect>
+                <text class="estado-label" x="630" y="275" text-anchor="middle" fill="#111">BA</text>
+              </g>
+
+              <!-- Minas Gerais (MG) — centro -->
+              <g id="MG" class="estado" data-estado="Minas Gerais">
+                <rect class="estado-shape" x="420" y="150" width="120" height="80" rx="6"></rect>
+                <text class="estado-label" x="480" y="195" text-anchor="middle" fill="#111">MG</text>
+              </g>
+
+              <!-- Rio de Janeiro (RJ) — perto de MG, mais ao sul -->
+              <g id="RJ" class="estado" data-estado="Rio de Janeiro">
+                <rect class="estado-shape" x="520" y="180" width="70" height="45" rx="6"></rect>
+                <text class="estado-label" x="555" y="210" text-anchor="middle" fill="#111">RJ</text>
+              </g>
+
+              <!-- São Paulo (SP) — abaixo de MG e RJ -->
+              <g id="SP" class="estado" data-estado="São Paulo">
+                <rect class="estado-shape" x="460" y="240" width="100" height="70" rx="8"></rect>
+                <text class="estado-label" x="510" y="285" text-anchor="middle" fill="#111">SP</text>
+              </g>
+
+              <!-- legenda simples -->
+              <g id="mapLegend" transform="translate(20,380)">
+                <rect x="0" y="0" width="200" height="90" rx="6" fill="#ffffff" stroke="#ddd"></rect>
+                <text x="12" y="20" font-size="13" fill="#222">Legenda (impacto grave)</text>
+
+                <g transform="translate(12,30)">
+                  <rect class="legend-swatch" x="0" y="0" width="28" height="14" fill="hsl(0,80%,70%)" stroke="#ccc"></rect>
+                  <text x="36" y="12" font-size="12" fill="#222">Pouco impacto</text>
+                </g>
+
+                <g transform="translate(12,50)">
+                  <rect class="legend-swatch" x="0" y="0" width="28" height="14" fill="hsl(0,80%,50%)" stroke="#ccc"></rect>
+                  <text x="36" y="12" font-size="12" fill="#222">Médio</text>
+                </g>
+
+                <g transform="translate(12,70)">
+                  <rect class="legend-swatch" x="0" y="0" width="28" height="14" fill="hsl(0,80%,35%)" stroke="#ccc"></rect>
+                  <text x="36" y="12" font-size="12" fill="#222">Alto</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <!-- 🔹 Gráfico de Barras -->
+          <div class="chart-card" id="graficoBarrasContainer">
+            <h3>Distribuição de Respostas por Estado</h3>
+            <canvas id="graficoBarras"></canvas>
+          </div>
+
+          <!-- 🔹 Gráfico de Campanhas -->
+          <div class="chart-card" id="graficoCampanhasContainer" style="display: none;">
+            <h3>Participação em Campanhas de Conscientização</h3>
+            <canvas id="graficoCampanhas"></canvas>
+          </div>
+
+          <!-- 🔹 Novo Gráfico de Gênero -->
+          <div class="chart-card" id="graficoGeneroContainer" style="display: none;">
+            <h3>Distribuição de Gênero por Estado</h3>
+            <canvas id="graficoGenero"></canvas>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="./dashboard.js" defer></script>
+  </body>
+</html>

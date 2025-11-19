@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autoavaliação de Dependência de Internet</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="form-container">
+    <div class="form-card" id="dadosPessoais">
+      <h1 class="titulo">Autoavaliação de Dependência de Internet</h1>
+
+      <label for="estado">Estado onde mora</label>
+      <select id="estado">
+        <option value="" disabled selected>Selecione</option>
+        <option>Rio de Janeiro</option>
+        <option>São Paulo</option>
+        <option>Pernambuco</option>
+      </select>
+
+      <label for="idade">Idade</label>
+      <input type="number" id="idade" placeholder="Digite sua idade" min="1" max="120">
+
+      <label for="genero">Qual seu gênero?</label>
+      <select id="genero" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="Feminino">Feminino</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Outro">Outro</option>
+      </select>
+
+      <button id="iniciar" class="btn-primary">Continuar ›</button>
+    </div>
+
+    <div class="form-card" id="questionario" style="display:none;">
+      <h1 class="titulo">Autoavaliação de Dependência de Internet</h1>
+
+      <p id="perguntaTexto" class="pergunta"></p>
+      <form id="form" class="opcoes"></form>
+
+      <div class="botoes">
+        <button id="voltar" class="btn-secondary">‹ Voltar</button>
+        <button id="continuar" class="btn-primary">Continuar ›</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

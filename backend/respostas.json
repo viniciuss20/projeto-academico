@@ -1,0 +1,2862 @@
+[
+  {
+    "estado": "SP",
+    "idade": 57,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 28,
+    "pontuacaoMax": 50,
+    "porcentagem": 56,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 25,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 32,
+    "pontuacaoMax": 50,
+    "porcentagem": 64,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "BA",
+    "idade": 43,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "BA",
+    "idade": 27,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 34,
+    "pontuacaoMax": 50,
+    "porcentagem": 68,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 17,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Frequentemente",
+        "valor": 4
+      }
+    },
+    "pontuacao": 32,
+    "pontuacaoMax": 50,
+    "porcentagem": 64,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "BA",
+    "idade": 31,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "BA",
+    "idade": 26,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 58,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 35,
+    "pontuacaoMax": 50,
+    "porcentagem": 70,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 45,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 33,
+    "pontuacaoMax": 50,
+    "porcentagem": 66,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "SP",
+    "idade": 50,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 46,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 34,
+    "pontuacaoMax": 50,
+    "porcentagem": 68,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 20,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Frequentemente",
+        "valor": 4
+      }
+    },
+    "pontuacao": 28,
+    "pontuacaoMax": 50,
+    "porcentagem": 56,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 34,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 31,
+    "pontuacaoMax": 50,
+    "porcentagem": 62,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "SP",
+    "idade": 26,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 25,
+    "pontuacaoMax": 50,
+    "porcentagem": 50,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 17,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Frequentemente",
+        "valor": 4
+      }
+    },
+    "pontuacao": 28,
+    "pontuacaoMax": 50,
+    "porcentagem": 56,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 42,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 23,
+    "pontuacaoMax": 50,
+    "porcentagem": 46,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 26,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 28,
+    "pontuacaoMax": 50,
+    "porcentagem": 56,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 40,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 27,
+    "pontuacaoMax": 50,
+    "porcentagem": 54,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 26,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 26,
+    "pontuacaoMax": 50,
+    "porcentagem": 52,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 22,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 27,
+    "pontuacaoMax": 50,
+    "porcentagem": 54,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "BA",
+    "idade": 26,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 26,
+    "pontuacaoMax": 50,
+    "porcentagem": 52,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 52,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 26,
+    "pontuacaoMax": 50,
+    "porcentagem": 52,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "SP",
+    "idade": 50,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 34,
+    "pontuacaoMax": 50,
+    "porcentagem": 68,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 19,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 25,
+    "pontuacaoMax": 50,
+    "porcentagem": 50,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "BA",
+    "idade": 59,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 31,
+    "pontuacaoMax": 50,
+    "porcentagem": 62,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 64,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 22,
+    "pontuacaoMax": 50,
+    "porcentagem": 44,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "SP",
+    "idade": 30,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "BA",
+    "idade": 56,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 21,
+    "pontuacaoMax": 50,
+    "porcentagem": 42,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 55,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 22,
+    "pontuacaoMax": 50,
+    "porcentagem": 44,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 27,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 27,
+    "pontuacaoMax": 50,
+    "porcentagem": 54,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 59,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 31,
+    "pontuacaoMax": 50,
+    "porcentagem": 62,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 26,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 32,
+    "pontuacaoMax": 50,
+    "porcentagem": 64,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 40,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 35,
+    "pontuacaoMax": 50,
+    "porcentagem": 70,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 43,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 32,
+    "pontuacaoMax": 50,
+    "porcentagem": 64,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 34,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 28,
+    "pontuacaoMax": 50,
+    "porcentagem": 56,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 57,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 36,
+    "pontuacaoMax": 50,
+    "porcentagem": 72,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "MG",
+    "idade": 34,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 32,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 26,
+    "pontuacaoMax": 50,
+    "porcentagem": 52,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 39,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 26,
+    "pontuacaoMax": 50,
+    "porcentagem": 52,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 25,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Frequentemente",
+        "valor": 4
+      }
+    },
+    "pontuacao": 29,
+    "pontuacaoMax": 50,
+    "porcentagem": 58,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 30,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Sempre",
+        "valor": 5
+      }
+    },
+    "pontuacao": 38,
+    "pontuacaoMax": 50,
+    "porcentagem": 76,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 24,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 28,
+    "pontuacaoMax": 50,
+    "porcentagem": 56,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 19,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Frequentemente",
+        "valor": 4
+      }
+    },
+    "pontuacao": 36,
+    "pontuacaoMax": 50,
+    "porcentagem": 72,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 61,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 29,
+    "pontuacaoMax": 50,
+    "porcentagem": 58,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 34,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q3": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q10": {
+        "texto": "Frequentemente",
+        "valor": 4
+      }
+    },
+    "pontuacao": 33,
+    "pontuacaoMax": 50,
+    "porcentagem": 66,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 53,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 33,
+    "pontuacaoMax": 50,
+    "porcentagem": 66,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 57,
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q10": {
+        "texto": "Raramente",
+        "valor": 2
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "PE",
+    "idade": 16,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q4": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q5": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q6": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Frequentemente",
+        "valor": 4
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "SP",
+    "idade": 43,
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Nunca",
+        "valor": 1
+      }
+    },
+    "pontuacao": 30,
+    "pontuacaoMax": 50,
+    "porcentagem": 60,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "RJ",
+    "idade": 44,
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Nunca",
+        "valor": 1
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Às vezes",
+        "valor": 3
+      }
+    },
+    "pontuacao": 33,
+    "pontuacaoMax": 50,
+    "porcentagem": 66,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-12T22:36:48.025Z"
+  },
+  {
+    "estado": "Rio de Janeiro",
+    "idade": "20",
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Quase o tempo todo",
+        "valor": 0
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Não consigo ficar mais de 30 minutos sem acessar",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Sim",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Sim",
+        "valor": 5
+      }
+    },
+    "pontuacao": 45,
+    "pontuacaoMax": 50,
+    "porcentagem": 90,
+    "classificacao": "Dependência severa",
+    "data": "2025-11-12T22:54:04.211Z"
+  },
+  {
+    "estado": "Pernambuco",
+    "idade": "0",
+    "genero": "Masculino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Quase o tempo todo",
+        "valor": 0
+      },
+      "q2": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q3": {
+        "texto": "Não consigo ficar mais de 30 minutos sem acessar",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q5": {
+        "texto": "Sim",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q7": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q8": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q9": {
+        "texto": "Sempre",
+        "valor": 5
+      },
+      "q10": {
+        "texto": "Sim",
+        "valor": 5
+      }
+    },
+    "pontuacao": 45,
+    "pontuacaoMax": 50,
+    "porcentagem": 90,
+    "classificacao": "Dependência severa",
+    "data": "2025-11-12T23:19:31.767Z"
+  },
+  {
+    "estado": "Rio de Janeiro",
+    "idade": "20",
+    "genero": "Outro",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q3": {
+        "texto": "Mais de 6 horas",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Talvez",
+        "valor": 3
+      },
+      "q6": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q7": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q10": {
+        "texto": "Sim",
+        "valor": 5
+      }
+    },
+    "pontuacao": 39,
+    "pontuacaoMax": 50,
+    "porcentagem": 78,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-19T01:00:59.904Z"
+  },
+  {
+    "estado": "São Paulo",
+    "idade": "2",
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q2": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q3": {
+        "texto": "Não consigo ficar mais de 30 minutos sem acessar",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q5": {
+        "texto": "Sim",
+        "valor": 5
+      },
+      "q6": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q7": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q8": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Não",
+        "valor": 1
+      }
+    },
+    "pontuacao": 35,
+    "pontuacaoMax": 50,
+    "porcentagem": 70,
+    "classificacao": "Dependência alta",
+    "data": "2025-11-19T01:10:44.394Z"
+  },
+  {
+    "estado": "São Paulo",
+    "idade": "29",
+    "genero": "Feminino",
+    "respostasDetalhadas": {
+      "q1": {
+        "texto": "Quase o tempo todo",
+        "valor": 0
+      },
+      "q2": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q3": {
+        "texto": "Mais de 6 horas",
+        "valor": 5
+      },
+      "q4": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q5": {
+        "texto": "Não",
+        "valor": 1
+      },
+      "q6": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q7": {
+        "texto": "Às vezes",
+        "valor": 3
+      },
+      "q8": {
+        "texto": "Raramente",
+        "valor": 2
+      },
+      "q9": {
+        "texto": "Frequentemente",
+        "valor": 4
+      },
+      "q10": {
+        "texto": "Sim",
+        "valor": 5
+      }
+    },
+    "pontuacao": 29,
+    "pontuacaoMax": 50,
+    "porcentagem": 58,
+    "classificacao": "Dependência moderada",
+    "data": "2025-11-19T01:29:20.381Z"
+  }
+]
