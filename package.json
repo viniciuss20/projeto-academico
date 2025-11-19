@@ -1,0 +1,15 @@
+{
+  "name": "projeto-academico",
+  "version": "1.0.0",
+  "description": "API do questionario de dependencia de internet",
+  "main": "backend/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.0",
+    "cors": "^2.8.5",
+    "mysql2": "^3.9.0"
+  }
+}
