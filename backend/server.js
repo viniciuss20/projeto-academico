@@ -4,8 +4,10 @@ import express from "express";
 import fs from "fs";
 import cors from "cors";
 import mysql from "mysql2";
+import path from "path";
+import { fileURLToPath } from "url";
 
-// (opcional, mas ajuda no ambiente local se você usar .env)
+// (opcional, se quiser usar .env localmente)
 // import dotenv from "dotenv";
 // dotenv.config();
 
@@ -13,9 +15,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ================== CONEXÃO COM O MYSQL (Railway ou local) ==================
+/* ================== CONEXÃO COM O MYSQL (Railway ou local) ================== */
 
-// Detecta se estamos em produção (Railway) ou local
+// Detecta se estamos em produção (Railway) ou rodando local
 const usandoRailway = !!process.env.MYSQLHOST && process.env.MYSQLHOST !== "localhost";
 
 const dbConfigProd = {
@@ -24,7 +26,7 @@ const dbConfigProd = {
   password: process.env.MYSQLPASSWORD,
   database: process.env.MYSQLDATABASE,
   port: Number(process.env.MYSQLPORT) || 3306,
-  // Railway exige SSL
+  // Railway costuma exigir SSL para MySQL
   ssl: {
     rejectUnauthorized: false,
   },
@@ -48,11 +50,14 @@ db.connect((err) => {
   console.log("✅ Conectado ao MySQL!", usandoRailway ? "(Railway)" : "(Local)");
 });
 
-// ================== ARQUIVO JSON (AINDA USADO PELO DASHBOARD) ==================
+/* ================== ARQUIVO JSON (AINDA USADO PELO DASHBOARD) ================== */
 
-const caminhoArquivo = "./respostas.json";
+// garante que o respostas.json fique na MESMA pasta do server.js
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const caminhoArquivo = path.join(__dirname, "respostas.json");
 
-// ================== FUNÇÃO DE CÁLCULO ==================
+/* ================== FUNÇÃO DE CÁLCULO ================== */
 
 function calcularPontuacao(respostas) {
   const valores = {
@@ -74,7 +79,7 @@ function calcularPontuacao(respostas) {
   let pontuacao = 0;
   const respostasDetalhadas = {};
 
-  // funciona tanto se vier { q1: "Sempre" } quanto { q1: { texto: "Sempre", ... } }
+  // funciona tanto se vier { q1: "Sempre" } quanto { q1: { texto: "Sempre" } }
   for (const [pergunta, resposta] of Object.entries(respostas)) {
     let texto;
 
@@ -102,7 +107,7 @@ function calcularPontuacao(respostas) {
   return { respostasDetalhadas, pontuacao, pontuacaoMax, porcentagem, classificacao };
 }
 
-// ================== ENDPOINT QUE RECEBE AS RESPOSTAS ==================
+/* ================== ENDPOINT QUE RECEBE AS RESPOSTAS ================== */
 
 app.post(["/registrar", "/dados"], (req, res) => {
   const { estado, idade, genero, respostas } = req.body;
@@ -166,7 +171,7 @@ app.post(["/registrar", "/dados"], (req, res) => {
   });
 });
 
-// ================== ROTA PARA MIGRAR JSON -> MYSQL ==================
+/* ================== ROTA PARA MIGRAR JSON -> MYSQL ================== */
 
 app.get("/migrar-json-para-mysql", (req, res) => {
   try {
@@ -224,7 +229,7 @@ app.get("/migrar-json-para-mysql", (req, res) => {
   }
 });
 
-// ================== ENDPOINTS DE LEITURA (AINDA LENDO DO JSON) ==================
+/* ================== ENDPOINTS DE LEITURA (AINDA LENDO DO JSON) ================== */
 
 app.get("/dados", (req, res) => {
   try {
@@ -250,9 +255,11 @@ app.get("/respostas", (req, res) => {
   }
 });
 
-// ================== INICIAR SERVIDOR ==================
+/* ================== INICIAR SERVIDOR ================== */
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando na porta ${PORT} (${usandoRailway ? "Railway" : "Local"})`);
+  console.log(
+    `🚀 Servidor rodando na porta ${PORT} (${usandoRailway ? "Railway" : "Local"})`
+  );
 });
