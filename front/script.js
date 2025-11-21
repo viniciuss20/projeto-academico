@@ -87,43 +87,43 @@ document.addEventListener("DOMContentLoaded", () => {
     const valor = valores[texto] || 0;
     respostas[`q${indice + 1}`] = { texto, valor };
 
-    // 👉 Se ainda há perguntas, avança
     if (indice < perguntas.length - 1) {
       indice++;
       renderPergunta();
       return;
     }
 
-    // 👉 Se acabou, envia pro servidor
+    // 🔹 Envia as respostas ao servidor
     const estado = estadoSelect.value.trim();
     const idade = document.getElementById("idade").value.trim();
     const genero = document.getElementById("genero").value.trim();
 
     const dados = { estado, idade, genero, respostas };
 
-      try {
-    const resposta = await fetch("https://projeto-academico-production.up.railway.app/dados", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dados),
-    });
+    try {
+      const resposta = await fetch("https://projeto-academico-production.up.railway.app/respostas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados),
+      });
 
-    if (!resposta.ok) throw new Error("Erro no servidor");
+      if (!resposta.ok) throw new Error("Erro no servidor");
 
-    const resultado = await resposta.json();
-    alert("✅ Respostas enviadas com sucesso!");
-    console.log("Servidor respondeu:", resultado);
+      const resultado = await resposta.json();
+      alert("✅ Respostas enviadas com sucesso!");
+      console.log("Servidor respondeu:", resultado);
 
-    Object.keys(respostas).forEach((key) => delete respostas[key]);
-    indice = 0;
-    form.reset();
-    dadosPessoais.style.display = "block";
-    questionario.style.display = "none";
-  } catch (erro) {
-    console.error("❌ Erro ao enviar:", erro);
-    alert("Erro ao enviar respostas. Verifique o servidor.");
-  }
+      // Resetar tudo
+      Object.keys(respostas).forEach((key) => delete respostas[key]);
+      indice = 0;
+      form.reset();
+      dadosPessoais.style.display = "block";
+      questionario.style.display = "none";
 
+    } catch (erro) {
+      console.error("❌ Erro ao enviar:", erro);
+      alert("Erro ao enviar respostas. Verifique o servidor.");
+    }
   });
 
   // 🔹 Voltar
