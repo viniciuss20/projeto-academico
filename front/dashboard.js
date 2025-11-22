@@ -241,6 +241,11 @@ document.addEventListener("DOMContentLoaded", () => {
       totalEstadosEl.textContent = Object.keys(dadosRespostas).length;
 
       tituloEstadoMaisPopular.textContent = "Estado mais afetado";
+
+      cardsClassificacao.style.display = "none";
+      graficoCampanhasContainer.style.display = "none";
+      graficoGeneroContainer.style.display = "none";
+
       return;
     }
 
@@ -266,6 +271,10 @@ document.addEventListener("DOMContentLoaded", () => {
     severaEl.textContent = d.classificacoes["Dependência severa"];
 
     tituloEstadoMaisPopular.textContent = "Situação do estado";
+
+    cardsClassificacao.style.display = "flex";
+    graficoCampanhasContainer.style.display = "block";
+    graficoGeneroContainer.style.display = "block";
   }
 
   /* -------------------------------------------------------
@@ -351,6 +360,43 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     });
   }
+
+  /* -------------------------------------------------------
+      TROCAR ESTADO AO CLICAR NO MENU
+  ------------------------------------------------------- */
+
+  function selecionarEstado(estado) {
+    document.querySelectorAll("#estadoList li").forEach((li) => {
+      li.classList.remove("active");
+      if (li.dataset.estado === estado) li.classList.add("active");
+    });
+
+    tituloDashboard.textContent =
+      estado === "geral"
+        ? "Resultados Gerais da Pesquisa"
+        : `Resultados de ${estado}`;
+
+    atualizarEstatisticas(estado);
+    criarGraficoCampanhas(estado);
+    criarGraficoGenero(estado);
+  }
+
+  document.querySelectorAll("#estadoList li").forEach((li) => {
+    li.addEventListener("click", () => {
+      const est = li.dataset.estado;
+      selecionarEstado(est);
+    });
+  });
+
+  /* -------------------------------------------------------
+      PERMITIR CLICAR NO MAPA
+  ------------------------------------------------------- */
+
+  document.querySelectorAll("#mapaBrasil g[data-estado]").forEach((g) => {
+    g.addEventListener("click", () => {
+      selecionarEstado(g.dataset.estado);
+    });
+  });
 
   /* -------------------------------------------------------
       CARREGAR DADOS
