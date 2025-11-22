@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     valor = String(valor).trim();
 
     if (estadoMap[valor]) return estadoMap[valor];
-    if (estadoMap[valor.toUpperCase()]) return estadoMap[valor.toUpperCase()]];
+    if (estadoMap[valor.toUpperCase()]) return estadoMap[valor.toUpperCase()];
 
     const capitalizado = valor[0]?.toUpperCase() + valor.slice(1).toLowerCase();
     if (estadoMap[capitalizado]) return estadoMap[capitalizado];
