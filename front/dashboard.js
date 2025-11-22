@@ -1,6 +1,12 @@
 // dashboard.js
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  const API_URL = "https://projeto-academico-production.up.railway.app/dados";
+
+  /* -------------------------------------------------------
+      ELEMENTOS DO DOM
+  ------------------------------------------------------- */
   const totalRespostasEl = document.getElementById("totalRespostas");
   const estadoMaisAfetadoEl = document.getElementById("EstadoMaisAfetado");
   const totalEstadosEl = document.getElementById("totalEstados");
@@ -16,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctxGenero = document.getElementById("graficoGenero").getContext("2d");
 
   const cardsClassificacao = document.querySelector(".classificacao-cards");
+  const rankingContainer = document.getElementById("rankingEstados");
 
   const usoNormalEl = document.getElementById("usoNormal");
   const leveEl = document.getElementById("leve");
@@ -23,17 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const altaEl = document.getElementById("alta");
   const severaEl = document.getElementById("severa");
 
-  const rankingContainer = document.getElementById("rankingEstados");
+  /* -------------------------------------------------------
+      VARIÁVEIS GLOBAIS
+  ------------------------------------------------------- */
 
   let graficoBarras;
   let graficoCampanhas;
   let graficoGenero;
+
   let dadosRespostas = {};
   let dadosCampanhas = {};
   let dadosGenero = {};
   let todosOsDados = [];
-
-  const API_URL = "https://projeto-academico-production.up.railway.app/dados";
 
   const estadoMap = {
     PE: "Pernambuco",
@@ -48,6 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
     Bahia: "Bahia",
   };
 
+  /* -------------------------------------------------------
+      FUNÇÕES UTILITÁRIAS
+  ------------------------------------------------------- */
+
   function normalizarTexto(txt) {
     if (typeof txt !== "string") return "";
     return txt.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -56,43 +68,47 @@ document.addEventListener("DOMContentLoaded", () => {
   function normalizarEstado(valor) {
     if (!valor) return "Não informado";
     valor = String(valor).trim();
+
     if (estadoMap[valor]) return estadoMap[valor];
-    const upper = valor.toUpperCase();
-    if (estadoMap[upper]) return estadoMap[upper];
+    if (estadoMap[valor.toUpperCase()]) return estadoMap[valor.toUpperCase()]];
+
     const capitalizado = valor[0]?.toUpperCase() + valor.slice(1).toLowerCase();
     if (estadoMap[capitalizado]) return estadoMap[capitalizado];
+
     return valor;
   }
 
   function calcularClassificacaoAPartirDosValores(item) {
     const valores = [];
+
     for (let i = 1; i <= 10; i++) {
       const campo = item[`q${i}_valor`];
       if (typeof campo === "number") valores.push(campo);
     }
+
     if (valores.length === 0) return "Sem dependência";
 
-    const pontuacao = valores.reduce((a, b) => a + b, 0);
-    const pontuacaoMax = valores.length * 5;
-    const porcentagem = Math.round((pontuacao / pontuacaoMax) * 100);
+    const pont = valores.reduce((acc, v) => acc + v, 0);
+    const max = valores.length * 5;
+    const pct = Math.round((pont / max) * 100);
 
-    if (porcentagem <= 20) return "Sem dependência";
-    if (porcentagem <= 40) return "Dependência leve";
-    if (porcentagem <= 60) return "Dependência moderada";
-    if (porcentagem <= 80) return "Dependência alta";
+    if (pct <= 20) return "Sem dependência";
+    if (pct <= 40) return "Dependência leve";
+    if (pct <= 60) return "Dependência moderada";
+    if (pct <= 80) return "Dependência alta";
     return "Dependência severa";
   }
 
   function pegarClassificacao(item) {
-    const valorTexto =
+    const texto =
       item.classificacao ||
       item.Classificacao ||
       item["Classificação"] ||
       item.classificação ||
       "";
 
-    if (valorTexto) {
-      const norm = normalizarTexto(valorTexto);
+    if (texto) {
+      const norm = normalizarTexto(texto);
       if (norm.includes("sem")) return "Sem dependência";
       if (norm.includes("leve")) return "Dependência leve";
       if (norm.includes("moderada")) return "Dependência moderada";
@@ -113,16 +129,12 @@ document.addEventListener("DOMContentLoaded", () => {
       campo = item.respostasDetalhadas.q10.texto;
     }
 
-    if (campo) {
-      const valorTxt = normalizarTexto(campo);
-      if (valorTxt.includes("sim")) return "Sim";
-      return "Não";
-    }
-
-    if (typeof item.q10_valor === "number") {
+    if (!campo && typeof item.q10_valor === "number") {
       return item.q10_valor >= 3 ? "Sim" : "Não";
     }
 
+    const t = normalizarTexto(campo || "");
+    if (t.includes("sim")) return "Sim";
     return "Não";
   }
 
@@ -134,58 +146,63 @@ document.addEventListener("DOMContentLoaded", () => {
       item["Gênero"] ||
       item["sexo"];
 
-    const valor = normalizarTexto(genero);
-    if (valor.includes("mascul")) return "Homem";
-    if (valor.includes("fem") || valor.includes("mulher")) return "Mulher";
+    const g = normalizarTexto(genero || "");
+    if (g.includes("masc")) return "Homem";
+    if (g.includes("fem") || g.includes("mulher")) return "Mulher";
     return "Não informado";
   }
 
-  function corPorIntensidade(intensidade) {
-    const light = 80 - Math.round(50 * intensidade);
+  /* -------------------------------------------------------
+      MAPA
+  ------------------------------------------------------- */
+
+  function corPorIntensidade(int) {
+    const light = 80 - Math.round(50 * int);
     return `hsl(0, 80%, ${light}%)`;
   }
 
   function desenharMapa() {
-    const estadosSVG = ["Pernambuco", "Bahia", "Minas Gerais", "Rio de Janeiro", "São Paulo"];
+    const estados = ["Pernambuco", "Bahia", "Minas Gerais", "Rio de Janeiro", "São Paulo"];
 
+    let max = 0;
     const impactos = {};
-    let maxImpacto = 0;
 
-    estadosSVG.forEach((estado) => {
-      const dados = dadosRespostas[estado];
-      const impacto = dados
-        ? (dados.classificacoes["Dependência alta"] || 0) +
-          (dados.classificacoes["Dependência severa"] || 0)
+    estados.forEach((estado) => {
+      const d = dadosRespostas[estado];
+      const impacto = d
+        ? d.classificacoes["Dependência alta"] + d.classificacoes["Dependência severa"]
         : 0;
 
       impactos[estado] = impacto;
-      if (impacto > maxImpacto) maxImpacto = impacto;
+      if (impacto > max) max = impacto;
     });
 
-    estadosSVG.forEach((estado) => {
-      const impacto = impactos[estado] || 0;
-      const intensidade = maxImpacto === 0 ? 0 : impacto / maxImpacto;
-      const cor = corPorIntensidade(intensidade);
-
+    estados.forEach((estado) => {
       const grupo = document.querySelector(`#mapaBrasil g[data-estado="${estado}"]`);
-      if (grupo) {
-        const shape = grupo.querySelector(".estado-shape");
-        if (shape) {
-          shape.style.fill = cor;
-          shape.setAttribute("data-impacto", impacto);
-          shape.style.opacity = impacto === 0 ? 0.6 : 1;
-        }
-      }
+      if (!grupo) return;
+
+      const shape = grupo.querySelector(".estado-shape");
+      if (!shape) return;
+
+      const impacto = impactos[estado];
+      const intensidade = max ? impacto / max : 0;
+
+      shape.style.fill = corPorIntensidade(intensidade);
+      shape.style.opacity = impacto === 0 ? 0.6 : 1;
     });
   }
+
+  /* -------------------------------------------------------
+      RANKING
+  ------------------------------------------------------- */
 
   function atualizarRankingEstados() {
     if (!rankingContainer) return;
 
     const ranking = Object.entries(dadosRespostas)
-      .map(([estado, dados]) => ({
+      .map(([estado, d]) => ({
         estado,
-        impacto: dados.classificacoes["Dependência alta"] + dados.classificacoes["Dependência severa"],
+        impacto: d.classificacoes["Dependência alta"] + d.classificacoes["Dependência severa"],
       }))
       .sort((a, b) => b.impacto - a.impacto);
 
@@ -194,65 +211,70 @@ document.addEventListener("DOMContentLoaded", () => {
         (r, i) => `
       <li>
         <strong>${i + 1}º</strong> ${r.estado} — 
-        <span style="color:#e74c3c">${r.impacto}</span> casos graves
+        <span style="color:#e74c3c">${r.impacto}</span>
       </li>`
       )
       .join("");
   }
 
+  /* -------------------------------------------------------
+      ESTATÍSTICAS
+  ------------------------------------------------------- */
+
   function atualizarEstatisticas(estado = "geral") {
     if (estado === "geral") {
-      const totalRespostas = Object.values(dadosRespostas).reduce(
-        (acc, estado) => acc + estado.total,
-        0
-      );
+      const total = Object.values(dadosRespostas).reduce((acc, d) => acc + d.total, 0);
 
-      let estadoMaisAfetado = "Nenhum";
-      let maiorImpacto = -1;
+      let mais = "Nenhum";
+      let maior = -1;
 
-      for (const [nomeEstado, dados] of Object.entries(dadosRespostas)) {
-        const impacto =
-          dados.classificacoes["Dependência alta"] +
-          dados.classificacoes["Dependência severa"];
-
-        if (impacto > maiorImpacto) {
-          maiorImpacto = impacto;
-          estadoMaisAfetado = nomeEstado;
+      for (const [est, d] of Object.entries(dadosRespostas)) {
+        const impacto = d.classificacoes["Dependência alta"] + d.classificacoes["Dependência severa"];
+        if (impacto > maior) {
+          maior = impacto;
+          mais = est;
         }
       }
 
-      totalRespostasEl.textContent = totalRespostas;
-      estadoMaisAfetadoEl.textContent = estadoMaisAfetado;
+      totalRespostasEl.textContent = total;
+      estadoMaisAfetadoEl.textContent = mais;
       totalEstadosEl.textContent = Object.keys(dadosRespostas).length;
+
       tituloEstadoMaisPopular.textContent = "Estado mais afetado";
-    } else {
-      const dadosEstado = dadosRespostas[estado] || {
-        total: 0,
-        classificacoes: {
-          "Sem dependência": 0,
-          "Dependência leve": 0,
-          "Dependência moderada": 0,
-          "Dependência alta": 0,
-          "Dependência severa": 0,
-        },
-      };
-
-      totalRespostasEl.textContent = dadosEstado.total;
-      estadoMaisAfetadoEl.textContent = estado;
-      totalEstadosEl.textContent = 1;
-      tituloEstadoMaisPopular.textContent = "Situação do Estado";
-
-      usoNormalEl.textContent = dadosEstado.classificacoes["Sem dependência"];
-      leveEl.textContent = dadosEstado.classificacoes["Dependência leve"];
-      moderadaEl.textContent = dadosEstado.classificacoes["Dependência moderada"];
-      altaEl.textContent = dadosEstado.classificacoes["Dependência alta"];
-      severaEl.textContent = dadosEstado.classificacoes["Dependência severa"];
+      return;
     }
+
+    const d = dadosRespostas[estado] || {
+      total: 0,
+      classificacoes: {
+        "Sem dependência": 0,
+        "Dependência leve": 0,
+        "Dependência moderada": 0,
+        "Dependência alta": 0,
+        "Dependência severa": 0,
+      },
+    };
+
+    totalRespostasEl.textContent = d.total;
+    estadoMaisAfetadoEl.textContent = estado;
+    totalEstadosEl.textContent = 1;
+
+    usoNormalEl.textContent = d.classificacoes["Sem dependência"];
+    leveEl.textContent = d.classificacoes["Dependência leve"];
+    moderadaEl.textContent = d.classificacoes["Dependência moderada"];
+    altaEl.textContent = d.classificacoes["Dependência alta"];
+    severaEl.textContent = d.classificacoes["Dependência severa"];
+
+    tituloEstadoMaisPopular.textContent = "Situação do estado";
   }
+
+  /* -------------------------------------------------------
+      GRÁFICOS
+  ------------------------------------------------------- */
 
   function criarGraficoBarras() {
     const labels = Object.keys(dadosRespostas);
-    const data = Object.values(dadosRespostas).map((d) => d.total);
+    const values = Object.values(dadosRespostas).map((d) => d.total);
 
     if (graficoBarras) graficoBarras.destroy();
 
@@ -263,9 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
         datasets: [
           {
             label: "Total de Respostas",
-            data,
-            backgroundColor: "rgba(54, 162, 235, 0.6)",
-            borderColor: "rgba(54, 162, 235, 1)",
+            data: values,
+            backgroundColor: "rgba(54,162,235,0.6)",
+            borderColor: "rgba(54,162,235,1)",
             borderWidth: 1,
           },
         ],
@@ -277,9 +299,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function criarGraficoCampanhas(estado = "geral") {
     let dados;
     if (estado === "geral") {
-      const totalSim = Object.values(dadosCampanhas).reduce((a, b) => a + b.Sim, 0);
-      const totalNao = Object.values(dadosCampanhas).reduce((a, b) => a + b["Não"], 0);
-      dados = { Sim: totalSim, Não: totalNao };
+      const sim = Object.values(dadosCampanhas).reduce((acc, d) => acc + d.Sim, 0);
+      const nao = Object.values(dadosCampanhas).reduce((acc, d) => acc + d["Não"], 0);
+      dados = { Sim: sim, Não: nao };
     } else {
       dados = dadosCampanhas[estado] || { Sim: 0, Não: 0 };
     }
@@ -304,11 +326,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function criarGraficoGenero(estado = "geral") {
     let dados;
-
     if (estado === "geral") {
-      const totalHomem = Object.values(dadosGenero).reduce((a, b) => a + b.Homem, 0);
-      const totalMulher = Object.values(dadosGenero).reduce((a, b) => a + b.Mulher, 0);
-      dados = { Homem: totalHomem, Mulher: totalMulher };
+      const homem = Object.values(dadosGenero).reduce((acc, d) => acc + d.Homem, 0);
+      const mulher = Object.values(dadosGenero).reduce((acc, d) => acc + d.Mulher, 0);
+      dados = { Homem: homem, Mulher: mulher };
     } else {
       dados = dadosGenero[estado] || { Homem: 0, Mulher: 0 };
     }
@@ -331,12 +352,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* -------------------------------------------------------
+      CARREGAR DADOS
+  ------------------------------------------------------- */
+
   async function carregarDados() {
     try {
-      const resposta = await fetch(API_URL);
-      if (!resposta.ok) throw new Error("Erro ao acessar o backend do Railway");
+      const resp = await fetch(API_URL);
+      if (!resp.ok) throw new Error("Erro ao acessar API do Railway");
 
-      const dados = await resposta.json();
+      const dados = await resp.json();
       todosOsDados = dados;
 
       const agrupado = {};
@@ -360,6 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "Dependência severa": 0,
             },
           };
+
           campanhasAgrupadas[estado] = { Sim: 0, Não: 0 };
           generoAgrupado[estado] = { Homem: 0, Mulher: 0, "Não informado": 0 };
         }
@@ -376,17 +402,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       atualizarEstatisticas("geral");
       criarGraficoBarras();
-      criarGraficoGenero("geral");
       criarGraficoCampanhas("geral");
+      criarGraficoGenero("geral");
       atualizarRankingEstados();
       desenharMapa();
 
-    } catch (erro) {
-      console.error("❌ Erro ao carregar dados:", erro);
+    } catch (err) {
+      console.error("❌ Erro ao carregar dados:", err);
     }
   }
 
-  habilitarInteracaoMapa();
+  /* -------------------------------------------------------
+      EXECUÇÃO INICIAL
+  ------------------------------------------------------- */
+
   carregarDados();
   setInterval(carregarDados, 5000);
+
 });
