@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let indice = 0;
+  
   const respostas = {};
 
   // 🔹 Renderiza pergunta atual
