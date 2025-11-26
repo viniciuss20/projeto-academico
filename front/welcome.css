@@ -1,0 +1,83 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: #F1F5FD;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteúdo central */
+.container {
+    width: 100%;
+    max-width: 750px;
+    background: white;
+    padding: 60px 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* LOGO GEOBRASIL */
+.logo-geobrasil {
+    width: 260px;
+    margin: 0 auto 25px auto;
+    display: block;
+}
+
+/* Título */
+h1 {
+    font-size: 64px;
+    font-weight: 900;
+    margin-bottom: 25px;
+}
+
+.azul { color: #0632A2; }
+.verde { color: #0B8A3D; }
+
+/* Texto */
+.descricao {
+    font-size: 20px;
+    line-height: 32px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+/* Botão */
+.botao {
+    display: inline-block;
+    padding: 18px 40px;
+    background: #0B8A3D;
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.botao:hover {
+    background: #0E6D31;
+    transform: translateY(-3px);
+}
+
+/* Responsivo */
+@media (max-width: 680px) {
+    h1 {
+        font-size: 42px;
+    }
+    .descricao {
+        font-size: 18px;
+        line-height: 28px;
+    }
+    .logo-geobrasil {
+        width: 180px;
+    }
+}

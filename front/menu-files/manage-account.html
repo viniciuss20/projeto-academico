@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Conta</title>
+
+    <link rel="stylesheet" href="manage-account.css" />
+
+    <style>
+        /* LOGO NO CANTO SUPERIOR DIREITO */
+        .geo-logo-top {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            height: 90px;
+            width: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+
+        <!-- SIDEBAR (MANTIDA COMO ESTAVA) -->
+        <aside class="sidebar">
+            <div class="profile">
+
+                <!-- ✔ Avatar ORIGINAL, sem mudanças -->
+                <img src="../public/img/image.png" alt="avatar" class="avatar-img">
+
+                <h3 id="userNameSidebar">Usuário</h3>
+            </div>
+
+            <ul class="menu">
+                <li onclick="window.location.href='../dashboard.html'">
+                    <span>📊</span> Dashboard
+                </li>
+
+                <li class="active">
+                    <span>👤</span> Detalhes da Conta
+                </li>
+
+                <li onclick="window.location.href='change-password.html'">
+                    <span>🔐</span> Alterar Senha
+                </li>
+
+                <li onclick="logout()">
+                    <span>🚪</span> Sair
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+
+            <!-- ✅ LOGO ADICIONADA NO CANTO SUPERIOR DIREITO -->
+            <img src="../public/img/geo-logo.png" alt="GeoBrasil Logo" class="geo-logo-top">
+
+
+
+            <h1>Configurações da Conta</h1>
+
+            <form class="form">
+                <label>Endereço de Email</label>
+                <input type="email" id="email" placeholder="email@exemplo.com" />
+
+                <label>Nome</label>
+                <input type="text" id="firstName" placeholder="Seu nome" />
+
+                <label>Sobrenome</label>
+                <input type="text" id="lastName" placeholder="Seu sobrenome" />
+
+                <button type="button" class="btn-primary" id="saveBtn">Salvar</button>
+            </form>
+        </main>
+
+    </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const usuario = localStorage.getItem("usuario") || "Usuário";
+
+        document.getElementById("userNameSidebar").innerText = usuario;
+        document.getElementById("email").value = usuario + "@exemplo.com";
+    });
+
+    function logout() {
+        localStorage.removeItem("usuario");
+        window.location.href = "../login.html";
+    }
+</script>
+
+</body>
+</html>

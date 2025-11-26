@@ -1,0 +1,205 @@
+/* ===========================
+   ESTILO GERAL DA PÁGINA
+=========================== */
+body {
+    font-family: "Inter", sans-serif;
+    background: #f4f6fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Área principal */
+.container {
+    width: 100%;
+    min-height: calc(100vh - 150px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 40px;
+}
+
+/* ===========================
+   LOGO GEOBRASIL
+=========================== */
+
+/* LOGO GEOBRASIL */
+.logo-geobrasil {
+    width: 260px;
+    margin: 0 auto 25px auto;
+    display: block;
+}
+
+/* ===========================
+   CARTÃO PRINCIPAL
+=========================== */
+
+.card {
+    background: #fff;
+    width: 100%;
+    max-width: 650px;
+    padding: 40px 50px;
+    border-radius: 20px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
+    margin: 0 auto;
+}
+
+/* Título */
+.titulo {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+
+/* ===========================
+   BARRAS DE PROGRESSO
+=========================== */
+
+.progress-bar {
+    height: 7px;
+    width: 100%;
+    background: #e5eaf1;
+    border-radius: 50px;
+    margin-bottom: 30px;
+}
+
+.progress {
+    height: 100%;
+    background: #2563eb; /* azul padrão */
+    border-radius: 50px;
+    transition: width 0.3s ease;
+}
+
+
+/* ===========================
+   CAMPOS DE FORMULÁRIO
+=========================== */
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+}
+
+.campo label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #111827;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+    background: white;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: #2563eb;
+}
+
+
+/* ===========================
+   SISTEMA DE PERGUNTAS
+=========================== */
+
+.pergunta {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+.opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.opcoes label {
+    padding: 15px 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.2s;
+}
+
+.opcoes label:hover {
+    background: #f3f5f9;
+}
+
+.opcoes input {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* ===========================
+   BOTÕES
+=========================== */
+
+.botoes {
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+/* Botão voltar */
+.voltar {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.voltar:hover {
+    background: #d1d5db;
+}
+
+/* Botão continuar */
+.continuar {
+    background: #2563eb;
+    color: white;
+}
+
+.continuar:hover {
+    background: #1d4ed8;
+}
+
+
+/* ===========================
+   RESPONSIVIDADE
+=========================== */
+
+@media (max-width: 600px) {
+    .card {
+        padding: 30px 25px;
+    }
+
+    .logo-img {
+        height: 75px;
+    }
+
+    .titulo {
+        font-size: 22px;
+    }
+}

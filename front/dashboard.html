@@ -1,170 +1,235 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Resultados</title>
+
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-      /* pequenos estilos para o mapa (você pode mover para style.css) */
-      #mapaBrasilContainer { margin-bottom: 16px; }
-      #mapaBrasil { width: 100%; max-width: 700px; height: auto; border: 1px solid #ddd; background: #fff; }
-      .estado-shape { cursor: pointer; stroke: #333; stroke-width: 1; transition: filter 0.15s, opacity 0.15s; }
-      .estado-label { font-size: 12px; font-family: Arial, sans-serif; pointer-events: none; }
-      .estado-legend { display:flex; gap:8px; align-items:center; margin-top:8px; font-size:13px }
-      .legend-swatch { width:28px; height:14px; border:1px solid #ccc; display:inline-block; }
+        /* === TOPO === */
+        .topbar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            position: relative;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .geo-logo {
+            height: 55px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .user-avatar-img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: -4px;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            width: 180px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            display: none;
+            flex-direction: column;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .user-dropdown.active {
+            display: flex;
+        }
+
+        .dropdown-item {
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            transition: 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #f3f4f6;
+        }
+
+        .logout {
+            color: #dc2626;
+            font-weight: 600;
+        }
     </style>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="dashboard-layout">
-      <!-- ✅ MENU LATERAL -->
-      <aside class="sidebar">
-        <h2>Estados</h2>
-        <ul id="estadoList">
-          <li data-estado="geral" class="active">Geral</li>
-          <li data-estado="Pernambuco">Pernambuco</li>
-          <li data-estado="São Paulo">São Paulo</li>
-          <li data-estado="Rio de Janeiro">Rio de Janeiro</li>
-          <li data-estado="Minas Gerais">Minas Gerais</li>
-          <li data-estado="Bahia">Bahia</li>
-        </ul>
-      </aside>
 
-      <!-- ✅ CONTEÚDO PRINCIPAL -->
-      <div class="dashboard-container">
-        <header class="dashboard-header">
-          <h1 id="tituloDashboard">Resultados Gerais da Pesquisa</h1>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h2>Estados</h2>
+            <ul id="estadoList"></ul>
+        </aside>
 
-          <!-- ✅ CARDS PRINCIPAIS -->
-          <div class="stats">
-            <div class="stat-card">
-              <h2 id="totalRespostas">0</h2>
-              <p>Total de Respostas</p>
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="dashboard-container">
+
+            <!-- TOPBAR -->
+            <div class="topbar">
+                <div class="logo-container">
+                    <img src="./public/img/geo-logo.png" class="geo-logo" />
+                </div>
+
+                <div id="userMenuBtn" class="user-menu">
+                    <img src="./public/img/image.png" class="user-avatar-img" id="userAvatarImg">
+                    <div>
+                        <div class="user-name" id="userNameText">Usuário</div>
+                        <div class="user-role">Admin</div>
+                    </div>
+                </div>
+
+                <div id="userDropdown" class="user-dropdown">
+                    <div class="dropdown-item" onclick="window.location.href='./menu-files/manage-account.html'">Gerenciar Conta</div>
+                    <div class="dropdown-item" onclick="window.location.href='./menu-files/change-password.html'">Alterar Senha</div>
+                    <div class="dropdown-item" onclick="window.location.href='activities.html'">Atividades</div>
+                    <div id="logoutBtn" class="dropdown-item logout">Sair</div>
+                </div>
             </div>
 
-            <div class="stat-card">
-              <h3 id="estadoMaisPopularTitulo">Estado Mais Afetado</h3>
-              <h2 id="EstadoMaisAfetado">-</h2>
-            </div>
+            <!-- HEADER -->
+            <header class="dashboard-header">
+                <h1 id="tituloDashboard">Resultados Gerais da Pesquisa</h1>
 
-            <div class="stat-card">
-              <h2 id="totalEstados">0</h2>
-              <p>Estados Participantes</p>
-            </div>
-          </div>
+                <div class="stats">
+                    <div class="stat-card">
+                        <h2 id="totalRespostas">0</h2>
+                        <p>Total de Respostas</p>
+                    </div>
 
-          <!-- ✅ NOVOS CARDS DE CLASSIFICAÇÃO -->
-          <div class="stats classificacao-cards" style="display: none;">
-            <div class="stat-card">
-              <h2 id="usoNormal">0</h2>
-              <p>Sem Dependência</p>
-            </div>
-            <div class="stat-card">
-              <h2 id="leve">0</h2>
-              <p>Dependência Leve</p>
-            </div>
-            <div class="stat-card">
-              <h2 id="moderada">0</h2>
-              <p>Dependência Moderada</p>
-            </div>
-            <div class="stat-card">
-              <h2 id="alta">0</h2>
-              <p>Dependência Alta</p>
-            </div>
-            <div class="stat-card">
-              <h2 id="severa">0</h2>
-              <p>Dependência Severa</p>
-            </div>
-          </div>
-        </header>
+                    <div class="stat-card">
+                        <h3 id="estadoMaisPopularTitulo">Estado mais afetado</h3>
+                        <h2 id="EstadoMaisAfetado">-</h2>
+                    </div>
 
-        <!-- ✅ GRÁFICOS -->
-        <main class="dashboard-main" id="areaGraficos">
-          <!-- 🔹 MAPA DO BRASIL (simplificado para demonstração) -->
-          <div class="chart-card" id="mapaBrasilContainer">
-            <h3>Mapa de Dependência por Estado</h3>
+                    <!-- CARD NOVO — FAIXA ETÁRIA -->
+                    <div class="stat-card">
+                        <h3>Faixa Etária Mais Afetada</h3>
+                        <h2 id="faixaEtaria">-</h2>
+                    </div>
+                </div>
 
-            <!-- SVG simplificado com formas representando estados (PE, SP, RJ, MG, BA) -->
-            <svg id="mapaBrasil" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
-              <!-- fundo -->
-              <rect x="0" y="0" width="800" height="500" fill="#f7f7f7"></rect>
+                <div class="stats classificacao-cards" style="display: none;">
+                    <div class="stat-card"><h2 id="usoNormal">0</h2><p>Sem Dependência</p></div>
+                    <div class="stat-card"><h2 id="leve">0</h2><p>Dependência Leve</p></div>
+                    <div class="stat-card"><h2 id="moderada">0</h2><p>Dependência Moderada</p></div>
+                    <div class="stat-card"><h2 id="alta">0</h2><p>Dependência Alta</p></div>
+                    <div class="stat-card"><h2 id="severa">0</h2><p>Dependência Severa</p></div>
+                </div>
+            </header>
 
-              <!-- Pernambuco (PE) — topo direito -->
-              <g id="PE" class="estado" data-estado="Pernambuco">
-                <rect class="estado-shape" x="600" y="90" width="90" height="60" rx="6"></rect>
-                <text class="estado-label" x="645" y="130" text-anchor="middle" fill="#111">PE</text>
-              </g>
+            <!-- MAIN GRID -->
+            <main class="dashboard-main">
 
-              <!-- Bahia (BA) — centro direito baixo -->
-              <g id="BA" class="estado" data-estado="Bahia">
-                <rect class="estado-shape" x="560" y="220" width="140" height="90" rx="8"></rect>
-                <text class="estado-label" x="630" y="275" text-anchor="middle" fill="#111">BA</text>
-              </g>
+                <div class="chart-card" id="graficoSeverosContainer">
+                    <h3>Estados com mais dependentes severos</h3>
+                    <canvas id="graficoSeveros"></canvas>
+                </div>
 
-              <!-- Minas Gerais (MG) — centro -->
-              <g id="MG" class="estado" data-estado="Minas Gerais">
-                <rect class="estado-shape" x="420" y="150" width="120" height="80" rx="6"></rect>
-                <text class="estado-label" x="480" y="195" text-anchor="middle" fill="#111">MG</text>
-              </g>
+                <div class="chart-card" id="mapaBrasilContainer">
+                    <h3>Mapa de dependência por estado (alta + severa)</h3>
+                    <object id="mapaBrasil" data="./public/maps/Brazil_states.svg" type="image/svg+xml"
+                        style="width:100%; height:auto; max-width:600px;"></object>
 
-              <!-- Rio de Janeiro (RJ) — perto de MG, mais ao sul -->
-              <g id="RJ" class="estado" data-estado="Rio de Janeiro">
-                <rect class="estado-shape" x="520" y="180" width="70" height="45" rx="6"></rect>
-                <text class="estado-label" x="555" y="210" text-anchor="middle" fill="#111">RJ</text>
-              </g>
+                    <div class="map-legend">
+                        <span class="legend-item"><span class="legend-swatch swatch-baixa"></span> Baixo impacto</span>
+                        <span class="legend-item"><span class="legend-swatch swatch-media"></span> Médio</span>
+                        <span class="legend-item"><span class="legend-swatch swatch-alta"></span> Alto</span>
+                    </div>
+                </div>
 
-              <!-- São Paulo (SP) — abaixo de MG e RJ -->
-              <g id="SP" class="estado" data-estado="São Paulo">
-                <rect class="estado-shape" x="460" y="240" width="100" height="70" rx="8"></rect>
-                <text class="estado-label" x="510" y="285" text-anchor="middle" fill="#111">SP</text>
-              </g>
+                <div class="chart-card" id="graficoBarrasContainer">
+                    <h3>Distribuição de respostas por estado</h3>
+                    <canvas id="graficoBarras"></canvas>
+                </div>
 
-              <!-- legenda simples -->
-              <g id="mapLegend" transform="translate(20,380)">
-                <rect x="0" y="0" width="200" height="90" rx="6" fill="#ffffff" stroke="#ddd"></rect>
-                <text x="12" y="20" font-size="13" fill="#222">Legenda (impacto grave)</text>
+                <div class="chart-card" id="graficoCampanhasContainer" style="display:none;">
+                    <h3>Participação em campanhas de conscientização</h3>
+                    <canvas id="graficoCampanhas"></canvas>
+                </div>
 
-                <g transform="translate(12,30)">
-                  <rect class="legend-swatch" x="0" y="0" width="28" height="14" fill="hsl(0,80%,70%)" stroke="#ccc"></rect>
-                  <text x="36" y="12" font-size="12" fill="#222">Pouco impacto</text>
-                </g>
+                <div class="chart-card" id="graficoGeneroContainer" style="display:none;">
+                    <h3>Distribuição de gênero por estado</h3>
+                    <canvas id="graficoGenero"></canvas>
+                </div>
 
-                <g transform="translate(12,50)">
-                  <rect class="legend-swatch" x="0" y="0" width="28" height="14" fill="hsl(0,80%,50%)" stroke="#ccc"></rect>
-                  <text x="36" y="12" font-size="12" fill="#222">Médio</text>
-                </g>
-
-                <g transform="translate(12,70)">
-                  <rect class="legend-swatch" x="0" y="0" width="28" height="14" fill="hsl(0,80%,35%)" stroke="#ccc"></rect>
-                  <text x="36" y="12" font-size="12" fill="#222">Alto</text>
-                </g>
-              </g>
-            </svg>
-          </div>
-
-          <!-- 🔹 Gráfico de Barras -->
-          <div class="chart-card" id="graficoBarrasContainer">
-            <h3>Distribuição de Respostas por Estado</h3>
-            <canvas id="graficoBarras"></canvas>
-          </div>
-
-          <!-- 🔹 Gráfico de Campanhas -->
-          <div class="chart-card" id="graficoCampanhasContainer" style="display: none;">
-            <h3>Participação em Campanhas de Conscientização</h3>
-            <canvas id="graficoCampanhas"></canvas>
-          </div>
-
-          <!-- 🔹 Novo Gráfico de Gênero -->
-          <div class="chart-card" id="graficoGeneroContainer" style="display: none;">
-            <h3>Distribuição de Gênero por Estado</h3>
-            <canvas id="graficoGenero"></canvas>
-          </div>
-        </main>
-      </div>
+            </main>
+        </div>
     </div>
 
     <script src="./dashboard.js" defer></script>
-  </body>
+
+    <script>
+        const userMenuBtn = document.getElementById("userMenuBtn");
+        const userDropdown = document.getElementById("userDropdown");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        userMenuBtn.addEventListener("click", () => {
+            userDropdown.classList.toggle("active");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.remove("active");
+            }
+        });
+
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("usuario");
+            window.location.href = "login.html";
+        });
+
+        const usuarioSalvo = localStorage.getItem("usuario");
+        if (usuarioSalvo) {
+            document.getElementById("userNameText").innerText = usuarioSalvo;
+        }
+    </script>
+
+</body>
+
 </html>

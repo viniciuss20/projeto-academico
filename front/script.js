@@ -1,4 +1,6 @@
+// script.js (versão defensiva — mantém toda a lógica original)
 document.addEventListener("DOMContentLoaded", () => {
+  // pegar elementos (pode retornar null se o id não existir)
   const dadosPessoais = document.getElementById("dadosPessoais");
   const questionario = document.getElementById("questionario");
   const iniciar = document.getElementById("iniciar");
@@ -8,7 +10,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const perguntaTexto = document.getElementById("perguntaTexto");
   const form = document.getElementById("form");
 
-  // 🔹 Perguntas do questionário
+  // Barras de progresso (podem ser nulas)
+  const progressBarInicio = document.getElementById("progressBar");   // 10%
+  const progressBarQ = document.getElementById("progressBar2");       // dinâmico
+
+  // Avisos rápidos se algum elemento crítico estiver faltando
+  const warnIfMissing = (el, name) => {
+    if (!el) console.warn(`AVISO: elemento "${name}" não encontrado no DOM.`);
+  };
+  warnIfMissing(dadosPessoais, "dadosPessoais");
+  warnIfMissing(questionario, "questionario");
+  warnIfMissing(iniciar, "iniciar");
+  warnIfMissing(continuar, "continuar");
+  warnIfMissing(voltar, "voltar");
+  warnIfMissing(estadoSelect, "estado");
+  warnIfMissing(perguntaTexto, "perguntaTexto");
+  warnIfMissing(form, "form");
+  warnIfMissing(progressBarInicio, "progressBar");
+  warnIfMissing(progressBarQ, "progressBar2");
+
+  // Perguntas do questionário (mantive exatamente como estava)
   const perguntas = [
     { texto: "Com que frequência você usa a internet para lazer (redes sociais, vídeos, jogos)?", opcoes: ["Raramente", "Às vezes", "Frequentemente", "Quase o tempo todo"] },
     { texto: "Você sente ansiedade quando está sem acesso à internet?", opcoes: ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"] },
@@ -22,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { texto: "Você já viu ou participou de campanhas, palestras ou programas sobre dependência de internet?", opcoes: ["Sim", "Não"] }
   ];
 
-  // 🔹 Mapeia os valores numéricos de cada opção
+  // Mapeamento de valores (mantive igual)
   const valores = {
     "Nunca": 1,
     "Raramente": 2,
@@ -40,14 +61,38 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let indice = 0;
-  
   const respostas = {};
 
-  // 🔹 Renderiza pergunta atual
+  // Função segura para atualizar estilo (checa existência)
+  function safeSetWidth(el, value) {
+    if (el && el.style) el.style.width = value;
+  }
+
+  // Atualiza a barra de progresso do questionário (seguro)
+  function atualizarProgresso() {
+    const total = perguntas.length;
+    // protege divisão por zero e uso sem element
+    if (!total || typeof indice !== "number") return;
+    const progresso = ((indice) / total) * 100;
+    safeSetWidth(progressBarQ, `${progresso}%`);
+  }
+
+  // Renderiza pergunta atual (com checagens)
   function renderPergunta() {
+    if (!perguntaTexto || !form) {
+      console.error("Elemento 'perguntaTexto' ou 'form' ausente — não é possível renderizar perguntas.");
+      return;
+    }
+
     const atual = perguntas[indice];
+    if (!atual) {
+      console.error("Índice de pergunta inválido:", indice);
+      return;
+    }
+
     perguntaTexto.textContent = atual.texto;
     form.innerHTML = "";
+
     atual.opcoes.forEach((opcao) => {
       const label = document.createElement("label");
       label.innerHTML = `
@@ -56,85 +101,116 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       form.appendChild(label);
     });
+
+    atualizarProgresso();
   }
 
-  // 🔹 Iniciar questionário
-  iniciar.addEventListener("click", (e) => {
-    e.preventDefault();
-    const estado = estadoSelect.value.trim();
-    const idade = document.getElementById("idade").value.trim();
-    const genero = document.getElementById("genero").value.trim();
+  // Função utilitária: obter valor de input com segurança
+  function getInputValue(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
 
-    if (!estado || !idade || !genero) {
-      alert("Por favor, preencha todos os campos!");
-      return;
-    }
+  // INICIAR (aplica somente se o botão existir)
+  if (iniciar) {
+    iniciar.addEventListener("click", (e) => {
+      e.preventDefault();
+      const estado = estadoSelect ? estadoSelect.value.trim() : "";
+      const idade = getInputValue("idade");
+      const genero = getInputValue("genero");
 
-    dadosPessoais.style.display = "none";
-    questionario.style.display = "block";
-    renderPergunta();
-  });
+      if (!estado || !idade || !genero) {
+        alert("Por favor, preencha todos os campos!");
+        return;
+      }
 
-  // 🔹 Continuar
-  continuar.addEventListener("click", async (e) => {
-    e.preventDefault();
-    const selecionada = form.querySelector("input[name='pergunta']:checked");
-    if (!selecionada) {
-      alert("Por favor, selecione uma resposta!");
-      return;
-    }
+      if (dadosPessoais) dadosPessoais.style.display = "none";
+      if (questionario) questionario.style.display = "block";
 
-    const texto = selecionada.value;
-    const valor = valores[texto] || 0;
-    respostas[`q${indice + 1}`] = { texto, valor };
+      safeSetWidth(progressBarInicio, "10%");
 
-    if (indice < perguntas.length - 1) {
-      indice++;
       renderPergunta();
-      return;
-    }
+    });
+  } else {
+    console.warn("Botão 'iniciar' não encontrado — não foi possível iniciar o questionário.");
+  }
 
-    // 🔹 Envia as respostas ao servidor
-    const estado = estadoSelect.value.trim();
-    const idade = document.getElementById("idade").value.trim();
-    const genero = document.getElementById("genero").value.trim();
+  // CONTINUAR (aplica somente se o botão existir)
+  if (continuar) {
+    continuar.addEventListener("click", async (e) => {
+      e.preventDefault();
 
-    const dados = { estado, idade, genero, respostas };
+      if (!form) {
+        alert("Erro: formulário de perguntas ausente.");
+        return;
+      }
 
-    try {
-      const resposta = await fetch("https://projeto-academico-production.up.railway.app/respostas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados),
-      });
+      const selecionada = form.querySelector("input[name='pergunta']:checked");
+      if (!selecionada) {
+        alert("Por favor, selecione uma resposta!");
+        return;
+      }
 
-      if (!resposta.ok) throw new Error("Erro no servidor");
+      const texto = selecionada.value;
+      const valor = valores[texto] || 0;
+      respostas[`q${indice + 1}`] = { texto, valor };
 
-      const resultado = await resposta.json();
-      alert("✅ Respostas enviadas com sucesso!");
-      console.log("Servidor respondeu:", resultado);
+      if (indice < perguntas.length - 1) {
+        indice++;
+        renderPergunta();
+        return;
+      }
 
-      // Resetar tudo
-      Object.keys(respostas).forEach((key) => delete respostas[key]);
-      indice = 0;
-      form.reset();
-      dadosPessoais.style.display = "block";
-      questionario.style.display = "none";
+      // última pergunta: enviar dados
+      const estado = estadoSelect ? estadoSelect.value.trim() : "";
+      const idade = getInputValue("idade");
+      const genero = getInputValue("genero");
 
-    } catch (erro) {
-      console.error("❌ Erro ao enviar:", erro);
-      alert("Erro ao enviar respostas. Verifique o servidor.");
-    }
-  });
+      const dados = { estado, idade, genero, respostas };
 
-  // 🔹 Voltar
-  voltar.addEventListener("click", () => {
-    if (indice > 0) {
-      indice--;
-      renderPergunta();
-    } else {
-      questionario.style.display = "none";
-      dadosPessoais.style.display = "block";
-    }
-  });
+      try {
+        const resposta = await fetch("https://projeto-academico-production.up.railway.app/respostas", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados),
+        });
+
+        if (!resposta.ok) throw new Error("Erro no servidor");
+
+        const resultado = await resposta.json();
+        alert("✅ Respostas enviadas com sucesso!");
+        console.log("Servidor respondeu:", resultado);
+
+        // reset
+        Object.keys(respostas).forEach((key) => delete respostas[key]);
+        indice = 0;
+        if (form) form.reset();
+        if (dadosPessoais) dadosPessoais.style.display = "block";
+        if (questionario) questionario.style.display = "none";
+        safeSetWidth(progressBarQ, "0%");
+
+      } catch (erro) {
+        console.error("❌ Erro ao enviar:", erro);
+        alert("Erro ao enviar respostas. Verifique o servidor.");
+      }
+    });
+  } else {
+    console.warn("Botão 'continuar' não encontrado — o click não será processado.");
+  }
+
+  // VOLTAR (aplica somente se o botão existir)
+  if (voltar) {
+    voltar.addEventListener("click", () => {
+      if (indice > 0) {
+        indice--;
+        renderPergunta();
+      } else {
+        if (questionario) questionario.style.display = "none";
+        if (dadosPessoais) dadosPessoais.style.display = "block";
+        safeSetWidth(progressBarQ, "0%");
+      }
+    });
+  } else {
+    console.warn("Botão 'voltar' não encontrado — a ação de voltar não está disponível.");
+  }
 });
