@@ -9,7 +9,7 @@ import { fileURLToPath } from "url";
 const app = express();
 app.use(express.json());
 
-// 🔥 CORS
+// 🔥 CORS liberado
 app.use(
   cors({
     origin: "*",
@@ -55,22 +55,18 @@ db.connect((err) => {
 });
 
 /* ============================================================
-   🔹 CONFIG FRONTEND (SERVIR ARQUIVOS ESTÁTICOS)
+   🔹 REMOVIDO: SERVIR FRONTEND
+   (Frontend agora está no Vercel, então o backend não entrega HTML)
 ============================================================ */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 👉 SERVIR A PASTA "front"
-app.use(express.static(path.join(__dirname, "front")));
-
-// 👉 QUANDO ACESSAR "/", ENTREGAR index.html
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "front", "index.html"));
-});
+// ❗ NÃO SERVIMOS MAIS "front/" — BACKEND é só API
+// ❗ Isso resolve o erro ENOENT no Railway
 
 /* ============================================================
-   🔹 ARQUIVO JSON (dashboard)
+   🔹 ARQUIVO JSON PARA DASHBOARD
 ============================================================ */
 
 const caminhoArquivo = path.join(__dirname, "respostas.json");
@@ -202,6 +198,14 @@ app.get("/dados", (req, res) => {
   if (!fs.existsSync(caminhoArquivo)) return res.json([]);
   const conteudo = fs.readFileSync(caminhoArquivo, "utf8");
   res.json(conteudo.trim() ? JSON.parse(conteudo) : []);
+});
+
+/* ============================================================
+   🔹 ROTA RAIZ — APENAS PARA TESTE
+============================================================ */
+
+app.get("/", (req, res) => {
+  res.json({ status: "API funcionando no Railway" });
 });
 
 /* ============================================================
