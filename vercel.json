@@ -1,6 +1,10 @@
 {
-  "cleanUrls": true,
+  "buildCommand": "cd front && npm install",
+  "outputDirectory": "front/public",
   "rewrites": [
-    { "source": "/", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
