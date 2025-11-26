@@ -1,14 +1,10 @@
 {
   "name": "projeto-academico",
   "version": "1.0.0",
-  "description": "API do questionario de dependencia de internet",
-  "main": "server.js",
+  "description": "API do questionário de dependência de internet",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "start": "node backend/server.js"
   },
   "dependencies": {
     "express": "^4.19.0",
