@@ -9,15 +9,10 @@ import { fileURLToPath } from "url";
 const app = express();
 app.use(express.json());
 
-// 🔥 CORS liberado para Vercel, localhost e Railway
+// 🔥 CORS
 app.use(
   cors({
-    origin: [
-      "https://projeto-academico-indol.vercel.app",
-      "http://localhost:5500",
-      "http://127.0.0.1:5500",
-      "*"
-    ],
+    origin: "*",
     methods: ["GET", "POST"],
   })
 );
@@ -60,11 +55,24 @@ db.connect((err) => {
 });
 
 /* ============================================================
-   🔹 ARQUIVO JSON (para o dashboard)
+   🔹 CONFIG FRONTEND (SERVIR ARQUIVOS ESTÁTICOS)
 ============================================================ */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// 👉 SERVIR A PASTA "front"
+app.use(express.static(path.join(__dirname, "front")));
+
+// 👉 QUANDO ACESSAR "/", ENTREGAR index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "front", "index.html"));
+});
+
+/* ============================================================
+   🔹 ARQUIVO JSON (dashboard)
+============================================================ */
+
 const caminhoArquivo = path.join(__dirname, "respostas.json");
 
 /* ============================================================
@@ -88,16 +96,16 @@ function calcularPontuacao(respostas) {
     "Não tenho problema em permanecer longe": 1,
   };
 
-    let pontuacao = 0;
-    const respostasDetalhadas = {};
+  let pontuacao = 0;
+  const respostasDetalhadas = {};
 
-    for (const [pergunta, resp] of Object.entries(respostas)) {
-      const texto = typeof resp === "object" ? resp.texto || resp.resposta : resp;
-      const valor = valores[texto] || 0;
+  for (const [pergunta, resp] of Object.entries(respostas)) {
+    const texto = typeof resp === "object" ? resp.texto || resp.resposta : resp;
+    const valor = valores[texto] || 0;
 
-      respostasDetalhadas[pergunta] = { texto, valor };
-      pontuacao += valor;
-    }
+    respostasDetalhadas[pergunta] = { texto, valor };
+    pontuacao += valor;
+  }
 
   const max = Object.keys(respostasDetalhadas).length * 5;
   const porcentagem = Math.round((pontuacao / max) * 100);
