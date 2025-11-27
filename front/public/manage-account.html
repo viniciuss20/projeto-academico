@@ -26,15 +26,14 @@
         <aside class="sidebar">
             <div class="profile">
 
-                <!-- ✔ Avatar ORIGINAL, sem mudanças -->
-                <img src="../public/img/image.png" alt="avatar" class="avatar-img">
-
+                <!-- ✔ Avatar CORRIGIDO -->
+                <img src="img/image.png" alt="avatar" class="avatar-img">
 
                 <h3 id="userNameSidebar">Usuário</h3>
             </div>
 
             <ul class="menu">
-                <a href="dashboard.html">Dashboard</a>
+                <li onclick="window.location.href='dashboard.html'">
                     <span>📊</span> Dashboard
                 </li>
 
@@ -55,11 +54,8 @@
         <!-- MAIN CONTENT -->
         <main class="content">
 
-            <!-- ✅ LOGO ADICIONADA NO CANTO SUPERIOR DIREITO -->
-            <img src="../public/img/geo-logo.png" alt="GeoBrasil Logo" class="geo-logo-top">
-
-
-
+            <!-- ✅ LOGO CORRIGIDA NO CANTO SUPERIOR DIREITO -->
+            <img src="img/geo-logo.png" alt="GeoBrasil Logo" class="geo-logo-top">
 
             <h1>Configurações da Conta</h1>
 
@@ -89,7 +85,7 @@
 
     function logout() {
         localStorage.removeItem("usuario");
-        window.location.href = "../login.html";
+        window.location.href = "/login.html";
     }
 </script>
 
