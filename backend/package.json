@@ -4,7 +4,7 @@
   "description": "API do questionário de dependência de internet",
   "type": "module",
   "scripts": {
-    "start": "node backend/server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.19.0",
