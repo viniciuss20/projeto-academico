@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoavaliação Digital</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+<!-- LOGO GEOBRASIL CORRIGIDA -->
+<div class="logo-container">
+    <img src="./geobrasilbemvindo.png" alt="GeoBrasil" class="logo-geobrasil">
+</div>
+
+<div class="container">
+
+    <!-- ===================== TELA 1 — DADOS PESSOAIS ===================== -->
+    <div id="dadosPessoais" class="card">
+
+        <h1 class="titulo">Autoavaliação de Dependência de Internet</h1>
+
+        <!-- BARRA DE PROGRESSO DA TELA 1 -->
+        <div class="progress-bar">
+            <div id="progressBar" class="progress" style="width: 0%;"></div>
+        </div>
+
+        <div class="campo">
+            <label for="estado">Estado onde mora</label>
+            <select id="estado">
+                <option value="">Selecione</option>
+                <option>Acre</option>
+                <option>Alagoas</option>
+                <option>Amapá</option>
+                <option>Amazonas</option>
+                <option>Bahia</option>
+                <option>Ceará</option>
+                <option>Distrito Federal</option>
+                <option>Espírito Santo</option>
+                <option>Goiás</option>
+                <option>Maranhão</option>
+                <option>Mato Grosso</option>
+                <option>Mato Grosso do Sul</option>
+                <option>Minas Gerais</option>
+                <option>Pará</option>
+                <option>Paraíba</option>
+                <option>Paraná</option>
+                <option>Pernambuco</option>
+                <option>Piauí</option>
+                <option>Rio de Janeiro</option>
+                <option>Rio Grande do Norte</option>
+                <option>Rio Grande do Sul</option>
+                <option>Rondônia</option>
+                <option>Roraima</option>
+                <option>Santa Catarina</option>
+                <option>São Paulo</option>
+                <option>Sergipe</option>
+                <option>Tocantins</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="idade">Idade</label>
+            <input type="number" id="idade" placeholder="Digite sua idade">
+        </div>
+
+        <div class="campo">
+            <label for="genero">Qual seu gênero?</label>
+            <select id="genero">
+                <option value="">Selecione</option>
+                <option>Masculino</option>
+                <option>Feminino</option>
+                <option>Prefiro não informar</option>
+                <option>Outro</option>
+            </select>
+        </div>
+
+        <button id="iniciar" class="btn continuar">Continuar ›</button>
+    </div>
+
+    <!-- ===================== TELA 2 — QUESTIONÁRIO ===================== -->
+    <div id="questionario" class="card" style="display:none;">
+
+        <h1 class="titulo">Autoavaliação de Dependência de Internet</h1>
+
+        <!-- BARRA DE PROGRESSO DINÂMICA -->
+        <div class="progress-bar">
+            <div id="progressBar2" class="progress" style="width: 0%;"></div>
+        </div>
+
+        <p id="perguntaTexto" class="pergunta">Pergunta será carregada aqui...</p>
+
+        <form id="form" class="opcoes"></form>
+
+        <div class="botoes">
+            <button id="voltar" type="button" class="btn voltar">‹ Voltar</button>
+            <button id="continuar" type="button" class="btn continuar">Continuar ›</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="./script.js"></script>
+</body>
+</html>

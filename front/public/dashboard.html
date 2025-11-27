@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Resultados</title>
 
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -113,11 +113,11 @@
             <!-- TOPBAR -->
             <div class="topbar">
                 <div class="logo-container">
-                    <img src="/img/geo-logo.png" class="geo-logo" />
+                    <img src="img/geo-logo.png" class="geo-logo" />
                 </div>
 
                 <div id="userMenuBtn" class="user-menu">
-                    <img src="/img/image.png" class="user-avatar-img" id="userAvatarImg">
+                    <img src="img/image.png" class="user-avatar-img" id="userAvatarImg">
                     <div>
                         <div class="user-name" id="userNameText">Usuário</div>
                         <div class="user-role">Admin</div>
@@ -125,9 +125,9 @@
                 </div>
 
                 <div id="userDropdown" class="user-dropdown">
-                    <div class="dropdown-item" onclick="window.location.href='/menu-files/manage-account.html'">Gerenciar Conta</div>
-                    <div class="dropdown-item" onclick="window.location.href='/menu-files/change-password.html'">Alterar Senha</div>
-                    <div class="dropdown-item" onclick="window.location.href='/activities.html'">Atividades</div>
+                    <div class="dropdown-item" onclick="window.location.href='menu-files/manage-account.html'">Gerenciar Conta</div>
+                    <div class="dropdown-item" onclick="window.location.href='menu-files/change-password.html'">Alterar Senha</div>
+                    <div class="dropdown-item" onclick="window.location.href='activities.html'">Atividades</div>
                     <div id="logoutBtn" class="dropdown-item logout">Sair</div>
                 </div>
             </div>
@@ -173,7 +173,7 @@
 
                 <div class="chart-card" id="mapaBrasilContainer">
                     <h3>Mapa de dependência por estado (alta + severa)</h3>
-                    <object id="mapaBrasil" data="/maps/Brazil_states.svg" type="image/svg+xml"
+                    <object id="mapaBrasil" data="maps/Brazil_states.svg" type="image/svg+xml"
                         style="width:100%; height:auto; max-width:600px;"></object>
 
                     <div class="map-legend">
@@ -202,7 +202,7 @@
         </div>
     </div>
 
-    <script src="/dashboard.js" defer></script>
+    <script src="dashboard.js" defer></script>
 
     <script>
         const userMenuBtn = document.getElementById("userMenuBtn");
@@ -221,7 +221,7 @@
 
         logoutBtn.addEventListener("click", () => {
             localStorage.removeItem("usuario");
-            window.location.href = "/login.html";
+            window.location.href = "login.html";
         });
 
         const usuarioSalvo = localStorage.getItem("usuario");
