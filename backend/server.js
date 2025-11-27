@@ -9,13 +9,35 @@ import { fileURLToPath } from "url";
 const app = express();
 app.use(express.json());
 
-// 🔥 CORS liberado
+// 🔥 CORS CONFIGURADO PARA FUNCIONAR COM VERCEL
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST"],
+    origin: [
+      "https://projeto-academico-gamma.vercel.app",
+      "https://projeto-academico-git-main-vinicius-projects-09c30c54.vercel.app",
+      "http://localhost:3000",
+      "http://127.0.0.1:3000"
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
+
+// Adicionar headers CORS manualmente também (garantia extra)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  
+  // Responder OPTIONS (preflight)
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
 
 /* ============================================================
    🔹 CONFIGURAÇÃO DO BANCO (Railway ou Local)
@@ -56,14 +78,10 @@ db.connect((err) => {
 
 /* ============================================================
    🔹 REMOVIDO: SERVIR FRONTEND
-   (Frontend agora está no Vercel, então o backend não entrega HTML)
 ============================================================ */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// ❗ NÃO SERVIMOS MAIS "front/" — BACKEND é só API
-// ❗ Isso resolve o erro ENOENT no Railway
 
 /* ============================================================
    🔹 ARQUIVO JSON PARA DASHBOARD
@@ -195,17 +213,59 @@ app.post("/respostas", (req, res) => {
 ============================================================ */
 
 app.get("/dados", (req, res) => {
-  if (!fs.existsSync(caminhoArquivo)) return res.json([]);
-  const conteudo = fs.readFileSync(caminhoArquivo, "utf8");
-  res.json(conteudo.trim() ? JSON.parse(conteudo) : []);
+  console.log("📊 Requisição recebida de:", req.headers.origin);
+  
+  // Buscar do MySQL
+  const sql = "SELECT * FROM respostas";
+  
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("❌ Erro ao buscar do MySQL:", err);
+      
+      // Fallback para JSON se MySQL falhar
+      if (fs.existsSync(caminhoArquivo)) {
+        const conteudo = fs.readFileSync(caminhoArquivo, "utf8");
+        return res.json(conteudo.trim() ? JSON.parse(conteudo) : []);
+      }
+      
+      return res.json([]);
+    }
+    
+    console.log(`✅ Retornando ${results.length} registros do MySQL`);
+    
+    // Converter para o formato esperado pelo dashboard
+    const dadosFormatados = results.map((row) => ({
+      estado: row.estado,
+      idade: row.idade,
+      genero: row.genero,
+      q1_valor: row.q1_valor,
+      q2_valor: row.q2_valor,
+      q3_valor: row.q3_valor,
+      q4_valor: row.q4_valor,
+      q5_valor: row.q5_valor,
+      q6_valor: row.q6_valor,
+      q7_valor: row.q7_valor,
+      q8_valor: row.q8_valor,
+      q9_valor: row.q9_valor,
+      q10_valor: row.q10_valor,
+    }));
+    
+    res.json(dadosFormatados);
+  });
 });
 
 /* ============================================================
-   🔹 ROTA RAIZ — APENAS PARA TESTE
+   🔹 ROTA RAIZ — TESTE
 ============================================================ */
 
 app.get("/", (req, res) => {
-  res.json({ status: "API funcionando no Railway" });
+  res.json({ 
+    status: "API funcionando no Railway com CORS configurado! 🚀",
+    endpoints: {
+      dados: "/dados",
+      respostas: "/respostas (POST)"
+    }
+  });
 });
 
 /* ============================================================
