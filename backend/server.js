@@ -73,8 +73,7 @@ db.connect((err) => {
     console.log(
       '✅ Conectado ao MySQL!',
       usandoRailway ? "(Railway)" : "(Local)"
-    );
-
+    )
     // ADICIONAR COLUNA data_registro SE NÃO EXISTIR
     db.query(`
       ALTER TABLE respostas 
