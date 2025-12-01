@@ -223,10 +223,7 @@ app.get("/dados", (req, res) => {
       console.error("❌ Erro ao buscar do MySQL:", err);
       
       // Fallback para JSON se MySQL falhar
-      if (fs.existsSync(caminhoArquivo)) {
-        const conteudo = fs.readFileSync(caminhoArquivo, "utf8");
-        return res.json(conteudo.trim() ? JSON.parse(conteudo) : []);
-      }
+     
       
       return res.json([]);
     }
