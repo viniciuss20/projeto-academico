@@ -73,7 +73,8 @@ db.connect((err) => {
     console.log(
       '✅ Conectado ao MySQL!',
       usandoRailway ? "(Railway)" : "(Local)"
-    )
+    );
+
     // ADICIONAR COLUNA data_registro SE NÃO EXISTIR
     db.query(`
       ALTER TABLE respostas 
@@ -90,6 +91,17 @@ db.connect((err) => {
       }
     });
 
+    // VERIFICAR ESTRUTURA DA TABELA
+    db.query('DESCRIBE respostas', (err, results) => {
+      if (err) {
+        console.error('❌ Erro ao verificar estrutura:', err);
+      } else {
+        console.log('📋 Estrutura da tabela respostas:');
+        console.table(results);
+      }
+    });
+  }
+});
     // VERIFICAR ESTRUTURA DA TABELA
     db.query('DESCRIBE respostas', (err, results) => {
       if (err) {
