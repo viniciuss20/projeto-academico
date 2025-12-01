@@ -102,18 +102,6 @@ db.connect((err) => {
     });
   }
 });
-    // VERIFICAR ESTRUTURA DA TABELA
-    db.query('DESCRIBE respostas', (err, results) => {
-      if (err) {
-        console.error('❌ Erro ao verificar estrutura:', err);
-      } else {
-        console.log('📋 Estrutura da tabela respostas:');
-        console.table(results);
-      }
-    });
-  }
-});
-});
 
 /* ============================================================
    🔹 REMOVIDO: SERVIR FRONTEND
@@ -263,10 +251,6 @@ app.get("/dados", (req, res) => {
   db.query(sql, (err, results) => {
     if (err) {
       console.error("❌ Erro ao buscar do MySQL:", err);
-      
-      // Fallback para JSON se MySQL falhar
-     
-      
       return res.json([]);
     }
     
