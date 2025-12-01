@@ -179,9 +179,11 @@ app.post("/respostas", (req, res) => {
   const sql = `
     INSERT INTO respostas
     (estado, idade, genero,
-      q1_valor, q2_valor, q3_valor, q4_valor, q5_valor,
-      q6_valor, q7_valor, q8_valor, q9_valor, q10_valor)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+ q1_valor, q2_valor, q3_valor, q4_valor, q5_valor,
+ q6_valor, q7_valor, q8_valor, q9_valor, q10_valor, data_registro)
+
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
   `;
 
   const valores = [
@@ -198,6 +200,7 @@ app.post("/respostas", (req, res) => {
     v(8),
     v(9),
     v(10),
+    new Date().toISOString().slice(0, 19).replace('T', ' ')
   ];
 
   db.query(sql, valores, (err) => {
