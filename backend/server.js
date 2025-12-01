@@ -68,13 +68,40 @@ const db = mysql.createConnection(usandoRailway ? dbConfigProd : dbConfigLocal);
 
 db.connect((err) => {
   if (err) {
-    console.error("❌ Erro ao conectar ao MySQL:", err);
+    console.error('❌ Erro ao conectar ao MySQL:', err);
   } else {
     console.log(
-      "✅ Conectado ao MySQL!",
+      '✅ Conectado ao MySQL!',
       usandoRailway ? "(Railway)" : "(Local)"
     );
+
+    // ADICIONAR COLUNA data_registro SE NÃO EXISTIR
+    db.query(`
+      ALTER TABLE respostas 
+      ADD COLUMN data_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+    `, (err) => {
+      if (err) {
+        if (err.code === 'ER_DUP_FIELDNAME') {
+          console.log('✅ Coluna data_registro já existe');
+        } else {
+          console.error('❌ Erro ao criar coluna:', err.message);
+        }
+      } else {
+        console.log('✅ Coluna data_registro criada com sucesso');
+      }
+    });
+
+    // VERIFICAR ESTRUTURA DA TABELA
+    db.query('DESCRIBE respostas', (err, results) => {
+      if (err) {
+        console.error('❌ Erro ao verificar estrutura:', err);
+      } else {
+        console.log('📋 Estrutura da tabela respostas:');
+        console.table(results);
+      }
+    });
   }
+});
 });
 
 /* ============================================================
