@@ -14,6 +14,7 @@ app.use(
   cors({
     origin: [
       "https://projeto-academico-gamma.vercel.app",
+      "https://geobrasil.vercel.app",
       "https://projeto-academico-git-main-vinicius-projects-09c30c54.vercel.app",
       "http://localhost:3000",
       "http://127.0.0.1:3000"
