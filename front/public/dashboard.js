@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let dadosGenero = {};
   let todosOsDados = [];
   let svgEstadosPaths = [];
-
   /* -------------------------------------------------------
       SIDEBAR DE ESTADOS
   ------------------------------------------------------- */
@@ -122,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return valor;
   }
+
   /* -------------------------------------------------------
       CLASSIFICAÇÃO
   ------------------------------------------------------- */
@@ -196,30 +196,35 @@ document.addEventListener("DOMContentLoaded", () => {
     if (g.includes("fem") || g.includes("mulher")) return "Mulher";
     return "Não informado";
   }
-
   /* -------------------------------------------------------
-      MAPA — HEATMAP
+      MAPA — HEATMAP COM CORES CORRIGIDAS
   ------------------------------------------------------- */
   function getImpactoColor(percentual) {
     const p = Number(percentual);
-    if (p <= 10) return "#cbd5e1";
-    if (p <= 25) return "#93c5fd";
-    if (p <= 45) return "#3b82f6";
-    return "#1d4ed8";
+    if (p <= 10) return "#cbd5e1";  // Cinza claro
+    if (p <= 25) return "#93c5fd";  // Azul claro
+    if (p <= 45) return "#3b82f6";  // Azul médio
+    if (p <= 65) return "#1e40af";  // Azul escuro
+    return "#1e3a8a";               // Azul muito escuro
   }
 
   function pintarMapaBrasil() {
-    if (!svgEstadosPaths.length) return;
+    if (!svgEstadosPaths.length) {
+      console.warn("⚠️ Nenhum estado encontrado no mapa SVG");
+      return;
+    }
 
     svgEstadosPaths.forEach((grupo) => {
       const est = grupo.dataset.estado;
-      const d = dadosRespostas[est];
+      const nomeNormalizado = normalizarEstado(est);
+      const d = dadosRespostas[nomeNormalizado];
       const paths = grupo.querySelectorAll("path, polygon, rect");
 
       if (!d || !d.total) {
         paths.forEach((p) => {
           p.style.fill = "#e5e7eb";
           p.style.opacity = 0.7;
+          p.style.transition = "all 0.3s ease";
         });
         return;
       }
@@ -233,89 +238,122 @@ document.addEventListener("DOMContentLoaded", () => {
       paths.forEach((p) => {
         p.style.fill = cor;
         p.style.opacity = 1;
+        p.style.transition = "all 0.3s ease";
+        p.style.cursor = "pointer";
       });
     });
+
+    console.log("✅ Mapa pintado com sucesso!");
   }
 
   function inicializarMapaInterativo() {
-    if (!mapaBrasilObject) return;
+    if (!mapaBrasilObject) {
+      console.error("❌ Elemento mapaBrasil não encontrado no HTML");
+      return;
+    }
 
     mapaBrasilObject.addEventListener("load", () => {
       const svgDoc = mapaBrasilObject.contentDocument;
       if (!svgDoc) {
-        console.error("Erro ao acessar SVG");
+        console.error("❌ Erro ao acessar conteúdo do SVG");
         return;
       }
 
-      const grupos = svgDoc.querySelectorAll("g[id]");
+      // Busca TODOS os elementos possíveis no SVG
+      const grupos = svgDoc.querySelectorAll("g[id], path[id], g[data-name], g[class*='estado']");
       svgEstadosPaths = [];
 
-      grupos.forEach((g) => {
-        const nome = g.id.trim();
+      grupos.forEach((elemento) => {
+        // Tenta pegar o ID de várias formas
+        const id = 
+          elemento.id?.trim() || 
+          elemento.getAttribute("data-name")?.trim() ||
+          elemento.getAttribute("data-estado")?.trim() ||
+          elemento.className?.baseVal?.trim();
 
-        if (!estadoMap[nome] && !Object.values(estadoMap).includes(nome)) return;
+        if (!id) return;
 
-        g.dataset.estado = nome;
-        g.style.cursor = "pointer";
-        g.addEventListener("click", () => selecionarEstado(nome));
-        svgEstadosPaths.push(g);
+        // Tenta encontrar o estado correspondente
+        const estadoEncontrado = 
+          estadoMap[id] || 
+          estadoMap[id.toUpperCase()] || 
+          estadoMap[id.toLowerCase()] ||
+          Object.values(estadoMap).find(e => 
+            normalizarTexto(e) === normalizarTexto(id)
+          ) ||
+          Object.keys(estadoMap).find(sigla => 
+            id.toUpperCase().includes(sigla)
+          );
+
+        if (estadoEncontrado) {
+          let grupo = elemento;
+          
+          // Se for path, usa o pai
+          if (elemento.tagName.toLowerCase() === "path") {
+            grupo = elemento.parentElement;
+          }
+
+          grupo.dataset.estado = estadoEncontrado;
+          grupo.style.cursor = "pointer";
+          
+          // Remove eventos antigos clonando o elemento
+          const novoGrupo = grupo.cloneNode(true);
+          grupo.parentNode.replaceChild(novoGrupo, grupo);
+          grupo = novoGrupo;
+          
+          // Adiciona evento de clique
+          grupo.addEventListener("click", (e) => {
+            e.stopPropagation();
+            selecionarEstado(estadoEncontrado);
+          });
+
+          // Efeito hover
+          grupo.addEventListener("mouseenter", function() {
+            const paths = this.querySelectorAll("path, polygon, rect");
+            paths.forEach(p => {
+              p.style.opacity = "0.8";
+              p.style.filter = "brightness(1.2)";
+            });
+          });
+
+          grupo.addEventListener("mouseleave", function() {
+            const paths = this.querySelectorAll("path, polygon, rect");
+            paths.forEach(p => {
+              p.style.opacity = "1";
+              p.style.filter = "brightness(1)";
+            });
+          });
+
+          svgEstadosPaths.push(grupo);
+          console.log(`✅ Estado adicionado: ${estadoEncontrado}`);
+        }
       });
 
+      console.log(`🗺️ Mapa inicializado com ${svgEstadosPaths.length} estados clicáveis`);
+      
+      if (svgEstadosPaths.length === 0) {
+        console.error("❌ NENHUM ESTADO FOI ENCONTRADO! Verifique a estrutura do SVG.");
+      }
+
       pintarMapaBrasil();
+    });
+
+    mapaBrasilObject.addEventListener("error", () => {
+      console.error("❌ Erro ao carregar arquivo SVG do mapa");
     });
   }
 
   function desenharMapa() {
-    if (!svgEstadosPaths.length) return;
-
-    let max = 0;
-    const valores = {};
-
-    svgEstadosPaths.forEach((g) => {
-      const est = g.dataset.estado;
-      const d = dadosRespostas[est];
-      const valor = d
-        ? (d.classificacoes["Dependência alta"] || 0) +
-          (d.classificacoes["Dependência severa"] || 0)
-        : 0;
-
-      valores[est] = valor;
-      if (valor > max) max = valor;
-    });
-
-    svgEstadosPaths.forEach((g) => {
-      const est = g.dataset.estado;
-      const valor = valores[est] || 0;
-
-      const paths = g.querySelectorAll("path");
-
-      if (!max || !valor) {
-        paths.forEach((p) => {
-          p.style.fill = "#e5e7eb";
-          p.style.opacity = 0.7;
-        });
-      } else {
-        const intensidade = valor / max;
-        const cor = `rgba(30,64,175,${0.3 + intensidade * 0.7})`;
-
-        paths.forEach((p) => {
-          p.style.fill = cor;
-          p.style.opacity = 1;
-        });
-      }
-    });
+    pintarMapaBrasil();
   }
   /* -------------------------------------------------------
       FAIXA ETÁRIA — CORREÇÃO COMPLETA
   ------------------------------------------------------- */
-
-  // Mapeia um valor de idade para uma faixa etária legível
   function mapAgeToBucket(idadeRaw) {
     if (idadeRaw == null) return "Não informado";
 
     const s = String(idadeRaw).toLowerCase().trim();
 
-    // captura números explícitos (ex: "17", "18 anos")
     const onlyNums = s.match(/\d+/g);
     if (onlyNums && onlyNums.length === 1) {
       const n = parseInt(onlyNums[0], 10);
@@ -329,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return "Idosos (65+)";
     }
 
-    // Range: "9-12", "9 a 12", "9 até 12"
     const range = s.match(/(\d{1,3})\s*(?:-|a|até)\s*(\d{1,3})/);
     if (range) {
       const a = parseInt(range[1], 10);
@@ -337,7 +374,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return mapAgeToBucket(Math.round((a + b) / 2));
     }
 
-    // Palavras-chave
     if (s.includes("crian")) return "Crianças (0–12)";
     if (s.includes("adole") || s.includes("teen")) return "Adolescentes (13–17)";
     if (s.includes("jovem")) return "Jovens (18–24)";
@@ -347,7 +383,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Não informado";
   }
 
-  // Função completamente flexível para captar qualquer campo de idade
   function extrairIdade(item) {
     return (
       item.idade ??
@@ -421,7 +456,6 @@ document.addEventListener("DOMContentLoaded", () => {
       faixaEtariaEl.textContent = obterFaixaEtariaMaisAfetadaPorEstado(estado);
     }
   }
-
   /* -------------------------------------------------------
       ESTATÍSTICAS E GRÁFICOS
   ------------------------------------------------------- */
@@ -499,6 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     atualizarFaixaNoCard(estado);
   }
+
   /* -------------------------------------------------------
       GRÁFICOS
   ------------------------------------------------------- */
@@ -652,8 +687,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     });
   }
-
-  /* -------------------------------------------------------
+ /* -------------------------------------------------------
       EVENTO: Troca de estado na sidebar
   ------------------------------------------------------- */
   function selecionarEstado(estado) {
@@ -677,6 +711,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!li) return;
     selecionarEstado(li.dataset.estado);
   });
+
   /* -------------------------------------------------------
       CARREGAMENTO DOS DADOS DA API
   ------------------------------------------------------- */
@@ -728,6 +763,11 @@ document.addEventListener("DOMContentLoaded", () => {
       dadosCampanhas = campanhasAgrupadas;
       dadosGenero = generoAgrupado;
 
+      console.log("📊 Dados carregados:", {
+        totalEstados: Object.keys(dadosRespostas).length,
+        totalRespostas: todosOsDados.length
+      });
+
       atualizarEstatisticas("geral");
       criarGraficoBarras();
       criarGraficoCampanhas("geral");
@@ -736,13 +776,14 @@ document.addEventListener("DOMContentLoaded", () => {
       pintarMapaBrasil();
 
     } catch (err) {
-      console.error("❌ ERRO AO CARREGAR:", err);
+      console.error("❌ ERRO AO CARREGAR DADOS:", err);
     }
   }
 
   /* -------------------------------------------------------
       EXECUÇÃO INICIAL
   ------------------------------------------------------- */
+  console.log("🚀 Iniciando dashboard...");
   inicializarMapaInterativo();
   carregarDados();
 });
