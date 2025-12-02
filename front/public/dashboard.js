@@ -390,8 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // PASSO 1: LISTAR ABSOLUTAMENTE TODOS OS IDs DO SVG
-      console.log("🔍 ==================== TODOS OS IDs NO SVG ====================");
+      // LISTAR TODOS OS IDs DO SVG DE FORMA CLARA
       const todosComId = svgDoc.querySelectorAll("[id]");
       const listaCompleta = [];
       todosComId.forEach(el => {
@@ -399,31 +398,19 @@ document.addEventListener("DOMContentLoaded", () => {
           listaCompleta.push(el.id);
         }
       });
-      console.log("📋 Total de elementos com ID:", listaCompleta.length);
       
-      // FORÇAR MOSTRAR TODOS OS IDs EM GRUPOS MENORES
-      const idsOrdenados = listaCompleta.sort();
-      console.log("📋 ========== LISTA COMPLETA DE IDs (A-Z) ==========");
+      console.log("%c========== LISTA COMPLETA DE TODOS OS IDs DO SVG ==========", "color: yellow; font-weight: bold; font-size: 14px;");
+      console.log(`Total de IDs encontrados: ${listaCompleta.length}`);
+      console.log("%cLISTA COMPLETA (copie e me envie):", "color: cyan; font-weight: bold;");
+      console.table(listaCompleta.sort());
       
-      for (let i = 0; i < idsOrdenados.length; i += 10) {
-        const grupo = idsOrdenados.slice(i, i + 10);
-        console.log(`IDs ${i}-${i+9}:`, grupo.join(", "));
-      }
+      // Também mostrar em formato de texto simples
+      console.log("%cIDs em formato texto:", "color: lime;");
+      listaCompleta.sort().forEach((id, index) => {
+        console.log(`${index + 1}. "${id}"`);
+      });
       
-      console.log("================================================================");
-      
-      // BUSCAR ESPECIFICAMENTE POR "RIO GRANDE"
-      console.log("🔎 ========== BUSCANDO POR 'RIO GRANDE' ==========");
-      const comRioGrande = idsOrdenados.filter(id => 
-        id.toLowerCase().includes('rio') || 
-        id.toLowerCase().includes('grande') ||
-        id.toLowerCase().includes('rg') ||
-        id.toLowerCase().includes('sul') ||
-        id.toLowerCase().includes('norte')
-      );
-      console.log("🎯 IDs que contêm 'rio', 'grande', 'rg', 'sul' ou 'norte':");
-      comRioGrande.forEach(id => console.log(`   ➜ "${id}"`));
-      console.log("================================================================");
+      console.log("===========================================================");
       
       // PASSO 2: Tentar mapear os estados
       svgEstadosPaths = [];
@@ -470,14 +457,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const estadosNaoEncontrados = ESTADOS_BRASIL.filter(estado => !estadosJaMapeados.has(estado));
       
       if (estadosNaoEncontrados.length > 0) {
-        console.error("❌ ESTADOS SEM MAPEAMENTO:", estadosNaoEncontrados);
-        console.warn("⚠️ Procure na lista acima por IDs que possam corresponder a estes estados!");
-        console.warn("⚠️ Padrões a procurar:");
-        estadosNaoEncontrados.forEach(estado => {
-          const semAcentos = estado.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-          const semEspacos = semAcentos.replace(/\s+/g, '');
-          console.warn(`   - Para "${estado}": procure IDs contendo "${semAcentos}" ou "${semEspacos}"`);
-        });
+        console.error("%c❌ ESTADOS SEM MAPEAMENTO:", "color: red; font-weight: bold; font-size: 14px;", estadosNaoEncontrados);
+        console.warn("⚠️ INSTRUÇÕES: Copie a lista de IDs acima e me envie para eu identificar quais são os IDs corretos!");
       } else {
         console.log("🎉 TODOS OS 27 ESTADOS FORAM MAPEADOS COM SUCESSO!");
       }
