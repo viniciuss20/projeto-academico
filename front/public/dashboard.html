@@ -97,7 +97,7 @@
         }
     </style>
 </head>
-
+ 
 <body>
     <div class="dashboard-layout">
 
@@ -230,7 +230,143 @@
             document.getElementById("userNameText").innerText = usuarioSalvo;
         }
     </script>
-
+<!-- ============= DEBUG TEMPORÁRIO - COLE AQUI ============= -->
+<script>
+// Aguarda 2 segundos para garantir que o SVG carregou
+setTimeout(() => {
+  console.log("🔍 === INICIANDO DEBUG COMPLETO DO SVG ===");
+  
+  const mapaSvg = document.getElementById("mapaBrasil");
+  
+  if (!mapaSvg) {
+    console.error("❌ Elemento #mapaBrasil não encontrado!");
+    return;
+  }
+  
+  const svgDoc = mapaSvg.contentDocument;
+  
+  if (!svgDoc) {
+    console.error("❌ Não conseguiu acessar contentDocument do SVG!");
+    return;
+  }
+  
+  // Buscar TODOS os elementos com ID
+  const todosElementos = svgDoc.querySelectorAll("*[id]");
+  
+  console.log(`📊 Total de elementos com ID: ${todosElementos.length}`);
+  
+  const listaCompleta = [];
+  
+  todosElementos.forEach(el => {
+    if (el.id && el.id.trim()) {
+      listaCompleta.push({
+        id: el.id,
+        tag: el.tagName,
+        classe: el.className?.baseVal || el.className || "(sem classe)"
+      });
+    }
+  });
+  
+  // Ordenar alfabeticamente
+  listaCompleta.sort((a, b) => a.id.localeCompare(b.id));
+  
+  console.log("=" .repeat(100));
+  console.log("📋 LISTA COMPLETA DE TODOS OS IDs DO SVG:");
+  console.log("=" .repeat(100));
+  
+  listaCompleta.forEach((item, index) => {
+    console.log(`${(index + 1).toString().padStart(3, ' ')}. ID: "${item.id}" | Tag: ${item.tag}`);
+  });
+  
+  console.log("=" .repeat(100));
+  
+  // Buscar especificamente por possíveis nomes dos estados faltantes
+  console.log("\n🎯 BUSCANDO ESPECIFICAMENTE:");
+  console.log("\n--- Possíveis Mato Grosso do Sul ---");
+  const possiveisMGS = listaCompleta.filter(item => {
+    const id = item.id.toLowerCase();
+    return id.includes('mato') || id.includes('grosso') || id.includes('sul') || id.includes('ms');
+  });
+  console.table(possiveisMGS);
+  
+  console.log("\n--- Possíveis Rio Grande do Norte ---");
+  const possiveisRGN = listaCompleta.filter(item => {
+    const id = item.id.toLowerCase();
+    return id.includes('norte') || id.includes('rn') || id.includes('rgn');
+  });
+  console.table(possiveisRGN);
+  
+  // Criar alerta visual
+  const alertaDiv = document.createElement("div");
+  alertaDiv.style.cssText = `
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    z-index: 999999;
+    max-width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 11px;
+  `;
+  
+  alertaDiv.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h3 style="margin: 0;">🔍 DEBUG - IDs do SVG (${listaCompleta.length} total)</h3>
+      <button onclick="this.parentElement.parentElement.remove()" 
+              style="background: white; color: #667eea; border: none; padding: 8px 15px; 
+                     border-radius: 6px; cursor: pointer; font-weight: bold;">
+        ✕ Fechar
+      </button>
+    </div>
+    
+    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+      <h4 style="margin-top: 0; color: #fbbf24;">⚠️ Possíveis Mato Grosso do Sul:</h4>
+      ${possiveisMGS.length > 0 
+        ? possiveisMGS.map(item => `<div style="margin: 5px 0; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 4px;">
+             <strong>${item.id}</strong> (${item.tag})
+           </div>`).join('')
+        : '<em style="color: #fca5a5;">❌ Nenhum encontrado</em>'}
+    </div>
+    
+    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+      <h4 style="margin-top: 0; color: #fbbf24;">⚠️ Possíveis Rio Grande do Norte:</h4>
+      ${possiveisRGN.length > 0 
+        ? possiveisRGN.map(item => `<div style="margin: 5px 0; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 4px;">
+             <strong>${item.id}</strong> (${item.tag})
+           </div>`).join('')
+        : '<em style="color: #fca5a5;">❌ Nenhum encontrado</em>'}
+    </div>
+    
+    <details>
+      <summary style="cursor: pointer; padding: 10px; background: rgba(255,255,255,0.1); 
+                     border-radius: 6px; margin-bottom: 10px; font-weight: bold;">
+        📋 Ver todos os ${listaCompleta.length} IDs
+      </summary>
+      <div style="max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.3); 
+                  padding: 10px; border-radius: 6px; margin-top: 10px;">
+        ${listaCompleta.map((item, i) => 
+          `<div style="padding: 3px 0;">
+             ${(i+1).toString().padStart(3, '0')}. <strong>${item.id}</strong>
+           </div>`
+        ).join('')}
+      </div>
+    </details>
+  `;
+  
+  document.body.appendChild(alertaDiv);
+  
+}, 2000);
+</script>
+<!-- ============= FIM DO DEBUG ============= -->
+</body>
+</html>
 </body>
 
 </html>
