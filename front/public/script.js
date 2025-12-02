@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
   idade, 
   genero, 
   respostas,
-  data_registro: new Date().toISOString()
+  data_registro: new Date().toISOString().slice(0, 19).replace('T', ' ')
 };
 
       try {
