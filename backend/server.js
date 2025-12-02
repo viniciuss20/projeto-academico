@@ -169,6 +169,92 @@ function calcularPontuacao(respostas) {
    🔹 ENDPOINT QUE RECEBE AS RESPOSTAS
 ============================================================ */
 
+/* =====================================================
+   🔐 ROTAS DE AUTENTICAÇÃO
+===================================================== */
+
+// Rota de REGISTRO
+app.post("/auth/register", async (req, res) => {
+  const { email, username, password } = req.body;
+
+  if (!email || !username || !password) {
+    return res.status(400).json({ erro: "Dados incompletos." });
+  }
+
+  try {
+    // Verificar se email já existe
+    const [existe] = await db.promise().query(
+      "SELECT * FROM usuarios WHERE email = ?",
+      [email]
+    );
+
+    if (existe.length > 0) {
+      return res.status(400).json({ erro: "Email já cadastrado." });
+    }
+
+    // Hash da senha
+    const bcrypt = require('bcrypt');
+    const senhaHash = await bcrypt.hash(password, 10);
+
+    // Inserir usuário
+    await db.promise().query(
+      "INSERT INTO usuarios (email, username, password) VALUES (?, ?, ?)",
+      [email, username, senhaHash]
+    );
+
+    console.log("✅ Usuário registrado:", email);
+    res.json({ sucesso: true, mensagem: "Conta criada com sucesso!" });
+
+  } catch (err) {
+    console.error("❌ Erro ao registrar:", err);
+    res.status(500).json({ erro: "Erro ao criar conta." });
+  }
+});
+
+// Rota de LOGIN
+app.post("/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ erro: "Dados incompletos." });
+  }
+
+  try {
+    const [usuarios] = await db.promise().query(
+      "SELECT * FROM usuarios WHERE email = ?",
+      [email]
+    );
+
+    if (usuarios.length === 0) {
+      return res.status(401).json({ erro: "Email ou senha incorretos." });
+    }
+
+    const usuario = usuarios[0];
+
+    // Verificar senha
+    const bcrypt = require('bcrypt');
+    const senhaValida = await bcrypt.compare(password, usuario.password);
+
+    if (!senhaValida) {
+      return res.status(401).json({ erro: "Email ou senha incorretos." });
+    }
+
+    console.log("✅ Login bem-sucedido:", email);
+    res.json({ 
+      sucesso: true, 
+      user: {
+        id: usuario.id,
+        email: usuario.email,
+        username: usuario.username
+      }
+    });
+
+  } catch (err) {
+    console.error("❌ Erro ao fazer login:", err);
+    res.status(500).json({ erro: "Erro ao fazer login." });
+  }
+});
+
 app.post("/respostas", (req, res) => {
   const { estado, idade, genero, respostas } = req.body;
 
