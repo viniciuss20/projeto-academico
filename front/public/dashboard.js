@@ -69,11 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Mapeamento de IDs do SVG para nomes completos dos estados
   const svgIdParaEstado = {
+    // Estados básicos
     "Piaui": "Piauí",
     "Ceara": "Ceará",
     "Alagoas": "Alagoas",
     "Sergipe": "Sergipe",
-    "Fernando_de_Noronha": "Pernambuco",
+    "Fernando_de_Noronha": "Rio Grande do Norte",  // ✅ CORRIGIDO!
     "Pernambuco": "Pernambuco",
     "Paraiba": "Paraíba",
     "BrasiliaDistritoFederal": "Distrito Federal",
@@ -90,25 +91,57 @@ document.addEventListener("DOMContentLoaded", () => {
     "Goias": "Goiás",
     "Parana": "Paraná",
     "MatoGrosso": "Mato Grosso",
-    "MatoGrossodoSul": "Mato Grosso do Sul",
-    "MatoGrossodosul": "Mato Grosso do Sul",
-    "MatoGrossodoSul": "Mato Grosso do Sul",
-    "MS": "Mato Grosso do Sul",
+    "MT": "Mato Grosso",
     "MinasGerais": "Minas Gerais",
+    "MG": "Minas Gerais",
     "Tocantins": "Tocantins",
-    "RioGrandedoNorte": "Rio Grande do Norte",
+    "TO": "Tocantins",
+    "Rondonia": "Rondônia",
+    "RO": "Rondônia",
+    "Roraima": "Roraima",
+    "RR": "Roraima",
+    "Amapa": "Amapá",
+    "AP": "Amapá",
+    "Amazonas": "Amazonas",
+    "AM": "Amazonas",
+    
+    // Rio Grande do Sul - TODAS as variações
+    "RioGrand_do_Sul": "Rio Grande do Sul",  // ✅ ID CORRETO DO SVG!
     "RioGrandedoSul": "Rio Grande do Sul",
     "RioGrandedosul": "Rio Grande do Sul",
     "Rio_Grande_do_Sul": "Rio Grande do Sul",
     "Rio_Grande_Sul": "Rio Grande do Sul",
-    "RGS": "Rio Grande do Sul",
-    "RS": "Rio Grande do Sul",
+    "RioGrandeSul": "Rio Grande do Sul",
     "riograndedosul": "Rio Grande do Sul",
     "RIOGRANDEDOSUL": "Rio Grande do Sul",
-    "Rondonia": "Rondônia",
-    "Roraima": "Roraima",
-    "Amapa": "Amapá",
-    "Amazonas": "Amazonas"
+    "RGS": "Rio Grande do Sul",
+    "RS": "Rio Grande do Sul",
+    "Rgdosul": "Rio Grande do Sul",
+    "RGdoSul": "Rio Grande do Sul",
+    
+    // Mato Grosso do Sul - TODAS as variações
+    "MatoGrosso_do_Sul": "Mato Grosso do Sul",  // ✅ ID CORRETO DO SVG!
+    "MatoGrossodoSul": "Mato Grosso do Sul",
+    "MatoGrossodosul": "Mato Grosso do Sul",
+    "MatoGrossodoSul": "Mato Grosso do Sul",
+    "Mato_Grosso_do_Sul": "Mato Grosso do Sul",
+    "MatoGrossoSul": "Mato Grosso do Sul",
+    "matogrossodosul": "Mato Grosso do Sul",
+    "MATOGROSSODOSUL": "Mato Grosso do Sul",
+    "MS": "Mato Grosso do Sul",
+    "MGS": "Mato Grosso do Sul",
+    "MtGrossoSul": "Mato Grosso do Sul",
+    
+    // Rio Grande do Norte - TODAS as variações
+    "RioGrandedoNorte": "Rio Grande do Norte",
+    "RioGrandedonorte": "Rio Grande do Norte",
+    "Rio_Grande_do_Norte": "Rio Grande do Norte",
+    "RioGrandeNorte": "Rio Grande do Norte",
+    "riograndedonorte": "Rio Grande do Norte",
+    "RIOGRANDEDONORTE": "Rio Grande do Norte",
+    "RGN": "Rio Grande do Norte",
+    "RN": "Rio Grande do Norte",
+    "RGdoNorte": "Rio Grande do Norte"
   };
 
   // Função para tentar descobrir o nome do estado a partir do ID - VERSÃO MELHORADA
@@ -118,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const idLower = id.toLowerCase().replace(/[_\-\s]/g, '');
     const idOriginal = id.replace(/[_\-\s]/g, '');
     
-    // Mapeamento de padrões - EXPANDIDO
+    // Mapeamento de padrões - EXPANDIDO COM MS E RGN
     const padroes = {
       // Rio Grande do Sul - TODAS as variações possíveis
       'riograndedosul': 'Rio Grande do Sul',
@@ -127,22 +160,38 @@ document.addEventListener("DOMContentLoaded", () => {
       'rgdosul': 'Rio Grande do Sul',
       'rgdsul': 'Rio Grande do Sul',
       'rgsul': 'Rio Grande do Sul',
-      'rs': 'Rio Grande do Sul',
-      'rgs': 'Rio Grande do Sul',
       'grandedosul': 'Rio Grande do Sul',
       'grandesul': 'Rio Grande do Sul',
       'granddosul': 'Rio Grande do Sul',
-      'sul': 'Rio Grande do Sul', // Último recurso
-      // Outros estados
-      'bahia': 'Bahia',
-      'ba': 'Bahia',
+      
+      // Rio Grande do Norte - TODAS as variações
+      'riograndedonorte': 'Rio Grande do Norte',
+      'riograndenorte': 'Rio Grande do Norte',
+      'rgdonorte': 'Rio Grande do Norte',
+      'rgdnorte': 'Rio Grande do Norte',
+      'rgnorte': 'Rio Grande do Norte',
+      'grandedonorte': 'Rio Grande do Norte',
+      'grandenorte': 'Rio Grande do Norte',
+      
+      // Mato Grosso do Sul - TODAS as variações
       'matogrossodosul': 'Mato Grosso do Sul',
       'matogrossosul': 'Mato Grosso do Sul',
-      'ms': 'Mato Grosso do Sul',
-      'mgs': 'Mato Grosso do Sul',
-      'riograndedonorte': 'Rio Grande do Norte',
-      'rn': 'Rio Grande do Norte',
-      'rgn': 'Rio Grande do Norte'
+      'mtgrossosul': 'Mato Grosso do Sul',
+      'mgrossosul': 'Mato Grosso do Sul',
+      'mgdosul': 'Mato Grosso do Sul',
+      'mgsul': 'Mato Grosso do Sul',
+      'grossodosul': 'Mato Grosso do Sul',
+      'grossosul': 'Mato Grosso do Sul',
+      
+      // Outros estados
+      'bahia': 'Bahia',
+      'matogrosso': 'Mato Grosso',
+      'minasgerais': 'Minas Gerais',
+      'riodejaneiro': 'Rio de Janeiro',
+      'saopaulo': 'São Paulo',
+      'santacatarina': 'Santa Catarina',
+      'espiritosanto': 'Espírito Santo',
+      'distritofederal': 'Distrito Federal'
     };
     
     // Verifica padrões no ID em lowercase
@@ -153,15 +202,57 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     
-    // Verifica se contém "rio" E "grande" E "sul"
+    // Verifica combinações específicas
+    
+    // Rio Grande do Sul: contém "rio" E "grande" E "sul"
     if (idLower.includes('rio') && idLower.includes('grande') && idLower.includes('sul')) {
-      console.log(`✅ Padrão complexo encontrado em "${id}" -> Rio Grande do Sul`);
+      console.log(`✅ Padrão complexo RGS encontrado em "${id}" -> Rio Grande do Sul`);
       return 'Rio Grande do Sul';
     }
     
-    // Verifica se contém "grande" E "sul"
-    if (idLower.includes('grande') && idLower.includes('sul')) {
+    // Rio Grande do Sul: contém "grande" E "sul" (sem norte)
+    if (idLower.includes('grande') && idLower.includes('sul') && !idLower.includes('norte')) {
       console.log(`✅ Padrão "grande + sul" encontrado em "${id}" -> Rio Grande do Sul`);
+      return 'Rio Grande do Sul';
+    }
+    
+    // Rio Grande do Norte: contém "rio" E "grande" E "norte"
+    if (idLower.includes('rio') && idLower.includes('grande') && idLower.includes('norte')) {
+      console.log(`✅ Padrão complexo RGN encontrado em "${id}" -> Rio Grande do Norte`);
+      return 'Rio Grande do Norte';
+    }
+    
+    // Rio Grande do Norte: contém "grande" E "norte"
+    if (idLower.includes('grande') && idLower.includes('norte')) {
+      console.log(`✅ Padrão "grande + norte" encontrado em "${id}" -> Rio Grande do Norte`);
+      return 'Rio Grande do Norte';
+    }
+    
+    // Mato Grosso do Sul: contém "mato" E "grosso" E "sul"
+    if (idLower.includes('mato') && idLower.includes('grosso') && idLower.includes('sul')) {
+      console.log(`✅ Padrão complexo MGS encontrado em "${id}" -> Mato Grosso do Sul`);
+      return 'Mato Grosso do Sul';
+    }
+    
+    // Mato Grosso do Sul: contém "grosso" E "sul"
+    if (idLower.includes('grosso') && idLower.includes('sul')) {
+      console.log(`✅ Padrão "grosso + sul" encontrado em "${id}" -> Mato Grosso do Sul`);
+      return 'Mato Grosso do Sul';
+    }
+    
+    // Siglas específicas no final
+    if (idLower === 'ms' || idLower.endsWith('ms')) {
+      console.log(`✅ Sigla "MS" encontrada em "${id}" -> Mato Grosso do Sul`);
+      return 'Mato Grosso do Sul';
+    }
+    
+    if (idLower === 'rn' || idLower.endsWith('rn')) {
+      console.log(`✅ Sigla "RN" encontrada em "${id}" -> Rio Grande do Norte`);
+      return 'Rio Grande do Norte';
+    }
+    
+    if (idLower === 'rs' || idLower.endsWith('rs')) {
+      console.log(`✅ Sigla "RS" encontrada em "${id}" -> Rio Grande do Sul`);
       return 'Rio Grande do Sul';
     }
     
