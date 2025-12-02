@@ -166,7 +166,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const idade = getInputValue("idade");
       const genero = getInputValue("genero");
 
-      const dados = { estado, idade, genero, respostas };
+      const dados = { 
+  estado, 
+  idade, 
+  genero, 
+  respostas,
+  data_registro: new Date().toISOString()
+};
 
       try {
         const resposta = await fetch("https://projeto-academico-production.up.railway.app/respostas", {
