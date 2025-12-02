@@ -393,15 +393,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-      MAPA — HEATMAP COM CORES CORRIGIDAS
+      MAPA — HEATMAP COM CORES: VERDE → LARANJA → VERMELHO
   ------------------------------------------------------- */
   function getImpactoColor(percentual) {
     const p = Number(percentual);
-    if (p <= 10) return "#cbd5e1";  // Cinza claro
-    if (p <= 25) return "#93c5fd";  // Azul claro
-    if (p <= 45) return "#3b82f6";  // Azul médio
-    if (p <= 65) return "#1e40af";  // Azul escuro
-    return "#1e3a8a";               // Azul muito escuro
+    
+    // Verde: 0-20% (estados menos afetados)
+    if (p <= 20) return "#10b981";  // Verde
+    
+    // Verde claro: 20-35%
+    if (p <= 35) return "#84cc16";  // Verde-limão
+    
+    // Amarelo-laranja: 35-50% (parcialmente afetados)
+    if (p <= 50) return "#f59e0b";  // Laranja
+    
+    // Laranja-avermelhado: 50-65%
+    if (p <= 65) return "#f97316";  // Laranja escuro
+    
+    // Vermelho: 65-80% (alto número de dependentes)
+    if (p <= 80) return "#ef4444";  // Vermelho
+    
+    // Vermelho escuro: 80%+ (número altíssimo de dependentes)
+    return "#dc2626";  // Vermelho escuro/intenso
   }
 
   function pintarMapaBrasil() {
