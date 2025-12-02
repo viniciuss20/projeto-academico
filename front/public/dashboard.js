@@ -382,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("⏳ Aguardando carregamento do SVG...");
 
     mapaBrasilObject.addEventListener("load", () => {
-      console.log("✅ SVG carregado! Iniciando busca por estados...");
+      console.log("✅ SVG carregado!");
       
       const svgDoc = mapaBrasilObject.contentDocument;
       if (!svgDoc) {
@@ -390,88 +390,81 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // LISTAR TODOS OS IDs DO SVG DE FORMA CLARA
-      const todosComId = svgDoc.querySelectorAll("[id]");
-      const listaCompleta = [];
-      todosComId.forEach(el => {
+      // NOVA ESTRATÉGIA: Buscar por grupos <g> que podem conter os estados
+      const grupos = svgDoc.querySelectorAll("g[id]");
+      const paths = svgDoc.querySelectorAll("path[id]");
+      const polygons = svgDoc.querySelectorAll("polygon[id]");
+      
+      console.log(`📊 Encontrados: ${grupos.length} grupos, ${paths.length} paths, ${polygons.length} polygons`);
+      
+      // Criar array com TODOS os elementos que têm ID
+      const todosElementosComId = [];
+      
+      grupos.forEach(el => {
         if (el.id) {
-          listaCompleta.push(el.id);
+          todosElementosComId.push({tipo: 'g', id: el.id, elemento: el});
         }
       });
       
-      console.log("%c========== LISTA COMPLETA DE TODOS OS IDs DO SVG ==========", "color: yellow; font-weight: bold; font-size: 14px;");
-      console.log(`Total de IDs encontrados: ${listaCompleta.length}`);
-      console.log("%cLISTA COMPLETA (copie e me envie):", "color: cyan; font-weight: bold;");
-      console.table(listaCompleta.sort());
-      
-      // Também mostrar em formato de texto simples
-      console.log("%cIDs em formato texto:", "color: lime;");
-      listaCompleta.sort().forEach((id, index) => {
-        console.log(`${index + 1}. "${id}"`);
+      paths.forEach(el => {
+        if (el.id) {
+          todosElementosComId.push({tipo: 'path', id: el.id, elemento: el});
+        }
       });
       
-      console.log("===========================================================");
+      polygons.forEach(el => {
+        if (el.id) {
+          todosElementosComId.push({tipo: 'polygon', id: el.id, elemento: el});
+        }
+      });
       
-      // PASSO 2: Tentar mapear os estados
+      console.log("📋 TODOS OS ELEMENTOS COM ID:");
+      console.table(todosElementosComId.map(item => ({
+        Tipo: item.tipo,
+        ID: item.id
+      })));
+      
+      // Tentar mapear
       svgEstadosPaths = [];
       const estadosJaMapeados = new Set();
       
-      // Primeiro: mapeamento direto
-      Object.keys(svgIdParaEstado).forEach(idEstado => {
-        const elemento = svgDoc.getElementById(idEstado);
-        if (elemento) {
-          svgEstadosPaths.push(elemento);
-          estadosJaMapeados.add(svgIdParaEstado[idEstado]);
-          console.log(`✅ Estado mapeado: ${idEstado} -> ${svgIdParaEstado[idEstado]}`);
-        }
-      });
-
-      // PASSO 3: Tentar descobrir automaticamente IDs não mapeados
-      console.log("🤖 Tentando descobrir automaticamente estados faltantes...");
-      todosComId.forEach(el => {
-        const id = el.id;
+      todosElementosComId.forEach(item => {
+        const id = item.id;
+        const elemento = item.elemento;
         
-        if (svgEstadosPaths.includes(el)) return;
-        
-        // Tenta mapeamento direto primeiro
+        // Tentar mapeamento direto
         let estadoNome = svgIdParaEstado[id];
         
-        // Se não encontrou, tenta descobrir automaticamente
+        // Se não encontrou, tentar descobrir
         if (!estadoNome) {
           estadoNome = descobrirEstadoPorId(id);
         }
         
         if (estadoNome && !estadosJaMapeados.has(estadoNome)) {
-          svgEstadosPaths.push(el);
+          svgEstadosPaths.push(elemento);
           estadosJaMapeados.add(estadoNome);
-          console.log(`🤖 Estado descoberto automaticamente: "${id}" -> ${estadoNome}`);
-          
-          // Adiciona ao mapeamento para próximas vezes
+          console.log(`✅ ${item.tipo} mapeado: "${id}" -> ${estadoNome}`);
           svgIdParaEstado[id] = estadoNome;
         }
       });
 
-      console.log(`📊 Total de estados mapeados: ${svgEstadosPaths.length} de 27`);
-
-      // PASSO 4: Listar estados que NÃO foram encontrados
+      console.log(`📊 Total mapeado: ${svgEstadosPaths.length} de 27`);
+      
       const estadosNaoEncontrados = ESTADOS_BRASIL.filter(estado => !estadosJaMapeados.has(estado));
       
       if (estadosNaoEncontrados.length > 0) {
-        console.error("%c❌ ESTADOS SEM MAPEAMENTO:", "color: red; font-weight: bold; font-size: 14px;", estadosNaoEncontrados);
-        console.warn("⚠️ INSTRUÇÕES: Copie a lista de IDs acima e me envie para eu identificar quais são os IDs corretos!");
+        console.error("❌ FALTAM:", estadosNaoEncontrados);
       } else {
-        console.log("🎉 TODOS OS 27 ESTADOS FORAM MAPEADOS COM SUCESSO!");
+        console.log("🎉 TODOS MAPEADOS!");
       }
 
-      // Pinta o mapa após encontrar os estados
       if (Object.keys(dadosRespostas).length > 0) {
         pintarMapaBrasil();
       }
     });
 
     mapaBrasilObject.addEventListener("error", () => {
-      console.error("❌ Erro ao carregar arquivo SVG do mapa");
-      console.error("Verifique se o arquivo existe em: maps/Brazil_states.svg");
+      console.error("❌ Erro ao carregar SVG");
     });
   }
 
