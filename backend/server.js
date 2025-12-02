@@ -261,6 +261,7 @@ app.get("/dados", (req, res) => {
       estado: row.estado,
       idade: row.idade,
       genero: row.genero,
+      data_registro: row.data_registro,
       q1_valor: row.q1_valor,
       q2_valor: row.q2_valor,
       q3_valor: row.q3_valor,
