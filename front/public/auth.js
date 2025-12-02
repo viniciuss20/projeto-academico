@@ -56,9 +56,11 @@ if (registerForm) {
       if (response.ok) {
         showMessage('Conta criada com sucesso! Redirecionando...', 'success');
         
-        // Salvar token
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        // Salvar dados do usuário (sem token por enquanto)
+        localStorage.setItem('user', JSON.stringify({
+          email: email,
+          username: username
+        }));
         
         // Redirecionar para o dashboard após 1.5 segundos
         setTimeout(() => {
@@ -104,12 +106,10 @@ if (loginForm) {
       if (response.ok) {
         showMessage('Login realizado com sucesso! Redirecionando...', 'success');
         
-        // Salvar token e dados do usuário
+        // Salvar dados do usuário
         if (remember) {
-          localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
         } else {
-          sessionStorage.setItem('token', data.token);
           sessionStorage.setItem('user', JSON.stringify(data.user));
         }
         
@@ -130,9 +130,11 @@ if (loginForm) {
 // ==================== PROTEÇÃO DO DASHBOARD ====================
 // Verifica se o usuário está autenticado (para páginas protegidas)
 function checkAuth() {
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  const user = localStorage.getItem('user') || sessionStorage.getItem('user');
   
-  if (!token && window.location.pathname.includes('dashboard')) {
+  if (!user && (window.location.pathname.includes('dashboard') || 
+                 window.location.pathname.includes('manage-account') || 
+                 window.location.pathname.includes('change-password'))) {
     window.location.href = '/login.html';
     return false;
   }
@@ -154,10 +156,15 @@ function loadUserData() {
       const sobrenomeInput = document.getElementById('sobrenomeInput');
       const usernameDisplay = document.getElementById('usernameDisplay');
       
+      // ✅ CORRIGIDO: Username aparece no campo Nome
       if (emailInput) emailInput.value = user.email || '';
-      if (nomeInput) nomeInput.value = user.nome || '';
+      if (nomeInput) nomeInput.value = user.username || ''; // ← USERNAME vai para NOME
       if (sobrenomeInput) sobrenomeInput.value = user.sobrenome || '';
       if (usernameDisplay) usernameDisplay.textContent = user.username || 'Usuário';
+      
+      // Também atualizar o sidebar se existir
+      const userNameSidebar = document.querySelector('.user-name');
+      if (userNameSidebar) userNameSidebar.textContent = user.username || 'Usuário';
       
     } catch (error) {
       console.error('Erro ao carregar dados do usuário:', error);
@@ -177,40 +184,27 @@ if (accountForm) {
     const email = document.getElementById('emailInput').value.trim();
     const nome = document.getElementById('nomeInput').value.trim();
     const sobrenome = document.getElementById('sobrenomeInput').value.trim();
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     try {
-      const response = await fetch(`${API_URL}/auth/update-profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ email, nome, sobrenome }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        showMessage('Dados atualizados com sucesso!', 'success');
-        
-        // Atualizar localStorage
-        const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'));
-        user.email = data.user.email;
-        user.nome = data.user.nome;
-        user.sobrenome = data.user.sobrenome;
-        
-        if (localStorage.getItem('token')) {
-          localStorage.setItem('user', JSON.stringify(user));
-        } else {
-          sessionStorage.setItem('user', JSON.stringify(user));
-        }
+      // Por enquanto, apenas atualizar localmente
+      const userStr = localStorage.getItem('user') || sessionStorage.getItem('user');
+      const user = JSON.parse(userStr);
+      
+      user.email = email;
+      user.username = nome; // Salvar como username
+      user.sobrenome = sobrenome;
+      
+      if (localStorage.getItem('user')) {
+        localStorage.setItem('user', JSON.stringify(user));
       } else {
-        showMessage(data.message || 'Erro ao atualizar dados.');
+        sessionStorage.setItem('user', JSON.stringify(user));
       }
+      
+      showMessage('Dados atualizados com sucesso!', 'success');
+      
     } catch (error) {
       console.error('Erro:', error);
-      showMessage('Erro ao conectar com o servidor.');
+      showMessage('Erro ao atualizar dados.');
     }
   });
 }
@@ -224,7 +218,6 @@ if (changePasswordForm) {
     const currentPassword = document.getElementById('currentPassword').value;
     const newPassword = document.getElementById('newPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     // Validações
     if (newPassword !== confirmPassword) {
@@ -237,40 +230,18 @@ if (changePasswordForm) {
       return;
     }
 
-    try {
-      const response = await fetch(`${API_URL}/auth/change-password`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ currentPassword, newPassword }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        showMessage('Senha alterada com sucesso!', 'success');
-        
-        // Limpar campos
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
-      } else {
-        showMessage(data.message || 'Erro ao alterar senha.');
-      }
-    } catch (error) {
-      console.error('Erro:', error);
-      showMessage('Erro ao conectar com o servidor.');
-    }
+    showMessage('Funcionalidade de alteração de senha em desenvolvimento.', 'success');
+    
+    // Limpar campos
+    document.getElementById('currentPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
   });
 }
 
 // ==================== LOGOUT ====================
 function logout() {
-  localStorage.removeItem('token');
   localStorage.removeItem('user');
-  sessionStorage.removeItem('token');
   sessionStorage.removeItem('user');
   window.location.href = '/login.html';
 }
