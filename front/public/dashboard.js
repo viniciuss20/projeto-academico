@@ -100,8 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
     "RioGrandedoNorte": "Rio Grande do Norte",
     "RioGrandedoSul": "Rio Grande do Sul",
     "RioGrandedosul": "Rio Grande do Sul",
-    "RioGrandedoSul": "Rio Grande do Sul",
+    "Rio_Grande_do_Sul": "Rio Grande do Sul",
+    "Rio_Grande_Sul": "Rio Grande do Sul",
+    "RGS": "Rio Grande do Sul",
     "RS": "Rio Grande do Sul",
+    "riograndedosul": "Rio Grande do Sul",
+    "RIOGRANDEDOSUL": "Rio Grande do Sul",
     "Rondonia": "Rondônia",
     "Roraima": "Roraima",
     "Amapa": "Amapá",
@@ -113,23 +117,38 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!id) return null;
     
     const idLower = id.toLowerCase().replace(/[_-]/g, '');
+    const idOriginal = id.replace(/[_-]/g, '');
     
-    // Mapeamento de padrões
+    // Mapeamento de padrões - VERSÃO EXPANDIDA
     const padroes = {
-      'bahia': 'Bahia',
-      'ba': 'Bahia',
       'riograndedosul': 'Rio Grande do Sul',
       'riograndedosul': 'Rio Grande do Sul',
+      'riograndedosul': 'Rio Grande do Sul',
+      'rgdosul': 'Rio Grande do Sul',
+      'rgdsul': 'Rio Grande do Sul',
+      'rgsul': 'Rio Grande do Sul',
       'rs': 'Rio Grande do Sul',
       'rgs': 'Rio Grande do Sul',
+      'grandedosul': 'Rio Grande do Sul',
+      'grandesul': 'Rio Grande do Sul',
+      'bahia': 'Bahia',
+      'ba': 'Bahia',
       'matogrossodosul': 'Mato Grosso do Sul',
       'matogrossodosul': 'Mato Grosso do Sul',
       'ms': 'Mato Grosso do Sul',
       'mgs': 'Mato Grosso do Sul'
     };
     
+    // Verifica padrões no ID em lowercase
     for (const [padrao, estado] of Object.entries(padroes)) {
       if (idLower.includes(padrao)) {
+        return estado;
+      }
+    }
+    
+    // Verifica padrões no ID original (mantendo maiúsculas/minúsculas)
+    for (const [padrao, estado] of Object.entries(padroes)) {
+      if (idOriginal.toLowerCase().includes(padrao)) {
         return estado;
       }
     }
@@ -146,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let dadosGenero = {};
   let todosOsDados = [];
   let svgEstadosPaths = [];
-
   /* -------------------------------------------------------
       SIDEBAR DE ESTADOS
   ------------------------------------------------------- */
@@ -355,7 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // A pintura é feita pela função pintarMapaBrasil()
     console.log("📍 Preparando mapa para pintura...");
   }
-
   function inicializarMapaInterativo() {
     if (!mapaBrasilObject) {
       console.error("❌ Elemento mapaBrasil não encontrado no HTML");
@@ -439,8 +456,11 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("⚠️ Padrões a procurar:");
         estadosNaoEncontrados.forEach(estado => {
           const semAcentos = estado.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-          console.warn(`   - Para "${estado}": procure IDs contendo "${semAcentos}"`);
+          const semEspacos = semAcentos.replace(/\s+/g, '');
+          console.warn(`   - Para "${estado}": procure IDs contendo "${semAcentos}" ou "${semEspacos}"`);
         });
+      } else {
+        console.log("🎉 TODOS OS 27 ESTADOS FORAM MAPEADOS COM SUCESSO!");
       }
 
       // Pinta o mapa após encontrar os estados
@@ -565,7 +585,6 @@ document.addEventListener("DOMContentLoaded", () => {
       faixaEtariaEl.textContent = obterFaixaEtariaMaisAfetadaPorEstado(estado);
     }
   }
-
   /* -------------------------------------------------------
       ESTATÍSTICAS E GRÁFICOS
   ------------------------------------------------------- */
