@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "EspiritoSanto": "Espírito Santo",
     "SantaCatarina": "Santa Catarina",
     "Acre": "Acre",
+    "Bahina": "Bahia",  // ✅ CORRIGIDO! (ID é "Bahina" no SVG)
     "Bahia": "Bahia",
     "BA": "Bahia",
     "Goias": "Goiás",
@@ -185,6 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Outros estados
       'bahia': 'Bahia',
+      'bahina': 'Bahia',  // ✅ ID correto no SVG
       'matogrosso': 'Mato Grosso',
       'minasgerais': 'Minas Gerais',
       'riodejaneiro': 'Rio de Janeiro',
