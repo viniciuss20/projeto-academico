@@ -5,6 +5,7 @@ import cors from "cors";
 import mysql from "mysql2";
 import path from "path";
 import { fileURLToPath } from "url";
+import bcrypt from "bcrypt"; // ← ADICIONE ESTA LINHA
 
 const app = express();
 app.use(express.json());
@@ -19,7 +20,7 @@ app.use(
       "http://localhost:3000",
       "http://127.0.0.1:3000"
     ],
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: ["GET", "POST", "OPTIONS", "PUT"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"]
   })
@@ -28,7 +29,7 @@ app.use(
 // Adicionar headers CORS manualmente também (garantia extra)
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", "true");
   
@@ -90,30 +91,11 @@ db.connect((err) => {
         console.log('✅ Coluna data_registro criada com sucesso');
       }
     });
-
-    // VERIFICAR ESTRUTURA DA TABELA
-    db.query('DESCRIBE respostas', (err, results) => {
-      if (err) {
-        console.error('❌ Erro ao verificar estrutura:', err);
-      } else {
-        console.log('📋 Estrutura da tabela respostas:');
-        console.table(results);
-      }
-    });
   }
 });
 
-/* ============================================================
-   🔹 REMOVIDO: SERVIR FRONTEND
-============================================================ */
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-/* ============================================================
-   🔹 ARQUIVO JSON PARA DASHBOARD
-============================================================ */
-
 const caminhoArquivo = path.join(__dirname, "respostas.json");
 
 /* ============================================================
@@ -165,58 +147,49 @@ function calcularPontuacao(respostas) {
   return { respostasDetalhadas, pontuacao, porcentagem, max, classificacao };
 }
 
-/* ============================================================
-   🔹 ENDPOINT QUE RECEBE AS RESPOSTAS
-============================================================ */
-
 /* =====================================================
    🔐 ROTAS DE AUTENTICAÇÃO
 ===================================================== */
 
-// Rota de REGISTRO
 app.post("/auth/register", async (req, res) => {
   const { email, username, password } = req.body;
 
   if (!email || !username || !password) {
-    return res.status(400).json({ erro: "Dados incompletos." });
+    return res.status(400).json({ message: "Dados incompletos." });
   }
 
   try {
-    // Verificar se email já existe
     const [existe] = await db.promise().query(
       "SELECT * FROM usuarios WHERE email = ?",
       [email]
     );
 
     if (existe.length > 0) {
-      return res.status(400).json({ erro: "Email já cadastrado." });
+      return res.status(400).json({ message: "Email já cadastrado." });
     }
 
-    // Hash da senha
-    const bcrypt = require('bcrypt');
+    // Hash da senha usando bcrypt importado
     const senhaHash = await bcrypt.hash(password, 10);
 
-    // Inserir usuário
     await db.promise().query(
       "INSERT INTO usuarios (email, username, password) VALUES (?, ?, ?)",
       [email, username, senhaHash]
     );
 
     console.log("✅ Usuário registrado:", email);
-    res.json({ sucesso: true, mensagem: "Conta criada com sucesso!" });
+    res.json({ sucesso: true, message: "Conta criada com sucesso!" });
 
   } catch (err) {
     console.error("❌ Erro ao registrar:", err);
-    res.status(500).json({ erro: "Erro ao criar conta." });
+    res.status(500).json({ message: "Erro ao criar conta." });
   }
 });
 
-// Rota de LOGIN
 app.post("/auth/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ erro: "Dados incompletos." });
+    return res.status(400).json({ message: "Dados incompletos." });
   }
 
   try {
@@ -226,22 +199,22 @@ app.post("/auth/login", async (req, res) => {
     );
 
     if (usuarios.length === 0) {
-      return res.status(401).json({ erro: "Email ou senha incorretos." });
+      return res.status(401).json({ message: "Email ou senha incorretos." });
     }
 
     const usuario = usuarios[0];
 
-    // Verificar senha
-    const bcrypt = require('bcrypt');
+    // Verificar senha usando bcrypt importado
     const senhaValida = await bcrypt.compare(password, usuario.password);
 
     if (!senhaValida) {
-      return res.status(401).json({ erro: "Email ou senha incorretos." });
+      return res.status(401).json({ message: "Email ou senha incorretos." });
     }
 
     console.log("✅ Login bem-sucedido:", email);
     res.json({ 
-      sucesso: true, 
+      sucesso: true,
+      message: "Login realizado com sucesso!",
       user: {
         id: usuario.id,
         email: usuario.email,
@@ -251,7 +224,7 @@ app.post("/auth/login", async (req, res) => {
 
   } catch (err) {
     console.error("❌ Erro ao fazer login:", err);
-    res.status(500).json({ erro: "Erro ao fazer login." });
+    res.status(500).json({ message: "Erro ao fazer login." });
   }
 });
 
@@ -272,31 +245,26 @@ app.post("/respostas", (req, res) => {
     data: new Date().toISOString(),
   };
 
-  // ---------------- JSON ----------------
   try {
     const lista = fs.existsSync(caminhoArquivo)
       ? JSON.parse(fs.readFileSync(caminhoArquivo, "utf8"))
       : [];
 
     lista.push(registro);
-
     fs.writeFileSync(caminhoArquivo, JSON.stringify(lista, null, 2));
   } catch (err) {
     console.error("❌ Erro ao gravar JSON:", err);
   }
 
-  // ---------------- MySQL ----------------
   const det = result.respostasDetalhadas;
   const v = (n) => det[`q${n}`]?.valor || 0;
 
   const sql = `
     INSERT INTO respostas
     (estado, idade, genero,
- q1_valor, q2_valor, q3_valor, q4_valor, q5_valor,
- q6_valor, q7_valor, q8_valor, q9_valor, q10_valor, data_registro)
-
+     q1_valor, q2_valor, q3_valor, q4_valor, q5_valor,
+     q6_valor, q7_valor, q8_valor, q9_valor, q10_valor, data_registro)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-
   `;
 
   const valores = [
@@ -324,14 +292,9 @@ app.post("/respostas", (req, res) => {
   res.json({ sucesso: true });
 });
 
-/* ============================================================
-   🔹 ENDPOINT DO DASHBOARD
-============================================================ */
-
 app.get("/dados", (req, res) => {
   console.log("📊 Requisição recebida de:", req.headers.origin);
   
-  // Buscar do MySQL
   const sql = "SELECT * FROM respostas";
   
   db.query(sql, (err, results) => {
@@ -342,7 +305,6 @@ app.get("/dados", (req, res) => {
     
     console.log(`✅ Retornando ${results.length} registros do MySQL`);
     
-    // Converter para o formato esperado pelo dashboard
     const dadosFormatados = results.map((row) => ({
       estado: row.estado,
       idade: row.idade,
@@ -364,23 +326,17 @@ app.get("/dados", (req, res) => {
   });
 });
 
-/* ============================================================
-   🔹 ROTA RAIZ — TESTE
-============================================================ */
-
 app.get("/", (req, res) => {
   res.json({ 
-    status: "API funcionando no Railway com CORS configurado! 🚀",
+    status: "API funcionando! 🚀",
     endpoints: {
       dados: "/dados",
-      respostas: "/respostas (POST)"
+      respostas: "/respostas (POST)",
+      registro: "/auth/register (POST)",
+      login: "/auth/login (POST)"
     }
   });
 });
-
-/* ============================================================
-   🔹 INICIAR SERVIDOR
-============================================================ */
 
 const PORT = process.env.PORT || 3000;
 
@@ -390,4 +346,4 @@ app.listen(PORT, () => {
       usandoRailway ? "Railway" : "Local"
     }`
   );
-});# Force deploy
+});
