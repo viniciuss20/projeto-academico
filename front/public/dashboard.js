@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Mapeamento de IDs do SVG para nomes completos dos estados
+  // Incluindo variações possíveis de IDs
   const svgIdParaEstado = {
     "Piaui": "Piauí",
     "Ceara": "Ceará",
@@ -81,18 +82,26 @@ document.addEventListener("DOMContentLoaded", () => {
     "Para": "Pará",
     "SaoPaulo": "São Paulo",
     "Rio_deJaneiro": "Rio de Janeiro",
+    "RiodeJaneiro": "Rio de Janeiro",
     "EspiritoSanto": "Espírito Santo",
     "SantaCatarina": "Santa Catarina",
     "Acre": "Acre",
     "Bahia": "Bahia",
+    "BA": "Bahia",
     "Goias": "Goiás",
     "Parana": "Paraná",
     "MatoGrosso": "Mato Grosso",
     "MatoGrossodoSul": "Mato Grosso do Sul",
+    "MatoGrossodosul": "Mato Grosso do Sul",
+    "MatoGrossodoSul": "Mato Grosso do Sul",
+    "MS": "Mato Grosso do Sul",
     "MinasGerais": "Minas Gerais",
     "Tocantins": "Tocantins",
     "RioGrandedoNorte": "Rio Grande do Norte",
     "RioGrandedoSul": "Rio Grande do Sul",
+    "RioGrandedosul": "Rio Grande do Sul",
+    "RioGrandedoSul": "Rio Grande do Sul",
+    "RS": "Rio Grande do Sul",
     "Rondonia": "Rondônia",
     "Roraima": "Roraima",
     "Amapa": "Amapá",
@@ -285,6 +294,28 @@ document.addEventListener("DOMContentLoaded", () => {
         p.style.transition = "all 0.3s ease";
         p.style.cursor = "pointer";
       });
+
+      // ✅ ADICIONAR EVENTO DE CLIQUE NO ESTADO
+      grupo.style.cursor = "pointer";
+      grupo.addEventListener("click", () => {
+        console.log(`🖱️ Clicou em: ${nomeEstado}`);
+        selecionarEstado(nomeEstado);
+      });
+
+      // Adicionar efeito hover
+      grupo.addEventListener("mouseenter", () => {
+        paths.forEach((p) => {
+          p.style.opacity = 0.8;
+          p.style.filter = "brightness(1.1)";
+        });
+      });
+
+      grupo.addEventListener("mouseleave", () => {
+        paths.forEach((p) => {
+          p.style.opacity = 1;
+          p.style.filter = "brightness(1)";
+        });
+      });
     });
 
     console.log("✅ Mapa pintado com sucesso!");
@@ -316,15 +347,37 @@ document.addEventListener("DOMContentLoaded", () => {
       // Busca todos os elementos com ID que correspondem a estados
       svgEstadosPaths = [];
       
+      // Primeiro tenta buscar pelos IDs conhecidos
       Object.keys(svgIdParaEstado).forEach(idEstado => {
         const elemento = svgDoc.getElementById(idEstado);
         if (elemento) {
           svgEstadosPaths.push(elemento);
           console.log(`✅ Estado encontrado: ${idEstado} -> ${svgIdParaEstado[idEstado]}`);
-        } else {
-          console.warn(`⚠️ Estado não encontrado no SVG: ${idEstado}`);
         }
       });
+
+      // Se não encontrou todos, tenta buscar por todos os elementos com ID
+      if (svgEstadosPaths.length < 27) {
+        console.log("🔍 Buscando IDs alternativos...");
+        const todosComId = svgDoc.querySelectorAll("[id]");
+        
+        todosComId.forEach(el => {
+          const id = el.id;
+          
+          // Verifica se já foi adicionado
+          if (svgEstadosPaths.includes(el)) return;
+          
+          // Tenta encontrar correspondência no mapeamento
+          const estadoNome = svgIdParaEstado[id];
+          if (estadoNome) {
+            svgEstadosPaths.push(el);
+            console.log(`✅ Estado encontrado (alternativo): ${id} -> ${estadoNome}`);
+          } else {
+            // Log de IDs não mapeados para debug
+            console.log(`ℹ️ ID não mapeado encontrado: "${id}"`);
+          }
+        });
+      }
 
       console.log(`📊 Total de estados mapeados: ${svgEstadosPaths.length}`);
 
