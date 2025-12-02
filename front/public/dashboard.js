@@ -68,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Mapeamento de IDs do SVG para nomes completos dos estados
-  // Incluindo variações possíveis de IDs
   const svgIdParaEstado = {
     "Piaui": "Piauí",
     "Ceara": "Ceará",
@@ -112,18 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
     "Amazonas": "Amazonas"
   };
 
-  // Função para tentar descobrir o nome do estado a partir do ID
+  // Função para tentar descobrir o nome do estado a partir do ID - VERSÃO MELHORADA
   function descobrirEstadoPorId(id) {
     if (!id) return null;
     
-    const idLower = id.toLowerCase().replace(/[_-]/g, '');
-    const idOriginal = id.replace(/[_-]/g, '');
+    const idLower = id.toLowerCase().replace(/[_\-\s]/g, '');
+    const idOriginal = id.replace(/[_\-\s]/g, '');
     
-    // Mapeamento de padrões - VERSÃO EXPANDIDA
+    // Mapeamento de padrões - EXPANDIDO
     const padroes = {
+      // Rio Grande do Sul - TODAS as variações possíveis
       'riograndedosul': 'Rio Grande do Sul',
-      'riograndedosul': 'Rio Grande do Sul',
-      'riograndedosul': 'Rio Grande do Sul',
+      'riograndedorsul': 'Rio Grande do Sul',
+      'riograndesul': 'Rio Grande do Sul',
       'rgdosul': 'Rio Grande do Sul',
       'rgdsul': 'Rio Grande do Sul',
       'rgsul': 'Rio Grande do Sul',
@@ -131,26 +131,38 @@ document.addEventListener("DOMContentLoaded", () => {
       'rgs': 'Rio Grande do Sul',
       'grandedosul': 'Rio Grande do Sul',
       'grandesul': 'Rio Grande do Sul',
+      'granddosul': 'Rio Grande do Sul',
+      'sul': 'Rio Grande do Sul', // Último recurso
+      // Outros estados
       'bahia': 'Bahia',
       'ba': 'Bahia',
       'matogrossodosul': 'Mato Grosso do Sul',
-      'matogrossodosul': 'Mato Grosso do Sul',
+      'matogrossosul': 'Mato Grosso do Sul',
       'ms': 'Mato Grosso do Sul',
-      'mgs': 'Mato Grosso do Sul'
+      'mgs': 'Mato Grosso do Sul',
+      'riograndedonorte': 'Rio Grande do Norte',
+      'rn': 'Rio Grande do Norte',
+      'rgn': 'Rio Grande do Norte'
     };
     
     // Verifica padrões no ID em lowercase
     for (const [padrao, estado] of Object.entries(padroes)) {
-      if (idLower.includes(padrao)) {
+      if (idLower === padrao || idLower.includes(padrao)) {
+        console.log(`✅ Padrão "${padrao}" encontrado em "${id}" -> ${estado}`);
         return estado;
       }
     }
     
-    // Verifica padrões no ID original (mantendo maiúsculas/minúsculas)
-    for (const [padrao, estado] of Object.entries(padroes)) {
-      if (idOriginal.toLowerCase().includes(padrao)) {
-        return estado;
-      }
+    // Verifica se contém "rio" E "grande" E "sul"
+    if (idLower.includes('rio') && idLower.includes('grande') && idLower.includes('sul')) {
+      console.log(`✅ Padrão complexo encontrado em "${id}" -> Rio Grande do Sul`);
+      return 'Rio Grande do Sul';
+    }
+    
+    // Verifica se contém "grande" E "sul"
+    if (idLower.includes('grande') && idLower.includes('sul')) {
+      console.log(`✅ Padrão "grande + sul" encontrado em "${id}" -> Rio Grande do Sul`);
+      return 'Rio Grande do Sul';
     }
     
     return null;
@@ -165,6 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let dadosGenero = {};
   let todosOsDados = [];
   let svgEstadosPaths = [];
+  
   /* -------------------------------------------------------
       SIDEBAR DE ESTADOS
   ------------------------------------------------------- */
@@ -342,7 +355,7 @@ document.addEventListener("DOMContentLoaded", () => {
         p.style.cursor = "pointer";
       });
 
-      // ✅ ADICIONAR EVENTO DE CLIQUE NO ESTADO
+      // Adicionar evento de clique no estado
       grupo.style.cursor = "pointer";
       grupo.addEventListener("click", () => {
         console.log(`🖱️ Clicou em: ${nomeEstado}`);
@@ -369,10 +382,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function desenharMapa() {
-    // Função vazia por enquanto - o mapa já está no HTML
-    // A pintura é feita pela função pintarMapaBrasil()
     console.log("📍 Preparando mapa para pintura...");
   }
+  
   function inicializarMapaInterativo() {
     if (!mapaBrasilObject) {
       console.error("❌ Elemento mapaBrasil não encontrado no HTML");
@@ -390,10 +402,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // NOVA ESTRATÉGIA: Buscar por grupos <g> que podem conter os estados
-      const grupos = svgDoc.querySelectorAll("g[id]");
-      const paths = svgDoc.querySelectorAll("path[id]");
-      const polygons = svgDoc.querySelectorAll("polygon[id]");
+      // BUSCA COMPLETA: grupos, paths, polygons
+      const grupos = Array.from(svgDoc.querySelectorAll("g[id]"));
+      const paths = Array.from(svgDoc.querySelectorAll("path[id]"));
+      const polygons = Array.from(svgDoc.querySelectorAll("polygon[id]"));
       
       console.log(`📊 Encontrados: ${grupos.length} grupos, ${paths.length} paths, ${polygons.length} polygons`);
       
@@ -454,8 +466,31 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (estadosNaoEncontrados.length > 0) {
         console.error("❌ FALTAM:", estadosNaoEncontrados);
+        
+        // Criar alerta visual na tela
+        const alerta = document.createElement("div");
+        alerta.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #fee2e2;
+          border: 3px solid #dc2626;
+          padding: 20px;
+          z-index: 99999;
+          border-radius: 8px;
+          max-width: 300px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        `;
+        alerta.innerHTML = `
+          <h4 style="margin-top: 0; color: #dc2626;">⚠️ Estados não mapeados:</h4>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            ${estadosNaoEncontrados.map(e => `<li>${e}</li>`).join('')}
+          </ul>
+          <button onclick="this.parentElement.remove()" style="padding: 5px 10px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer;">Fechar</button>
+        `;
+        document.body.appendChild(alerta);
       } else {
-        console.log("🎉 TODOS MAPEADOS!");
+        console.log("🎉 TODOS OS 27 ESTADOS MAPEADOS!");
       }
 
       if (Object.keys(dadosRespostas).length > 0) {
@@ -578,6 +613,7 @@ document.addEventListener("DOMContentLoaded", () => {
       faixaEtariaEl.textContent = obterFaixaEtariaMaisAfetadaPorEstado(estado);
     }
   }
+  
   /* -------------------------------------------------------
       ESTATÍSTICAS E GRÁFICOS
   ------------------------------------------------------- */
@@ -914,65 +950,3 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarMapaInterativo();
   carregarDados();
 });
-// CÓDIGO TEMPORÁRIO DE DEBUG - REMOVER DEPOIS
-setTimeout(() => {
-  console.log("🔍 INICIANDO BUSCA FORÇADA DE IDs...");
-  
-  const mapaSvg = document.getElementById("mapaBrasil");
-  if (!mapaSvg || !mapaSvg.contentDocument) {
-    console.error("❌ SVG não carregado ainda");
-    return;
-  }
-  
-  const svgDoc = mapaSvg.contentDocument;
-  const todosElementos = svgDoc.querySelectorAll("*");
-  
-  console.log(`📊 Total de elementos no SVG: ${todosElementos.length}`);
-  
-  const idsEncontrados = [];
-  todosElementos.forEach(el => {
-    if (el.id && el.id.trim() !== "") {
-      idsEncontrados.push(el.id);
-    }
-  });
-  
-  console.log(`📋 Total de IDs encontrados: ${idsEncontrados.length}`);
-  
-  // Mostrar de 10 em 10
-  const sorted = idsEncontrados.sort();
-  console.log("=" .repeat(80));
-  console.log("LISTA COMPLETA DE IDs:");
-  console.log("=" .repeat(80));
-  
-  for (let i = 0; i < sorted.length; i++) {
-    console.log(`${(i+1).toString().padStart(3, ' ')}. "${sorted[i]}"`);
-  }
-  
-  console.log("=" .repeat(80));
-  
-  // Criar um alerta na tela com os IDs
-  const containerDiv = document.createElement("div");
-  containerDiv.style.cssText = `
-    position: fixed;
-    top: 50px;
-    right: 20px;
-    background: white;
-    border: 3px solid red;
-    padding: 20px;
-    max-height: 80vh;
-    overflow-y: auto;
-    z-index: 99999;
-    font-family: monospace;
-    font-size: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  `;
-  
-  containerDiv.innerHTML = `
-    <h3 style="margin-top: 0; color: red;">IDs DO SVG (${sorted.length} total)</h3>
-    <button onclick="this.parentElement.remove()" style="margin-bottom: 10px;">Fechar</button>
-    <div>${sorted.map((id, i) => `${i+1}. ${id}`).join('<br>')}</div>
-  `;
-  
-  document.body.appendChild(containerDiv);
-  
-}, 3000); // Aguarda 3 segundos após página carregar
