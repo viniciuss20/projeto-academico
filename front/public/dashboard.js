@@ -400,10 +400,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       console.log("📋 Total de elementos com ID:", listaCompleta.length);
-      console.log("📋 Lista completa (ordenada alfabeticamente):");
-      listaCompleta.sort().forEach(id => {
-        console.log(`   - "${id}"`);
-      });
+      
+      // FORÇAR MOSTRAR TODOS OS IDs EM GRUPOS MENORES
+      const idsOrdenados = listaCompleta.sort();
+      console.log("📋 ========== LISTA COMPLETA DE IDs (A-Z) ==========");
+      
+      for (let i = 0; i < idsOrdenados.length; i += 10) {
+        const grupo = idsOrdenados.slice(i, i + 10);
+        console.log(`IDs ${i}-${i+9}:`, grupo.join(", "));
+      }
+      
+      console.log("================================================================");
+      
+      // BUSCAR ESPECIFICAMENTE POR "RIO GRANDE"
+      console.log("🔎 ========== BUSCANDO POR 'RIO GRANDE' ==========");
+      const comRioGrande = idsOrdenados.filter(id => 
+        id.toLowerCase().includes('rio') || 
+        id.toLowerCase().includes('grande') ||
+        id.toLowerCase().includes('rg') ||
+        id.toLowerCase().includes('sul') ||
+        id.toLowerCase().includes('norte')
+      );
+      console.log("🎯 IDs que contêm 'rio', 'grande', 'rg', 'sul' ou 'norte':");
+      comRioGrande.forEach(id => console.log(`   ➜ "${id}"`));
       console.log("================================================================");
       
       // PASSO 2: Tentar mapear os estados
