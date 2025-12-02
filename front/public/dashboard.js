@@ -921,3 +921,65 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarMapaInterativo();
   carregarDados();
 });
+// CÓDIGO TEMPORÁRIO DE DEBUG - REMOVER DEPOIS
+setTimeout(() => {
+  console.log("🔍 INICIANDO BUSCA FORÇADA DE IDs...");
+  
+  const mapaSvg = document.getElementById("mapaBrasil");
+  if (!mapaSvg || !mapaSvg.contentDocument) {
+    console.error("❌ SVG não carregado ainda");
+    return;
+  }
+  
+  const svgDoc = mapaSvg.contentDocument;
+  const todosElementos = svgDoc.querySelectorAll("*");
+  
+  console.log(`📊 Total de elementos no SVG: ${todosElementos.length}`);
+  
+  const idsEncontrados = [];
+  todosElementos.forEach(el => {
+    if (el.id && el.id.trim() !== "") {
+      idsEncontrados.push(el.id);
+    }
+  });
+  
+  console.log(`📋 Total de IDs encontrados: ${idsEncontrados.length}`);
+  
+  // Mostrar de 10 em 10
+  const sorted = idsEncontrados.sort();
+  console.log("=" .repeat(80));
+  console.log("LISTA COMPLETA DE IDs:");
+  console.log("=" .repeat(80));
+  
+  for (let i = 0; i < sorted.length; i++) {
+    console.log(`${(i+1).toString().padStart(3, ' ')}. "${sorted[i]}"`);
+  }
+  
+  console.log("=" .repeat(80));
+  
+  // Criar um alerta na tela com os IDs
+  const containerDiv = document.createElement("div");
+  containerDiv.style.cssText = `
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    background: white;
+    border: 3px solid red;
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 99999;
+    font-family: monospace;
+    font-size: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  `;
+  
+  containerDiv.innerHTML = `
+    <h3 style="margin-top: 0; color: red;">IDs DO SVG (${sorted.length} total)</h3>
+    <button onclick="this.parentElement.remove()" style="margin-bottom: 10px;">Fechar</button>
+    <div>${sorted.map((id, i) => `${i+1}. ${id}`).join('<br>')}</div>
+  `;
+  
+  document.body.appendChild(containerDiv);
+  
+}, 3000); // Aguarda 3 segundos após página carregar
