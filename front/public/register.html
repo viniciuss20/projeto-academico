@@ -8,28 +8,28 @@
 
 <body>
   <div class="auth-card">
-
+    
     <h1>Crie sua conta</h1>
     <p>Preencha seus dados para continuar</p>
-
+    
     <form id="registerForm">
       <input type="email" id="email" class="auth-input" placeholder="E-mail" required />
       <input type="text" id="username" class="auth-input" placeholder="Nome de usuário" required />
       <input type="password" id="password" class="auth-input" placeholder="Senha" required />
-
+      
       <div style="text-align:left; margin-bottom:12px;">
         <input type="checkbox" class="auth-check" id="terms" required />
         <label for="terms">Aceito os termos e condições</label>
       </div>
-
+      
       <button class="auth-btn" type="submit">Cadastrar-se</button>
-
-      <!-- CORRIGIDO: link para login -->
-      <a class="auth-link" href="./login.html">Já possui uma conta? Entrar</a>
     </form>
-
+    
+    <!-- CORRIGIDO: link para login -->
+    <a class="auth-link" href="login.html">Já possui uma conta? Entrar</a>
+    
   </div>
-
+  
   <script src="auth.js"></script>
 </body>
 </html>
