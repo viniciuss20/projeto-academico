@@ -80,17 +80,80 @@
     </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const usuario = localStorage.getItem("usuario") || "Usuário";
+    // Função para carregar dados do usuário
+    function loadUserData() {
+        try {
+            // Recupera os dados do usuário do localStorage
+            const userDataString = localStorage.getItem('user');
+            
+            if (userDataString) {
+                const userData = JSON.parse(userDataString);
+                
+                // Preenche os campos do formulário
+                if (userData.email) {
+                    document.getElementById("email").value = userData.email;
+                }
+                
+                if (userData.username) {
+                    document.getElementById("firstName").value = userData.username;
+                    document.getElementById("userNameSidebar").innerText = userData.username;
+                }
+                
+                if (userData.sobrenome) {
+                    document.getElementById("lastName").value = userData.sobrenome;
+                }
+            } else {
+                // Fallback caso não encontre dados
+                const usuario = localStorage.getItem("usuario") || "Usuário";
+                document.getElementById("userNameSidebar").innerText = usuario;
+            }
+        } catch (error) {
+            console.error("Erro ao carregar dados do usuário:", error);
+        }
+    }
 
-        document.getElementById("userNameSidebar").innerText = usuario;
-        document.getElementById("email").value = usuario + "@exemplo.com";
-    });
+    // Função para salvar dados do usuário
+    function saveUserData() {
+        try {
+            const email = document.getElementById("email").value;
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
 
+            // Cria objeto com os dados atualizados
+            const userData = {
+                email: email,
+                username: firstName,
+                sobrenome: lastName
+            };
+
+            // Salva no localStorage
+            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('usuario', firstName); // Mantém compatibilidade
+
+            // Atualiza o nome na sidebar
+            document.getElementById("userNameSidebar").innerText = firstName;
+
+            alert("Dados salvos com sucesso!");
+        } catch (error) {
+            console.error("Erro ao salvar dados:", error);
+            alert("Erro ao salvar os dados. Tente novamente.");
+        }
+    }
+
+    // Função de logout
     function logout() {
         localStorage.removeItem("usuario");
-        window.location.href = "/login.html";
+        localStorage.removeItem("user");
+        window.location.href = "login.html";
     }
+
+    // Carrega os dados quando a página carregar
+    document.addEventListener("DOMContentLoaded", () => {
+        loadUserData();
+
+        // Adiciona evento de clique no botão Salvar
+        document.getElementById("saveBtn").addEventListener("click", saveUserData);
+    });
 </script>
 
 </body>
