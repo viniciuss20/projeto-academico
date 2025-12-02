@@ -19,6 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapaBrasilContainer = document.getElementById("mapaBrasilContainer");
   const mapaBrasilObject = document.getElementById("mapaBrasil");
 
+ // DIAGNÓSTICO - REMOVER DEPOIS
+console.log("🔍 Verificando elementos do mapa:");
+console.log("mapaBrasilContainer existe?", !!mapaBrasilContainer);
+console.log("mapaBrasilObject existe?", !!mapaBrasilObject);
+console.log("Tipo do mapaBrasilObject:", mapaBrasilObject?.tagName);
+console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data'));
+
   const ctxBarras = document.getElementById("graficoBarras")?.getContext?.("2d");
   const ctxCampanhas = document.getElementById("graficoCampanhas")?.getContext?.("2d");
   const ctxGenero = document.getElementById("graficoGenero")?.getContext?.("2d");
@@ -247,105 +254,44 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function inicializarMapaInterativo() {
-    if (!mapaBrasilObject) {
-      console.error("❌ Elemento mapaBrasil não encontrado no HTML");
+  if (!mapaBrasilObject) {
+    console.error("❌ Elemento mapaBrasil não encontrado no HTML");
+    return;
+  }
+
+  console.log("⏳ Aguardando carregamento do SVG...");
+
+  mapaBrasilObject.addEventListener("load", () => {
+    console.log("✅ SVG carregado! Iniciando busca por estados...");
+    
+    const svgDoc = mapaBrasilObject.contentDocument;
+    if (!svgDoc) {
+      console.error("❌ Não foi possível acessar o conteúdo do SVG");
       return;
     }
 
-    mapaBrasilObject.addEventListener("load", () => {
-      const svgDoc = mapaBrasilObject.contentDocument;
-      if (!svgDoc) {
-        console.error("❌ Erro ao acessar conteúdo do SVG");
-        return;
-      }
+    // Busca todos os elementos do SVG
+    const todosElementos = svgDoc.querySelectorAll("*");
+    console.log(`📍 Total de elementos no SVG: ${todosElementos.length}`);
 
-      // Busca TODOS os elementos possíveis no SVG
-      const grupos = svgDoc.querySelectorAll("g[id], path[id], g[data-name], g[class*='estado']");
-      svgEstadosPaths = [];
-
-      grupos.forEach((elemento) => {
-        // Tenta pegar o ID de várias formas
-        const id = 
-          elemento.id?.trim() || 
-          elemento.getAttribute("data-name")?.trim() ||
-          elemento.getAttribute("data-estado")?.trim() ||
-          elemento.className?.baseVal?.trim();
-
-        if (!id) return;
-
-        // Tenta encontrar o estado correspondente
-        const estadoEncontrado = 
-          estadoMap[id] || 
-          estadoMap[id.toUpperCase()] || 
-          estadoMap[id.toLowerCase()] ||
-          Object.values(estadoMap).find(e => 
-            normalizarTexto(e) === normalizarTexto(id)
-          ) ||
-          Object.keys(estadoMap).find(sigla => 
-            id.toUpperCase().includes(sigla)
-          );
-
-        if (estadoEncontrado) {
-          let grupo = elemento;
-          
-          // Se for path, usa o pai
-          if (elemento.tagName.toLowerCase() === "path") {
-            grupo = elemento.parentElement;
-          }
-
-          grupo.dataset.estado = estadoEncontrado;
-          grupo.style.cursor = "pointer";
-          
-          // Remove eventos antigos clonando o elemento
-          const novoGrupo = grupo.cloneNode(true);
-          grupo.parentNode.replaceChild(novoGrupo, grupo);
-          grupo = novoGrupo;
-          
-          // Adiciona evento de clique
-          grupo.addEventListener("click", (e) => {
-            e.stopPropagation();
-            selecionarEstado(estadoEncontrado);
-          });
-
-          // Efeito hover
-          grupo.addEventListener("mouseenter", function() {
-            const paths = this.querySelectorAll("path, polygon, rect");
-            paths.forEach(p => {
-              p.style.opacity = "0.8";
-              p.style.filter = "brightness(1.2)";
-            });
-          });
-
-          grupo.addEventListener("mouseleave", function() {
-            const paths = this.querySelectorAll("path, polygon, rect");
-            paths.forEach(p => {
-              p.style.opacity = "1";
-              p.style.filter = "brightness(1)";
-            });
-          });
-
-          svgEstadosPaths.push(grupo);
-          console.log(`✅ Estado adicionado: ${estadoEncontrado}`);
-        }
-      });
-
-      console.log(`🗺️ Mapa inicializado com ${svgEstadosPaths.length} estados clicáveis`);
-      
-      if (svgEstadosPaths.length === 0) {
-        console.error("❌ NENHUM ESTADO FOI ENCONTRADO! Verifique a estrutura do SVG.");
-      }
-
-      pintarMapaBrasil();
+    // Vamos procurar por padrões comuns de nomeação
+    svgEstadosPaths = [];
+    const elementosComId = svgDoc.querySelectorAll("[id]");
+    
+    console.log("🔍 Elementos com ID encontrados:");
+    elementosComId.forEach(el => {
+      console.log(`  - ID: "${el.id}" | Tag: ${el.tagName}`);
     });
 
-    mapaBrasilObject.addEventListener("error", () => {
-      console.error("❌ Erro ao carregar arquivo SVG do mapa");
-    });
-  }
+    // CONTINUA NA PRÓXIMA PARTE...
+  });
+  
 
-  function desenharMapa() {
-    pintarMapaBrasil();
-  }
+  mapaBrasilObject.addEventListener("error", () => {
+    console.error("❌ Erro ao carregar arquivo SVG do mapa");
+    console.error("Verifique se o arquivo existe em: maps/Brazil_states.svg");
+  });
+}
   /* -------------------------------------------------------
       FAIXA ETÁRIA — CORREÇÃO COMPLETA
   ------------------------------------------------------- */
