@@ -108,6 +108,35 @@ document.addEventListener("DOMContentLoaded", () => {
     "Amazonas": "Amazonas"
   };
 
+  // Função para tentar descobrir o nome do estado a partir do ID
+  function descobrirEstadoPorId(id) {
+    if (!id) return null;
+    
+    const idLower = id.toLowerCase().replace(/[_-]/g, '');
+    
+    // Mapeamento de padrões
+    const padroes = {
+      'bahia': 'Bahia',
+      'ba': 'Bahia',
+      'riograndedosul': 'Rio Grande do Sul',
+      'riograndedosul': 'Rio Grande do Sul',
+      'rs': 'Rio Grande do Sul',
+      'rgs': 'Rio Grande do Sul',
+      'matogrossodosul': 'Mato Grosso do Sul',
+      'matogrossodosul': 'Mato Grosso do Sul',
+      'ms': 'Mato Grosso do Sul',
+      'mgs': 'Mato Grosso do Sul'
+    };
+    
+    for (const [padrao, estado] of Object.entries(padroes)) {
+      if (idLower.includes(padrao)) {
+        return estado;
+      }
+    }
+    
+    return null;
+  }
+
   /* -------------------------------------------------------
       VARIÁVEIS GLOBAIS
   ------------------------------------------------------- */
@@ -344,62 +373,74 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Busca todos os elementos com ID
-      svgEstadosPaths = [];
+      // PASSO 1: LISTAR ABSOLUTAMENTE TODOS OS IDs DO SVG
+      console.log("🔍 ==================== TODOS OS IDs NO SVG ====================");
       const todosComId = svgDoc.querySelectorAll("[id]");
-      
-      console.log("🔍 ========== LISTA COMPLETA DE IDs NO SVG ==========");
-      const idsEncontrados = [];
+      const listaCompleta = [];
       todosComId.forEach(el => {
-        idsEncontrados.push(el.id);
+        if (el.id) {
+          listaCompleta.push(el.id);
+        }
       });
-      console.log("IDs encontrados:", idsEncontrados.sort());
-      console.log("====================================================");
+      console.log("📋 Total de elementos com ID:", listaCompleta.length);
+      console.log("📋 Lista completa (ordenada alfabeticamente):");
+      listaCompleta.sort().forEach(id => {
+        console.log(`   - "${id}"`);
+      });
+      console.log("================================================================");
       
-      // Primeiro tenta buscar pelos IDs conhecidos
+      // PASSO 2: Tentar mapear os estados
+      svgEstadosPaths = [];
+      const estadosJaMapeados = new Set();
+      
+      // Primeiro: mapeamento direto
       Object.keys(svgIdParaEstado).forEach(idEstado => {
         const elemento = svgDoc.getElementById(idEstado);
         if (elemento) {
           svgEstadosPaths.push(elemento);
-          console.log(`✅ Estado encontrado: ${idEstado} -> ${svgIdParaEstado[idEstado]}`);
+          estadosJaMapeados.add(svgIdParaEstado[idEstado]);
+          console.log(`✅ Estado mapeado: ${idEstado} -> ${svgIdParaEstado[idEstado]}`);
         }
       });
 
-      // Busca por IDs não mapeados
-      console.log("🔍 ========== IDs NÃO MAPEADOS ==========");
+      // PASSO 3: Tentar descobrir automaticamente IDs não mapeados
+      console.log("🤖 Tentando descobrir automaticamente estados faltantes...");
       todosComId.forEach(el => {
         const id = el.id;
         
-        // Verifica se já foi adicionado
         if (svgEstadosPaths.includes(el)) return;
         
-        // Tenta encontrar correspondência no mapeamento
-        const estadoNome = svgIdParaEstado[id];
-        if (estadoNome) {
+        // Tenta mapeamento direto primeiro
+        let estadoNome = svgIdParaEstado[id];
+        
+        // Se não encontrou, tenta descobrir automaticamente
+        if (!estadoNome) {
+          estadoNome = descobrirEstadoPorId(id);
+        }
+        
+        if (estadoNome && !estadosJaMapeados.has(estadoNome)) {
           svgEstadosPaths.push(el);
-          console.log(`✅ Estado encontrado (alternativo): ${id} -> ${estadoNome}`);
-        } else {
-          // Log de IDs não mapeados para debug - com destaque
-          if (id && !id.includes('_') && id.length > 2) {
-            console.log(`⚠️ IMPORTANTE - ID não mapeado: "${id}"`);
-          }
+          estadosJaMapeados.add(estadoNome);
+          console.log(`🤖 Estado descoberto automaticamente: "${id}" -> ${estadoNome}`);
+          
+          // Adiciona ao mapeamento para próximas vezes
+          svgIdParaEstado[id] = estadoNome;
         }
       });
-      console.log("=========================================");
 
       console.log(`📊 Total de estados mapeados: ${svgEstadosPaths.length} de 27`);
 
-      // Lista estados que NÃO foram encontrados
-      const estadosNaoEncontrados = ESTADOS_BRASIL.filter(estado => {
-        return !svgEstadosPaths.some(el => {
-          const idOriginal = el.id;
-          const nomeEstado = svgIdParaEstado[idOriginal];
-          return nomeEstado === estado;
-        });
-      });
+      // PASSO 4: Listar estados que NÃO foram encontrados
+      const estadosNaoEncontrados = ESTADOS_BRASIL.filter(estado => !estadosJaMapeados.has(estado));
       
       if (estadosNaoEncontrados.length > 0) {
-        console.warn("⚠️ Estados SEM mapeamento:", estadosNaoEncontrados);
+        console.error("❌ ESTADOS SEM MAPEAMENTO:", estadosNaoEncontrados);
+        console.warn("⚠️ Procure na lista acima por IDs que possam corresponder a estes estados!");
+        console.warn("⚠️ Padrões a procurar:");
+        estadosNaoEncontrados.forEach(estado => {
+          const semAcentos = estado.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          console.warn(`   - Para "${estado}": procure IDs contendo "${semAcentos}"`);
+        });
       }
 
       // Pinta o mapa após encontrar os estados
