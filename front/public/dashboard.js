@@ -19,13 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapaBrasilContainer = document.getElementById("mapaBrasilContainer");
   const mapaBrasilObject = document.getElementById("mapaBrasil");
 
- // DIAGNÓSTICO - REMOVER DEPOIS
-console.log("🔍 Verificando elementos do mapa:");
-console.log("mapaBrasilContainer existe?", !!mapaBrasilContainer);
-console.log("mapaBrasilObject existe?", !!mapaBrasilObject);
-console.log("Tipo do mapaBrasilObject:", mapaBrasilObject?.tagName);
-console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data'));
-
   const ctxBarras = document.getElementById("graficoBarras")?.getContext?.("2d");
   const ctxCampanhas = document.getElementById("graficoCampanhas")?.getContext?.("2d");
   const ctxGenero = document.getElementById("graficoGenero")?.getContext?.("2d");
@@ -74,6 +67,38 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
     TO:"Tocantins", Tocantins:"Tocantins"
   };
 
+  // Mapeamento de IDs do SVG para nomes completos dos estados
+  const svgIdParaEstado = {
+    "Piaui": "Piauí",
+    "Ceara": "Ceará",
+    "Alagoas": "Alagoas",
+    "Sergipe": "Sergipe",
+    "Fernando_de_Noronha": "Pernambuco",
+    "Pernambuco": "Pernambuco",
+    "Paraiba": "Paraíba",
+    "BrasiliaDistritoFederal": "Distrito Federal",
+    "Maranhao": "Maranhão",
+    "Para": "Pará",
+    "SaoPaulo": "São Paulo",
+    "Rio_deJaneiro": "Rio de Janeiro",
+    "EspiritoSanto": "Espírito Santo",
+    "SantaCatarina": "Santa Catarina",
+    "Acre": "Acre",
+    "Bahia": "Bahia",
+    "Goias": "Goiás",
+    "Parana": "Paraná",
+    "MatoGrosso": "Mato Grosso",
+    "MatoGrossodoSul": "Mato Grosso do Sul",
+    "MinasGerais": "Minas Gerais",
+    "Tocantins": "Tocantins",
+    "RioGrandedoNorte": "Rio Grande do Norte",
+    "RioGrandedoSul": "Rio Grande do Sul",
+    "Rondonia": "Rondônia",
+    "Roraima": "Roraima",
+    "Amapa": "Amapá",
+    "Amazonas": "Amazonas"
+  };
+
   /* -------------------------------------------------------
       VARIÁVEIS GLOBAIS
   ------------------------------------------------------- */
@@ -83,6 +108,7 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
   let dadosGenero = {};
   let todosOsDados = [];
   let svgEstadosPaths = [];
+
   /* -------------------------------------------------------
       SIDEBAR DE ESTADOS
   ------------------------------------------------------- */
@@ -203,6 +229,7 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
     if (g.includes("fem") || g.includes("mulher")) return "Mulher";
     return "Não informado";
   }
+
   /* -------------------------------------------------------
       MAPA — HEATMAP COM CORES CORRIGIDAS
   ------------------------------------------------------- */
@@ -221,10 +248,18 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
       return;
     }
 
+    console.log("🎨 Iniciando pintura do mapa...");
+    
     svgEstadosPaths.forEach((grupo) => {
-      const est = grupo.dataset.estado;
-      const nomeNormalizado = normalizarEstado(est);
-      const d = dadosRespostas[nomeNormalizado];
+      const idOriginal = grupo.id;
+      const nomeEstado = svgIdParaEstado[idOriginal];
+      
+      if (!nomeEstado) {
+        console.warn(`⚠️ Estado não mapeado: ${idOriginal}`);
+        return;
+      }
+
+      const d = dadosRespostas[nomeEstado];
       const paths = grupo.querySelectorAll("path, polygon, rect");
 
       if (!d || !d.total) {
@@ -242,6 +277,8 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
       const percentual = total ? ((altos + severos) / total) * 100 : 0;
       const cor = getImpactoColor(percentual);
 
+      console.log(`🎨 ${nomeEstado}: ${percentual.toFixed(1)}% afetado - cor: ${cor}`);
+
       paths.forEach((p) => {
         p.style.fill = cor;
         p.style.opacity = 1;
@@ -253,45 +290,56 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
     console.log("✅ Mapa pintado com sucesso!");
   }
 
-  function inicializarMapaInterativo() {
-  if (!mapaBrasilObject) {
-    console.error("❌ Elemento mapaBrasil não encontrado no HTML");
-    return;
+  function desenharMapa() {
+    // Função vazia por enquanto - o mapa já está no HTML
+    // A pintura é feita pela função pintarMapaBrasil()
+    console.log("📍 Preparando mapa para pintura...");
   }
 
-  console.log("⏳ Aguardando carregamento do SVG...");
-
-  mapaBrasilObject.addEventListener("load", () => {
-    console.log("✅ SVG carregado! Iniciando busca por estados...");
-    
-    const svgDoc = mapaBrasilObject.contentDocument;
-    if (!svgDoc) {
-      console.error("❌ Não foi possível acessar o conteúdo do SVG");
+  function inicializarMapaInterativo() {
+    if (!mapaBrasilObject) {
+      console.error("❌ Elemento mapaBrasil não encontrado no HTML");
       return;
     }
 
-    // Busca todos os elementos do SVG
-    const todosElementos = svgDoc.querySelectorAll("*");
-    console.log(`📍 Total de elementos no SVG: ${todosElementos.length}`);
+    console.log("⏳ Aguardando carregamento do SVG...");
 
-    // Vamos procurar por padrões comuns de nomeação
-    svgEstadosPaths = [];
-    const elementosComId = svgDoc.querySelectorAll("[id]");
-    
-    console.log("🔍 Elementos com ID encontrados:");
-    elementosComId.forEach(el => {
-      console.log(`  - ID: "${el.id}" | Tag: ${el.tagName}`);
+    mapaBrasilObject.addEventListener("load", () => {
+      console.log("✅ SVG carregado! Iniciando busca por estados...");
+      
+      const svgDoc = mapaBrasilObject.contentDocument;
+      if (!svgDoc) {
+        console.error("❌ Não foi possível acessar o conteúdo do SVG");
+        return;
+      }
+
+      // Busca todos os elementos com ID que correspondem a estados
+      svgEstadosPaths = [];
+      
+      Object.keys(svgIdParaEstado).forEach(idEstado => {
+        const elemento = svgDoc.getElementById(idEstado);
+        if (elemento) {
+          svgEstadosPaths.push(elemento);
+          console.log(`✅ Estado encontrado: ${idEstado} -> ${svgIdParaEstado[idEstado]}`);
+        } else {
+          console.warn(`⚠️ Estado não encontrado no SVG: ${idEstado}`);
+        }
+      });
+
+      console.log(`📊 Total de estados mapeados: ${svgEstadosPaths.length}`);
+
+      // Pinta o mapa após encontrar os estados
+      if (Object.keys(dadosRespostas).length > 0) {
+        pintarMapaBrasil();
+      }
     });
 
-    // CONTINUA NA PRÓXIMA PARTE...
-  });
-  
+    mapaBrasilObject.addEventListener("error", () => {
+      console.error("❌ Erro ao carregar arquivo SVG do mapa");
+      console.error("Verifique se o arquivo existe em: maps/Brazil_states.svg");
+    });
+  }
 
-  mapaBrasilObject.addEventListener("error", () => {
-    console.error("❌ Erro ao carregar arquivo SVG do mapa");
-    console.error("Verifique se o arquivo existe em: maps/Brazil_states.svg");
-  });
-}
   /* -------------------------------------------------------
       FAIXA ETÁRIA — CORREÇÃO COMPLETA
   ------------------------------------------------------- */
@@ -402,6 +450,7 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
       faixaEtariaEl.textContent = obterFaixaEtariaMaisAfetadaPorEstado(estado);
     }
   }
+
   /* -------------------------------------------------------
       ESTATÍSTICAS E GRÁFICOS
   ------------------------------------------------------- */
@@ -633,7 +682,8 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
       },
     });
   }
- /* -------------------------------------------------------
+
+  /* -------------------------------------------------------
       EVENTO: Troca de estado na sidebar
   ------------------------------------------------------- */
   function selecionarEstado(estado) {
@@ -719,7 +769,11 @@ console.log("Atributo data do mapaBrasil:", mapaBrasilObject?.getAttribute('data
       criarGraficoCampanhas("geral");
       criarGraficoGenero("geral");
       desenharMapa();
-      pintarMapaBrasil();
+      
+      // Aguarda um pouco para garantir que o SVG foi carregado
+      setTimeout(() => {
+        pintarMapaBrasil();
+      }, 500);
 
     } catch (err) {
       console.error("❌ ERRO AO CARREGAR DADOS:", err);
