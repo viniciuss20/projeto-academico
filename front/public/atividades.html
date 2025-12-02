@@ -4,308 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atividades - GeoBrasil</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="manage-account.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+        /* Estilos específicos para a lista de atividades */
+        .activities-list {
             display: flex;
-            padding: 20px;
-        }
-
-        .sidebar {
-            width: 280px;
-            background: white;
-            border-radius: 15px;
-            padding: 30px 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-right: 20px;
-        }
-
-        .user-profile {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .user-avatar {
-            width: 80px;
-            height: 80px;
-            background: #4285f4;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-        }
-
-        .user-avatar svg {
-            width: 45px;
-            height: 45px;
-            fill: white;
-        }
-
-        .user-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu-item {
-            padding: 15px 20px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .menu-item:hover {
-            background: #f0f0f0;
-        }
-
-        .menu-item.active {
-            background: #4285f4;
-            color: white;
-        }
-
-        .menu-item-icon {
-            font-size: 18px;
-        }
-
-        .menu-item.logout {
-            color: #dc3545;
-            margin-top: 20px;
-        }
-
-        .menu-item.logout:hover {
-            background: #ffe5e5;
-        }
-
-        .main-content {
-            flex: 1;
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow-y: auto;
-            max-height: calc(100vh - 40px);
-        }
-
-        .page-header {
-            margin-bottom: 30px;
-        }
-
-        .page-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 1200px;
         }
 
         .activity-card {
-            background: #f8f9fa;
+            background: white;
             border-radius: 12px;
             padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #4285f4;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            border-left: 4px solid #2563eb;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: all 0.3s;
         }
 
         .activity-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             transform: translateY(-2px);
         }
 
         .activity-info {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 25px;
+            align-items: center;
         }
 
         .activity-field {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 5px;
         }
 
         .activity-label {
             font-size: 11px;
             text-transform: uppercase;
-            color: #666;
+            color: #6b7280;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
 
         .activity-value {
-            font-size: 14px;
-            color: #333;
+            font-size: 15px;
+            color: #1f2937;
             font-weight: 500;
         }
 
         .activity-value.idade {
-            color: #4285f4;
-        }
-
-        .activity-value.classificacao {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            color: #2563eb;
             font-weight: 600;
         }
 
+        .activity-value.classificacao {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
         .activity-value.classificacao.severa {
-            background: #dc3545;
+            background: #dc2626;
             color: white;
         }
 
         .activity-value.classificacao.moderada {
-            background: #ffc107;
-            color: #333;
+            background: #f59e0b;
+            color: white;
         }
 
         .activity-value.classificacao.leve {
-            background: #28a745;
+            background: #10b981;
             color: white;
         }
 
         .activity-value.classificacao.sem {
-            background: #6c757d;
+            background: #6b7280;
             color: white;
-        }
-
-        .logo {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-text {
-            font-size: 32px;
-            font-weight: 800;
-        }
-
-        .logo-text .geo {
-            color: #4285f4;
-        }
-
-        .logo-text .brasil {
-            color: #28a745;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
         }
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: #999;
+            padding: 80px 20px;
+            color: #9ca3af;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .empty-state-icon {
             font-size: 64px;
             margin-bottom: 20px;
+            opacity: 0.5;
         }
 
-        @media (max-width: 1024px) {
-            body {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-
-            .logo {
-                position: static;
-                margin-top: 30px;
-                justify-content: center;
-            }
+        .empty-state p {
+            font-size: 16px;
+            margin: 0;
         }
     </style>
 </head>
+
 <body>
-    <aside class="sidebar">
-        <div class="user-profile">
-            <div class="user-avatar">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="profile">
+                <img src="img/image.png" alt="avatar" class="avatar-img">
+                <h3 id="userNameSidebar">Usuário</h3>
             </div>
-            <div class="user-name">Usuário</div>
-        </div>
 
-        <ul class="menu">
-            <li class="menu-item" onclick="window.location.href='dashboard.html'">
-                <span class="menu-item-icon">📊</span>
-                <span>Dashboard</span>
-            </li>
-            <li class="menu-item" onclick="window.location.href='manage-account.html'">
-                <span class="menu-item-icon">👤</span>
-                <span>Detalhes da Conta</span>
-            </li>
-            <li class="menu-item active">
-                <span class="menu-item-icon">📋</span>
-                <span>Atividades</span>
-            </li>
-            <li class="menu-item" onclick="window.location.href='change-password.html'">
-                <span class="menu-item-icon">🔒</span>
-                <span>Alterar Senha</span>
-            </li>
-            <li class="menu-item logout" onclick="window.location.href='login.html'">
-                <span class="menu-item-icon">🚪</span>
-                <span>Sair</span>
-            </li>
-        </ul>
-    </aside>
+            <ul class="menu">
+                <li onclick="window.location.href='dashboard.html'">
+                    <span>📊</span> Dashboard
+                </li>
 
-    <main class="main-content">
-        <div class="page-header">
-            <h1 class="page-title">Últimos registros</h1>
-        </div>
+                <li onclick="window.location.href='manage-account.html'">
+                    <span>👤</span> Detalhes da Conta
+                </li>
 
-        <div id="atividades-container">
-            <!-- As atividades serão carregadas aqui via JavaScript -->
-        </div>
+                <li class="active">
+                    <span>📋</span> Atividades
+                </li>
 
-        <div class="logo">
-            <span class="logo-text">
-                <span class="geo">Geo</span><span class="brasil">Brasil</span>
-            </span>
-            <svg class="logo-icon" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="#28a745"/>
-                <circle cx="50" cy="50" r="35" fill="#ffc107"/>
-                <path d="M30 50 Q50 30 70 50 Q50 70 30 50" fill="#4285f4"/>
-            </svg>
-        </div>
-    </main>
+                <li onclick="window.location.href='change-password.html'">
+                    <span>🔐</span> Alterar Senha
+                </li>
+
+                <li onclick="logout()">
+                    <span>🚪</span> Sair
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+
+            <!-- ✅ LOGO ORIGINAL NO CANTO SUPERIOR DIREITO -->
+            <img src="img/geo-logo.png" alt="GeoBrasil Logo" class="geo-logo-top">
+
+            <h1>Últimos registros</h1>
+
+            <div id="atividades-container" class="activities-list">
+                <!-- As atividades serão carregadas aqui via JavaScript -->
+            </div>
+        </main>
+
+    </div>
 
     <script>
         const API_URL = "https://projeto-academico-production.up.railway.app";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuario = localStorage.getItem("usuario") || "Usuário";
+            document.getElementById("userNameSidebar").innerText = usuario;
+            
+            carregarAtividades();
+        });
+
+        function logout() {
+            localStorage.removeItem("usuario");
+            window.location.href = "/login.html";
+        }
 
         async function carregarAtividades() {
             const container = document.getElementById('atividades-container');
@@ -368,7 +234,7 @@
                             <div class="activity-info">
                                 <div class="activity-field">
                                     <span class="activity-label">Data</span>
-                                     <span class="activity-value">${data}</span>
+                                    <span class="activity-value">${data}</span>
                                 </div>
                                 <div class="activity-field">
                                     <span class="activity-label">Hora</span>
@@ -405,9 +271,6 @@
                 `;
             }
         }
-
-        // Carregar atividades quando a página carregar
-        document.addEventListener('DOMContentLoaded', carregarAtividades);
     </script>
 </body>
 </html>
