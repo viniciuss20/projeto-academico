@@ -393,29 +393,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-      MAPA — HEATMAP COM CORES: VERDE → LARANJA → VERMELHO
-      Baseado no % de pessoas com ALGUM nível de dependência
+      MAPA — HEATMAP: Apenas dependência ALTA e SEVERA
+      Faixas ajustadas para casos graves
   ------------------------------------------------------- */
   function getImpactoColor(percentual) {
     const p = Number(percentual);
     
-    // Verde: 0-40% (menos afetados)
-    if (p <= 40) return "#10b981";  // Verde
+    // Verde: 0-8% (baixo impacto)
+    if (p <= 8) return "#10b981";  // Verde
     
-    // Verde claro: 40-55%
-    if (p <= 55) return "#84cc16";  // Verde-limão
+    // Verde-limão: 8-12%
+    if (p <= 12) return "#84cc16";  // Verde-limão
     
-    // Amarelo-laranja: 55-65% (parcialmente afetados)
-    if (p <= 65) return "#f59e0b";  // Laranja
+    // Laranja: 12-16% (moderado)
+    if (p <= 16) return "#f59e0b";  // Laranja
     
-    // Laranja-avermelhado: 65-75%
-    if (p <= 75) return "#f97316";  // Laranja escuro
+    // Laranja escuro: 16-20%
+    if (p <= 20) return "#f97316";  // Laranja escuro
     
-    // Vermelho: 75-85% (alto número de dependentes)
-    if (p <= 85) return "#ef4444";  // Vermelho
+    // Vermelho: 20-25% (alto)
+    if (p <= 25) return "#ef4444";  // Vermelho
     
-    // Vermelho escuro: 85%+ (número altíssimo de dependentes)
-    return "#dc2626";  // Vermelho escuro/intenso
+    // Vermelho escuro: 25%+ (crítico)
+    return "#dc2626";  // Vermelho escuro
   }
 
   function pintarMapaBrasil() {
@@ -447,17 +447,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const leve = d.classificacoes["Dependência leve"] || 0;
-      const moderada = d.classificacoes["Dependência moderada"] || 0;
+      // APENAS casos graves: alta + severa
       const altos = d.classificacoes["Dependência alta"] || 0;
       const severos = d.classificacoes["Dependência severa"] || 0;
       const total = d.total || 0;
-      
-      // Percentual de TODAS as dependências (exceto "Sem dependência")
-      const percentual = total ? ((leve + moderada + altos + severos) / total) * 100 : 0;
+      const percentual = total ? ((altos + severos) / total) * 100 : 0;
       const cor = getImpactoColor(percentual);
 
-      console.log(`🎨 ${nomeEstado}: ${percentual.toFixed(1)}% com algum nível de dependência - cor: ${cor}`);
+      console.log(`🎨 ${nomeEstado}: ${percentual.toFixed(1)}% casos graves - cor: ${cor}`);
 
       paths.forEach((p) => {
         p.style.fill = cor;
