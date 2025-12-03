@@ -2,32 +2,64 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Entrar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar - GeoBrasil</title>
   <link rel="stylesheet" href="auth.css" />
 </head>
 
 <body>
-  <div class="auth-card">
-
-    <h1>Entrar na conta</h1>
-    <p>Use seu email e senha para continuar</p>
-
-    <form id="loginForm">
-      <input type="email" id="email" class="auth-input" placeholder="E-mail" required />
-      <input type="password" id="password" class="auth-input" placeholder="Senha" required />
-
-      <div style="text-align:left; margin-bottom:12px;">
-        <input type="checkbox" class="auth-check" id="remember" />
-        <label for="remember">Lembrar-me</label>
+  <div class="auth-container">
+    <!-- Card de Login -->
+    <div class="auth-card">
+      <!-- Logo dentro do card -->
+      <div class="auth-logo">
+        <img src="img/geo-logo.png" alt="GeoBrasil" class="logo-img">
+        <h1 class="logo-text">GeoBrasil</h1>
       </div>
 
-      <button class="auth-btn" type="submit">Entrar</button>
+      <div class="auth-header">
+        <p>Use seu email e senha para continuar</p>
+      </div>
 
-      <!-- CORRIGIDO: link para o registro -->
-      <a href="/register.html">Criar nova conta</a>
+      <div id="message" class="message-box"></div>
 
-    </form>
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input 
+            type="email" 
+            id="email" 
+            class="auth-input" 
+            placeholder="seu@email.com" 
+            required 
+          />
+        </div>
 
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input 
+            type="password" 
+            id="password" 
+            class="auth-input" 
+            placeholder="••••••••" 
+            required 
+          />
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember" />
+            <span>Lembrar-me</span>
+          </label>
+        </div>
+
+        <button class="auth-btn" type="submit">Entrar</button>
+
+        <div class="auth-footer">
+          <p>Não tem uma conta? <a href="register.html">Criar nova conta</a></p>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="auth.js"></script>

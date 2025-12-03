@@ -2,34 +2,77 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Criar Conta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta - GeoBrasil</title>
   <link rel="stylesheet" href="auth.css" />
 </head>
 
 <body>
-  <div class="auth-card">
-    
-    <h1>Crie sua conta</h1>
-    <p>Preencha seus dados para continuar</p>
-    
-    <form id="registerForm">
-      <input type="email" id="email" class="auth-input" placeholder="E-mail" required />
-      <input type="text" id="username" class="auth-input" placeholder="Nome de usuário" required />
-      <input type="password" id="password" class="auth-input" placeholder="Senha" required />
-      
-      <div style="text-align:left; margin-bottom:12px;">
-        <input type="checkbox" class="auth-check" id="terms" required />
-        <label for="terms">Aceito os termos e condições</label>
+  <div class="auth-container">
+    <!-- Card de Registro -->
+    <div class="auth-card">
+      <!-- Logo dentro do card -->
+      <div class="auth-logo">
+        <img src="img/geo-logo.png" alt="GeoBrasil" class="logo-img">
+        <h1 class="logo-text">GeoBrasil</h1>
       </div>
-      
-      <button class="auth-btn" type="submit">Cadastrar-se</button>
-    </form>
-    
-    <!-- CORRIGIDO: link para login -->
-    <a class="auth-link" href="login.html">Já possui uma conta? Entrar</a>
-    
+
+      <div class="auth-header">
+        <p>Preencha seus dados para continuar</p>
+      </div>
+
+      <div id="message" class="message-box"></div>
+
+      <form id="registerForm" class="auth-form">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input 
+            type="email" 
+            id="email" 
+            class="auth-input" 
+            placeholder="seu@email.com" 
+            required 
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Nome de usuário</label>
+          <input 
+            type="text" 
+            id="username" 
+            class="auth-input" 
+            placeholder="Digite seu nome de usuário" 
+            required 
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input 
+            type="password" 
+            id="password" 
+            class="auth-input" 
+            placeholder="••••••••" 
+            required 
+          />
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="terms" required />
+            <span>Aceito os termos e condições</span>
+          </label>
+        </div>
+
+        <button class="auth-btn" type="submit">Cadastrar-se</button>
+
+        <div class="auth-footer">
+          <p>Já possui uma conta? <a href="login.html">Entrar</a></p>
+        </div>
+      </form>
+    </div>
   </div>
-  
+
   <script src="auth.js"></script>
 </body>
 </html>
