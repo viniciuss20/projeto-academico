@@ -199,30 +199,31 @@
                 const ultimosRegistros = dados.slice(-20).reverse();
 
                 container.innerHTML = ultimosRegistros.map(item => {
-                    // Usar a classificação que já vem da API
-                    const classificacaoOriginal = item.classificacao || 'Sem dependência';
+                    // Calcular pontuação total (soma de q1 até q10)
+                    const pontuacaoTotal = (item.q1_valor || 0) + (item.q2_valor || 0) + 
+                                          (item.q3_valor || 0) + (item.q4_valor || 0) + 
+                                          (item.q5_valor || 0) + (item.q6_valor || 0) + 
+                                          (item.q7_valor || 0) + (item.q8_valor || 0) + 
+                                          (item.q9_valor || 0) + (item.q10_valor || 0);
                     
-                    // Normalizar a classificação para o CSS
-                    let classificacao = classificacaoOriginal;
-                    let classeCss = 'sem';
+                    // Determinar classificação baseada na pontuação (mesmo critério do dashboard)
+                    let classificacao, classeCss;
                     
-                    const classifLower = classificacaoOriginal.toLowerCase();
-                    
-                    if (classifLower.includes('severa')) {
-                        classificacao = 'Dependência Severa';
-                        classeCss = 'severa';
-                    } else if (classifLower.includes('alta')) {
-                        classificacao = 'Dependência Alta';
-                        classeCss = 'alta';
-                    } else if (classifLower.includes('moderada')) {
-                        classificacao = 'Dependência Moderada';
-                        classeCss = 'moderada';
-                    } else if (classifLower.includes('leve')) {
-                        classificacao = 'Dependência Leve';
-                        classeCss = 'leve';
-                    } else {
+                    if (pontuacaoTotal <= 10) {
                         classificacao = 'Sem Dependência';
                         classeCss = 'sem';
+                    } else if (pontuacaoTotal <= 20) {
+                        classificacao = 'Dependência Leve';
+                        classeCss = 'leve';
+                    } else if (pontuacaoTotal <= 30) {
+                        classificacao = 'Dependência Moderada';
+                        classeCss = 'moderada';
+                    } else if (pontuacaoTotal <= 40) {
+                        classificacao = 'Dependência Alta';
+                        classeCss = 'alta';
+                    } else {
+                        classificacao = 'Dependência Severa';
+                        classeCss = 'severa';
                     }
 
                     // Formatar data e hora
