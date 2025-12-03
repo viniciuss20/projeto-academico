@@ -5,7 +5,7 @@ import cors from "cors";
 import mysql from "mysql2";
 import path from "path";
 import { fileURLToPath } from "url";
-import bcrypt from "bcrypt"; // ← ADICIONE ESTA LINHA
+import bcrypt from "bcrypt";
 
 const app = express();
 app.use(express.json());
@@ -39,78 +39,6 @@ app.use((req, res, next) => {
   }
   
   next();
-});
-// ADICIONE ESTA ROTA DEPOIS DA CONFIGURAÇÃO DO CORS (após a linha 42)
-
-// ====================================
-// ROTA PARA SALVAR RESPOSTAS DO FORMULÁRIO
-// ====================================
-app.post('/respostas', async (req, res) => {
-  try {
-    const {
-      estado,
-      idade,
-      genero,
-      q1_valor,
-      q2_valor,
-      q3_valor,
-      q4_valor,
-      q5_valor,
-      q6_valor,
-      q7_valor,
-      q8_valor,
-      q9_valor,
-      q10_valor
-    } = req.body;
-
-    // Validação básica
-    if (!estado || idade === undefined || !genero) {
-      return res.status(400).json({ 
-        erro: 'Dados incompletos. Estado, idade e gênero são obrigatórios.' 
-      });
-    }
-
-    // Inserir no banco de dados
-    const query = `
-      INSERT INTO respostas 
-      (estado, idade, genero, q1_valor, q2_valor, q3_valor, q4_valor, q5_valor, 
-       q6_valor, q7_valor, q8_valor, q9_valor, q10_valor, criado_em)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-    `;
-
-    const valores = [
-      estado,
-      idade,
-      genero,
-      q1_valor || 0,
-      q2_valor || 0,
-      q3_valor || 0,
-      q4_valor || 0,
-      q5_valor || 0,
-      q6_valor || 0,
-      q7_valor || 0,
-      q8_valor || 0,
-      q9_valor || 0,
-      q10_valor || 0
-    ];
-
-    const [resultado] = await db.promise().query(query, valores);
-
-    console.log('✅ Resposta salva com sucesso! ID:', resultado.insertId);
-
-    res.status(201).json({
-      sucesso: true,
-      mensagem: 'Resposta enviada com sucesso!',
-      id: resultado.insertId
-    });
-
-  } catch (erro) {
-    console.error('❌ Erro ao salvar resposta:', erro);
-    res.status(500).json({
-      erro: 'Erro ao salvar resposta no servidor.',
-      detalhes: erro.message
-    });
-  }
 });
 
 /* ============================================================
@@ -240,7 +168,6 @@ app.post("/auth/register", async (req, res) => {
       return res.status(400).json({ message: "Email já cadastrado." });
     }
 
-    // Hash da senha usando bcrypt importado
     const senhaHash = await bcrypt.hash(password, 10);
 
     await db.promise().query(
@@ -276,7 +203,6 @@ app.post("/auth/login", async (req, res) => {
 
     const usuario = usuarios[0];
 
-    // Verificar senha usando bcrypt importado
     const senhaValida = await bcrypt.compare(password, usuario.password);
 
     if (!senhaValida) {
@@ -300,10 +226,18 @@ app.post("/auth/login", async (req, res) => {
   }
 });
 
+/* =====================================================
+   📝 ROTA PARA SALVAR RESPOSTAS DO FORMULÁRIO
+===================================================== */
+
 app.post("/respostas", (req, res) => {
+  console.log("📝 Recebendo resposta do formulário...");
+  console.log("Body recebido:", req.body);
+  
   const { estado, idade, genero, respostas } = req.body;
 
   if (!estado || !idade || !genero || !respostas) {
+    console.log("❌ Dados incompletos");
     return res.status(400).json({ erro: "Dados incompletos." });
   }
 
@@ -317,6 +251,7 @@ app.post("/respostas", (req, res) => {
     data: new Date().toISOString(),
   };
 
+  // Salvar em JSON (backup)
   try {
     const lista = fs.existsSync(caminhoArquivo)
       ? JSON.parse(fs.readFileSync(caminhoArquivo, "utf8"))
@@ -324,10 +259,12 @@ app.post("/respostas", (req, res) => {
 
     lista.push(registro);
     fs.writeFileSync(caminhoArquivo, JSON.stringify(lista, null, 2));
+    console.log("✅ Salvo no JSON");
   } catch (err) {
     console.error("❌ Erro ao gravar JSON:", err);
   }
 
+  // Salvar no MySQL
   const det = result.respostasDetalhadas;
   const v = (n) => det[`q${n}`]?.valor || 0;
 
@@ -356,13 +293,29 @@ app.post("/respostas", (req, res) => {
     new Date().toISOString().slice(0, 19).replace('T', ' ')
   ];
 
-  db.query(sql, valores, (err) => {
-    if (err) console.error("❌ MySQL:", err);
-    else console.log("✅ Registro inserido no MySQL");
+  db.query(sql, valores, (err, resultado) => {
+    if (err) {
+      console.error("❌ Erro MySQL:", err);
+      return res.status(500).json({ 
+        erro: "Erro ao salvar no banco de dados",
+        detalhes: err.message 
+      });
+    }
+    
+    console.log("✅ Registro inserido no MySQL, ID:", resultado.insertId);
+    
+    res.json({ 
+      sucesso: true,
+      mensagem: "Resposta enviada com sucesso!",
+      classificacao: result.classificacao,
+      porcentagem: result.porcentagem
+    });
   });
-
-  res.json({ sucesso: true });
 });
+
+/* =====================================================
+   📊 ROTA PARA BUSCAR DADOS
+===================================================== */
 
 app.get("/dados", (req, res) => {
   console.log("📊 Requisição recebida de:", req.headers.origin);
@@ -398,17 +351,25 @@ app.get("/dados", (req, res) => {
   });
 });
 
+/* =====================================================
+   🏠 ROTA PRINCIPAL
+===================================================== */
+
 app.get("/", (req, res) => {
   res.json({ 
     status: "API funcionando! 🚀",
     endpoints: {
-      dados: "/dados",
+      dados: "/dados (GET)",
       respostas: "/respostas (POST)",
       registro: "/auth/register (POST)",
       login: "/auth/login (POST)"
     }
   });
 });
+
+/* =====================================================
+   🚀 INICIAR SERVIDOR
+===================================================== */
 
 const PORT = process.env.PORT || 3000;
 
