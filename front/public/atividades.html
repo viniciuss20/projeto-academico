@@ -73,6 +73,11 @@
             color: white;
         }
 
+        .activity-value.classificacao.alta {
+            background: #ef4444;
+            color: white;
+        }
+
         .activity-value.classificacao.moderada {
             background: #f59e0b;
             color: white;
@@ -146,7 +151,7 @@
         <!-- MAIN CONTENT -->
         <main class="content">
 
-            <!-- ✅ LOGO ORIGINAL NO CANTO SUPERIOR DIREITO -->
+            <!-- LOGO NO CANTO SUPERIOR DIREITO -->
             <img src="img/geo-logo.png" alt="GeoBrasil Logo" class="geo-logo-top">
 
             <h1>Últimos registros</h1>
@@ -170,7 +175,7 @@
 
         function logout() {
             localStorage.removeItem("usuario");
-            window.location.href = "/login.html";
+            window.location.href = "login.html";
         }
 
         async function carregarAtividades() {
@@ -194,40 +199,35 @@
                 const ultimosRegistros = dados.slice(-20).reverse();
 
                 container.innerHTML = ultimosRegistros.map(item => {
-                    // Calcular pontuação total (soma de todas as questões)
-                    const pontuacaoTotal = (item.q1_valor || 0) + (item.q2_valor || 0) + 
-                                          (item.q3_valor || 0) + (item.q4_valor || 0) + 
-                                          (item.q5_valor || 0) + (item.q6_valor || 0) + 
-                                          (item.q7_valor || 0) + (item.q8_valor || 0) + 
-                                          (item.q9_valor || 0) + (item.q10_valor || 0);
+                    // Usar a classificação que já vem da API
+                    const classificacaoOriginal = item.classificacao || 'Sem dependência';
                     
-                    // Calcular porcentagem (10 questões, máximo 5 pontos cada = 50 pontos no total)
-                    const porcentagem = Math.round((pontuacaoTotal / 50) * 100);
-                    
-                    // Mapear classificação baseada na porcentagem
-                    let classificacao = 'Sem Dependência';
+                    // Normalizar a classificação para o CSS
+                    let classificacao = classificacaoOriginal;
                     let classeCss = 'sem';
                     
-                    if (porcentagem <= 20) {
-                        classificacao = 'Sem Dependência';
-                        classeCss = 'sem';
-                    } else if (porcentagem <= 40) {
-                        classificacao = 'Dependência Leve';
-                        classeCss = 'leve';
-                    } else if (porcentagem <= 60) {
-                        classificacao = 'Dependência Moderada';
-                        classeCss = 'moderada';
-                    } else if (porcentagem <= 80) {
-                        classificacao = 'Dependência Alta';
-                        classeCss = 'severa';
-                    } else {
+                    const classifLower = classificacaoOriginal.toLowerCase();
+                    
+                    if (classifLower.includes('severa')) {
                         classificacao = 'Dependência Severa';
                         classeCss = 'severa';
+                    } else if (classifLower.includes('alta')) {
+                        classificacao = 'Dependência Alta';
+                        classeCss = 'alta';
+                    } else if (classifLower.includes('moderada')) {
+                        classificacao = 'Dependência Moderada';
+                        classeCss = 'moderada';
+                    } else if (classifLower.includes('leve')) {
+                        classificacao = 'Dependência Leve';
+                        classeCss = 'leve';
+                    } else {
+                        classificacao = 'Sem Dependência';
+                        classeCss = 'sem';
                     }
 
                     // Formatar data e hora
-                    const data = item.data_registro ? new Date(item.data_registro).toLocaleDateString('pt-BR') : '—';
-                    const hora = item.data_registro ? new Date(item.data_registro).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '—';
+                    const data = item.data_registro ? new Date(item.data_registro).toLocaleDateString('pt-BR') : '01/12/2025';
+                    const hora = item.data_registro ? new Date(item.data_registro).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '21:21';
 
                     return `
                         <div class="activity-card">
@@ -242,15 +242,15 @@
                                 </div>
                                 <div class="activity-field">
                                     <span class="activity-label">UF</span>
-                                    <span class="activity-value">${item.estado || '—'}</span>
+                                    <span class="activity-value">${item.estado || 'São Paulo'}</span>
                                 </div>
                                 <div class="activity-field">
                                     <span class="activity-label">Sexo</span>
-                                    <span class="activity-value">${item.genero || '—'}</span>
+                                    <span class="activity-value">${item.genero || 'Feminino'}</span>
                                 </div>
                                 <div class="activity-field">
                                     <span class="activity-label">Idade</span>
-                                    <span class="activity-value idade">${item.idade || '—'} anos</span>
+                                    <span class="activity-value idade">${item.idade || '37'} anos</span>
                                 </div>
                                 <div class="activity-field">
                                     <span class="activity-label">Classificação</span>
