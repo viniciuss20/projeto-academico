@@ -142,10 +142,10 @@ body {
 /* ============================= */
 
 .dashboard-main {
-  margin-top: 18px;
+  margin-top: -10px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px 22px;
+  gap: 12px 22px;
   justify-content: flex-start;
   align-items: start;
 }
@@ -171,22 +171,82 @@ canvas {
   display: block;
 }
 
-/* GRÁFICOS — aba geral */
+/* ============================= */
+/* GRÁFICO DE PIZZA (SEVEROS) */
+/* ============================= */
 
 #graficoSeverosContainer canvas {
-  max-width: 480px;
+  max-width: 350px !important;
   margin: 0 auto;
 }
 
+/* ============================= */
+/* MAPA DO BRASIL */
+/* ============================= */
+
 #mapaBrasil {
   width: 100%;
-  max-width: 500px;
+  max-width: 850px !important;
   aspect-ratio: 4 / 3;
   display: block;
   margin: 0 auto;
 }
 
+/* ============================= */
+/* LEGENDA DO MAPA - MELHORADA */
+/* ============================= */
+
+.map-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border-radius: 14px;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  transition: transform 0.2s ease;
+}
+
+.legend-item:hover {
+  transform: translateX(4px);
+}
+
+.legend-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 2px solid rgba(0,0,0,0.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Cores da legenda */
+.legend-swatch.swatch-baixa {
+  background: #10b981;  /* Verde - Baixo impacto */
+}
+
+.legend-swatch.swatch-media {
+  background: #fbbf24;  /* Amarelo - Médio */
+}
+
+.legend-swatch.swatch-alta {
+  background: #ef4444;  /* Vermelho - Alto */
+}
+
+/* ============================= */
 /* Gráfico de barras */
+/* ============================= */
 
 #graficoBarrasContainer canvas {
   width: 100% !important;
@@ -210,33 +270,33 @@ canvas {
   align-items: center !important;
   gap: 40px !important;
 
-  padding: 26px 34px !important;      /* 🔥 maior */
+  padding: 26px 34px !important;
   background: white !important;
   border-radius: 22px !important;
   box-shadow: 0 4px 14px rgba(0,0,0,0.10) !important;
 
-  width: 250px !important;            /* 🔥 maior */
-  height: 70px !important;           /* 🔥 maior */
+  width: 250px !important;
+  height: 70px !important;
 
   cursor: pointer !important;
   transition: 0.2s ease !important;
 }
 
 .user-avatar-img {
-  width: 72px !important;             /* 🔥 maior */
+  width: 72px !important;
   height: 72px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
 }
 
 .user-name {
-  font-size: 25px !important;         /* 🔥 maior */
+  font-size: 25px !important;
   font-weight: 700 !important;
   color: #1f2937 !important;
 }
 
 .user-role {
-  font-size: 20px !important;         /* 🔥 maior */
+  font-size: 20px !important;
   color: #6b7280 !important;
   margin-top: -2px !important;
 }
@@ -244,7 +304,7 @@ canvas {
 .user-dropdown {
   display: none;
   position: absolute;
-  top: 145px !important;              /* acompanha o menu maior */
+  top: 145px !important;
   right: 40px !important;
   width: 220px !important;
   background: #fff !important;
@@ -257,8 +317,6 @@ canvas {
 .user-dropdown.active {
   display: block !important;
 }
-
-
 
 /* ============================= */
 /* LOGO ========================= */
