@@ -40,6 +40,78 @@ app.use((req, res, next) => {
   
   next();
 });
+// ADICIONE ESTA ROTA DEPOIS DA CONFIGURAÇÃO DO CORS (após a linha 42)
+
+// ====================================
+// ROTA PARA SALVAR RESPOSTAS DO FORMULÁRIO
+// ====================================
+app.post('/respostas', async (req, res) => {
+  try {
+    const {
+      estado,
+      idade,
+      genero,
+      q1_valor,
+      q2_valor,
+      q3_valor,
+      q4_valor,
+      q5_valor,
+      q6_valor,
+      q7_valor,
+      q8_valor,
+      q9_valor,
+      q10_valor
+    } = req.body;
+
+    // Validação básica
+    if (!estado || idade === undefined || !genero) {
+      return res.status(400).json({ 
+        erro: 'Dados incompletos. Estado, idade e gênero são obrigatórios.' 
+      });
+    }
+
+    // Inserir no banco de dados
+    const query = `
+      INSERT INTO respostas 
+      (estado, idade, genero, q1_valor, q2_valor, q3_valor, q4_valor, q5_valor, 
+       q6_valor, q7_valor, q8_valor, q9_valor, q10_valor, criado_em)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    `;
+
+    const valores = [
+      estado,
+      idade,
+      genero,
+      q1_valor || 0,
+      q2_valor || 0,
+      q3_valor || 0,
+      q4_valor || 0,
+      q5_valor || 0,
+      q6_valor || 0,
+      q7_valor || 0,
+      q8_valor || 0,
+      q9_valor || 0,
+      q10_valor || 0
+    ];
+
+    const [resultado] = await db.promise().query(query, valores);
+
+    console.log('✅ Resposta salva com sucesso! ID:', resultado.insertId);
+
+    res.status(201).json({
+      sucesso: true,
+      mensagem: 'Resposta enviada com sucesso!',
+      id: resultado.insertId
+    });
+
+  } catch (erro) {
+    console.error('❌ Erro ao salvar resposta:', erro);
+    res.status(500).json({
+      erro: 'Erro ao salvar resposta no servidor.',
+      detalhes: erro.message
+    });
+  }
+});
 
 /* ============================================================
    🔹 CONFIGURAÇÃO DO BANCO (Railway ou Local)
